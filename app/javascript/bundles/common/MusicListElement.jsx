@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavItem, Dropdown, Button } from 'react-materialize'
-
+import { NavItem, Dropdown } from 'react-materialize'
+import PropTypes from 'prop-types';
 
 const MusicListElement = ({
   id,
@@ -13,9 +13,6 @@ const MusicListElement = ({
   addMusicToRoom,
   inRoom
 }) => {
-  if(music.playing){
-    console.log("YESSSSSSSS", music)
-  }
   return(
     <a>
         { inRoom ?
@@ -27,7 +24,7 @@ const MusicListElement = ({
           </div>
         :
           <div className="collection-item-overlay">
-            <li onClick={(e) => {playMusicInLibrary(music)}} className="collection-item">
+            <li onClick={() => {playMusicInLibrary()}} className="collection-item">
               <p className={`truncate ${music.playing ? "secondary-text" : ""}`}>{name || music.song}</p>
             </li>
             <span onClick={(e) => editItem(e, music)}>
@@ -46,5 +43,17 @@ const MusicListElement = ({
     </a>
   )
 }
+
+MusicListElement.propTypes = {
+  id: PropTypes.string,
+  music: PropTypes.object,
+  handleAddClick: PropTypes.func,
+  handleDeleteClick: PropTypes.func,
+  editItem: PropTypes.func,
+  name: PropTypes.string,
+  playMusicInLibrary: PropTypes.func,
+  addMusicToRoom: PropTypes.func,
+  inRoom: PropTypes.bool,
+};
 
 export { MusicListElement };

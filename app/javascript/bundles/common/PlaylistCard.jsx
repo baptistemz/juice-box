@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const PlaylistCard = ({ name, ownerName, picture }) => {
   return (
@@ -18,6 +18,12 @@ const PlaylistCard = ({ name, ownerName, picture }) => {
       <div className="white-text"><h6>{name}</h6> by {ownerName}</div>
     </div>
   );
+};
+
+PlaylistCard.propTypes = {
+  name: PropTypes.string,
+  ownerName: PropTypes.string,
+  picture: PropTypes.string,
 };
 
 export { PlaylistCard };

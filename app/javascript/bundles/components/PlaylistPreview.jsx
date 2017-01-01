@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Button, Loader, AddToListWindow } from "../common/index";
+import { Button, Loader } from "../common/index";
 // import { addMusicToRoom, addPlaylistToRoom } from "../actions/index";
 import { NavItem, Dropdown } from 'react-materialize'
 
@@ -70,12 +69,12 @@ class PlaylistPreview extends Component {
           <div className="playlist-modal-list overflow-scroll">
             {selectedPlaylistMusics.length > 0 ?
               <ul className="collection library-collection">
-                {selectedPlaylistMusics.map((music) => {
+                {selectedPlaylistMusics.map((music, index) => {
                   const wholeName = music.artist && music.artist.name && music.song ? `${music.artist.name} - ${music.song}`: music.whole_name
                   return(
                     <a key={music.music_key}>
                       <div className="collection-item-overlay">
-                        <li onClick={(e) => {if(!inRoom){playMusicInLibrary(music)}}} className="collection-item" style={{ paddingLeft: "10px" }}>
+                        <li onClick={() => {if(!inRoom){playMusicInLibrary(music, selectedPlaylistMusics.slice(index + 1))}}} className="collection-item" style={{ paddingLeft: "10px" }}>
                           <p className={`truncate ${music.playing ? "secondary-text" : ""}`}>{wholeName}</p>
                         </li>
                         {!inRoom ?

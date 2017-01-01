@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
-import { gotRoom } from './index'
+import { setNextHeaders } from '../utils/tokenManagement';
 import { errorHandling } from '../utils/errorHandling';
 import {
   MUSIC_ENDED,

@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
-import { CSSTransitionGroup } from 'react-transition-group';
-import { bindActionCreators } from 'redux';
-import ReduxToastr from 'react-redux-toastr';
 import PrivateRoute from './PrivateRoute';
 import PreHome from '../components/PreHome';
 import PasswordForgotten from '../components/PasswordForgotten';
@@ -12,7 +9,6 @@ import NewPassword from '../components/Auth/NewPassword';
 import Signup from '../components/Auth/Signup';
 import Login from '../components/Auth/Login';
 import Sidenav from '../components/Sidenav';
-import LibraryPlaylists from '../components/Library/LibraryPlaylists';
 import Library from './Library';
 import RoomList from './RoomList';
 import Account from './Account';
@@ -54,17 +50,17 @@ class Routes extends Component{
     return(
       <ConnectedRouter history={history}>
         <div>
+          { this.state.sideNav ?
+            <Sidenav />
+            :
+            <div/>
+          }
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={PreHome} />
           <Route path="/library" component={Library}/>
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/new_password" component={NewPassword} />
-          { this.state.sideNav ?
-            <Sidenav />
-          :
-            <div/>
-          }
           <Route path="/password_forgotten" component={PasswordForgotten}/>
           <PrivateRoute path="/account" isAuthenticated={isAuthenticated} registerMethod="login" component={Account} />
           <PrivateRoute exact path="/rooms" isAuthenticated={isAuthenticated} registerMethod="login" component={RoomList} />

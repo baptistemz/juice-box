@@ -116,7 +116,12 @@
   .next-btn{
     position: absolute;
     left: 300px;
-    top: 118.1px;
+    top: 116.1px;
+    &.side-menu-next-btn{
+      left: auto;
+      right: 0;
+      top: 103px
+    }
   }
   html, p, body { font-size: 13.5px; }
 }
@@ -157,7 +162,12 @@
   .next-btn{
     position: absolute;
     left: 300px;
-    top: 126.1px;
+    top: 118.1px;
+    &.side-menu-next-btn{
+      left: auto;
+      right: 0;
+      top: 103px
+    }
   }
   html, p, body { font-size: 14px; }
 }

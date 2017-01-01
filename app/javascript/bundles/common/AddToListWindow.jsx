@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { compose as reduxCompose } from 'redux';
-import { connect } from 'react-redux';
+// import { compose as reduxCompose } from 'redux';
+// import { connect } from 'react-redux';
 // import { reduxForm } from 'redux-form';
 import { Input } from 'react-materialize';
 import { Button } from './index';
@@ -9,7 +10,7 @@ import { withState, withHandlers, compose, pure } from 'recompose';
 
 
 const state = withState('state', 'setState', ({ musicKey, playlists, inLibrary }) => {
-  console.log("inLibrary", inLibrary)
+  // console.log("inLibrary", inLibrary)
   let state = {}
   playlists.map(playlist =>{
     state[`${musicKey}_${playlist.id}`] = _.includes(playlist.music_keys, musicKey);
@@ -70,6 +71,17 @@ let AddToListContent = ({ libraryId, playlists, musicName, id, state, setState, 
     </div>
   )
 }
+
+AddToListContent.propTypes = {
+  libraryId : PropTypes.string,
+  playlists : PropTypes.array,
+  musicName : PropTypes.string,
+  id : PropTypes.string,
+  state : PropTypes.object,
+  setState : PropTypes.func,
+  addToPlaylists : PropTypes.func,
+  musicKey : PropTypes.string
+};
 
 AddToListContent = compose(
   state,

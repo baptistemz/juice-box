@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { updateProfile, validateToken } from '../actions/index';
 import { Loader, ProfilePicture } from '../common/index';
-import getBase64 from '../utils/getBase64'
+// import getBase64 from '../utils/getBase64'
 
 class PictureUpdate extends Component {
   constructor(props) {

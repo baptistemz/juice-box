@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withState, withHandlers, compose, pure } from 'recompose';
-import { Link } from 'react-router-dom';
 import { Button, AddToListWindow, MusicListElement } from "../../common/index";
 import { updateMusic } from '../../actions/index';
 
@@ -20,7 +19,7 @@ const handlers = withHandlers({
     setEditing(music)
     setTitleField(music.song || music.whole_name)
     setArtistField(music.artist && music.artist.name || music.whole_name)
-    $('#music_and_artist_edit_modal').modal({endingTop: "O%"})
+    $('#music_and_artist_edit_modal').modal({ endingTop: "O%" })
     $('#music_and_artist_edit_modal').modal('open')
   },
   submit: ({ updateMusic, editing, titleField, artistField }) => (e) => {
@@ -86,7 +85,7 @@ let LibraryMusics = ({
       <div className="my-music-records-list">
         <ul style={{ overflow: "visible" }} className="collection library-collection">
           <h5>Library Musics</h5>
-          {musics.map((music) => {
+          {musics.map((music, index) => {
             const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
             return(
               <MusicListElement
@@ -94,7 +93,7 @@ let LibraryMusics = ({
                 id={`library_music_${music.music_key}`}
                 music={music}
                 name={wholeName}
-                playMusicInLibrary={playMusicInLibrary}
+                playMusicInLibrary={() => playMusicInLibrary(music, musics.slice(index + 1))}
                 handleAddClick={(e, music) => {
                   e.preventDefault();
                   handleAddClick(e, music);

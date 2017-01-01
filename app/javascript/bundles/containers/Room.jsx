@@ -6,12 +6,9 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import MusicBoard from "./MusicBoard";
-import SearchBoard from "./SearchBoard";
 import SearchNavigator from "./SearchNavigator";
-import RoomCreation from '../components/RoomCreation';
 import RoomSettings from '../components/RoomSettings';
 import RoomUsers from '../components/RoomUsers';
-import PlaylistPreview from '../components/PlaylistPreview'
 import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addMusicToRoom, addPlaylistToRoom } from '../actions/index'
 
 

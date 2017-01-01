@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import {PlaylistCard} from '../../common/index';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { lifecycle } from 'recompose';

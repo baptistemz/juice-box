@@ -1,7 +1,6 @@
 import _ from "lodash";
 import {
   GOT_ROOM,
-  ROOM_STARTED,
   MUSIC_ENDED,
   MUSIC_ADDED,
   MUSIC_DELETED,

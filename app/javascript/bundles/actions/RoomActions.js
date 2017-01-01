@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
+import { setNextHeaders } from '../utils/tokenManagement';
 import { push } from 'react-router-redux';
 import { toastr } from 'react-redux-toastr';
 import { errorHandling } from '../utils/errorHandling';
@@ -9,7 +9,6 @@ import {
   ROOM_ERROR,
   GOT_ROOM_LIST,
   GOT_ROOM,
-  ROOM_STARTED,
   USER_CONNECTED,
   USER_DISCONNECTED,
   CONNECTED_STRANGER_NUMBER_CHANGED

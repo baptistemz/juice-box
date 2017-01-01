@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Youtube from 'react-youtube';
 import ReactPlayer from 'react-player';
-import { Button } from '../common/index';
 
 class YoutubePlayer extends Component {
   constructor(props){
@@ -82,7 +79,7 @@ class YoutubePlayer extends Component {
               </div>
               <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "" : "hidden"}`}>{this.props.name}</p>
             </div>
-            <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
+            <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${inSideMenu ? "side-menu-next-btn" : "" } ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
               <i className="material-icons">skip_next</i>
             </a>
           </div>

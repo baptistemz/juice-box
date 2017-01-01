@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ type, fullWidth, children, icon, clickTrigger, color = "secondary", iconOnly, disabled }) => {
   return (
@@ -12,6 +13,17 @@ const Button = ({ type, fullWidth, children, icon, clickTrigger, color = "second
       { children }
     </button>
   );
+};
+
+Button.propTypes = {
+  type: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  children: PropTypes.node,
+  icon: PropTypes.string,
+  clickTrigger: PropTypes.func,
+  color: PropTypes.string,
+  iconOnly: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export { Button };

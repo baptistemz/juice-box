@@ -3,5 +3,5 @@ class LibraryPlayerMusic < ApplicationRecord
   belongs_to :library_music, required: false
   belongs_to :music
   extend Enumerize
-  enumerize :status, in: ["waiting", "playing", "ending"]
+  enumerize :status, in: ["waiting", "playing", "ending", "archived"]
 end

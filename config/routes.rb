@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     end
     resources :libraries, only: [ :show, :update] do
       resources :library_musics, only: [:create, :destroy]
-      resources :library_player_musics, only: [:create, :destroy]
+      resources :library_player_musics, only: [:create, :update, :destroy]
+      post 'add_waiting_list', to: 'library_player_musics#add_waiting_list'
+      delete 'library_player_musics', to: 'library_player_musics#delete_all'
     end
     resources :artists, only: [ :update ]
     resources :musics, only: [ :update ]

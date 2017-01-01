@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form'
+import PropTypes from 'prop-types';
 
 const MaterializeCheckbox = ({ id, label, checked, clickEvent }) => {
   return(
@@ -18,5 +19,19 @@ const Checkbox = ({ label, id, checked, clickEvent }) => {
     </div>
   )
 }
+
+MaterializeCheckbox.propTypes = {
+  id: PropTypes.string,
+  label: PropTypes.string,
+  clickEvent: PropTypes.func,
+  checked: PropTypes.bool
+};
+
+Checkbox.propTypes = {
+  id: PropTypes.string,
+  label: PropTypes.string,
+  clickEvent: PropTypes.func,
+  checked: PropTypes.bool
+};
 
 export { Checkbox };

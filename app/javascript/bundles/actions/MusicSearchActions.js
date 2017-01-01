@@ -2,7 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { getHeadersObject } from '../utils/tokenManagement';
 import {
-  GOT_YOUTUBE_VIDEOS
+  GOT_YOUTUBE_VIDEOS,
+  SEARCH_LOADING
 } from './types';
 
 const API_KEY = 'AIzaSyDQu8AKJ_hWW3IFxEvchDjfN-JjcofQjUo';
@@ -38,6 +39,12 @@ export function fetchYoutubeVideos(term){
       }).catch((error)=> console.log(error.response))
     };
 };
+
+export function loadSearch() {
+  return {
+    type: SEARCH_LOADING
+  };
+}
 
 function gotYoutubeVideos(data) {
   return {

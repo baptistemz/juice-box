@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { SortableElement } from 'react-sortable-hoc';
 
 const ListItem = ({ children, deleteMusicFromRoom, isOwner }) => {
@@ -25,5 +26,11 @@ const ListItem = ({ children, deleteMusicFromRoom, isOwner }) => {
     </li>
   );
 }
+
+ListItem.propTypes = {
+  children: PropTypes.node,
+  deleteMusicFromRoom: PropTypes.func,
+  isOwner: PropTypes.bool
+};
 
 export default SortableElement(ListItem);

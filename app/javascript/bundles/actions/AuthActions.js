@@ -3,7 +3,6 @@ import axios from 'axios';
 import { reset } from 'redux-form';
 import { push } from 'react-router-redux';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
-import { fetchLibrary } from "./index";
 import { errorHandling } from '../utils/errorHandling';
 import {
   LOGOUT_SUCCESS,
@@ -16,7 +15,7 @@ import {
 // API CALLS
 
 export function validateToken(){
-  console.log("CALL VALIDATE TOKEN")
+  // console.log("CALL VALIDATE TOKEN")
   return dispatch => {
     if(localStorage["persist:root"] && JSON.parse(JSON.parse(localStorage["persist:root"]).auth).isAuthenticated){
       // console.log("before validate token", getHeadersObject(localStorage))
@@ -32,21 +31,21 @@ export function validateToken(){
           }else{
             dispatch(receiveLogout());
           }
-        }).catch(error => {
+        }).catch(() => {
           dispatch(receiveLogout())
         });
     }
   };
-};
+}
 
 export function loginUser(data, next_path) {
   return dispatch => {
     return axios.post('/api/auth/sign_in', data)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         //STORE TOKEN IN LOCAL STORAGE AND IN AXIOS HEADERS FOR NEXT REQUEST
-        console.log("loginUser headers", response.headers)
-        console.log("loginUser data", response.data)
+        // console.log("loginUser headers", response.headers)
+        // console.log("loginUser data", response.data)
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
@@ -57,7 +56,7 @@ export function loginUser(data, next_path) {
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
       }).catch((error) => {
-        console.log(error)
+        // console.log(error)
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
       })
@@ -86,19 +85,19 @@ export function signupUser(data, next_path) {
 }
 
 export function updateProfile(data, success_message, next_path) {
-  console.log("CALL update profile headers", axios.defaults.headers.common)
+  // console.log("CALL update profile headers", axios.defaults.headers.common)
   return dispatch => {
     return axios.put('/api/auth/', data)
     .then(response => {
-      console.log("update profile RESPONSE headers", response.headers)
+      // console.log("update profile RESPONSE headers", response.headers)
       setNextHeaders(response.headers)
       if(success_message){
         toastr.success(success_message);
       }
       dispatch(profileUpdated(response.data.data))
-      if(next_path){dispatch(push(next_path))};
+      if(next_path){dispatch(push(next_path))}
     }).catch((error) => {
-      console.log(error.response)
+      // console.log(error.response)
       dispatch(authError(error.response.data.errors));
       errorHandling(error);
     })
@@ -108,12 +107,12 @@ export function updateProfile(data, success_message, next_path) {
 export function logoutUser() {
   return dispatch => {
     axios.delete('/api/auth/sign_out')
-      .then(response => {
+      .then(() => {
         localStorage.clear();
         toastr.success('Log out', 'see you soon');
         dispatch(receiveLogout());
-      }).catch((error)=>{
-        console.log("logoutUser error", error);
+      }).catch(()=>{
+        // console.log("logoutUser error", error);
         localStorage.clear();
         dispatch(receiveLogout());
       })
@@ -135,8 +134,8 @@ export function updatePassword(data, params = null) {
       params.forEach((value, key) => {
         axios.defaults.headers.common[key] = value;
         axios.defaults.headers.common['reset'] = true;
-        if(key === 'token'){ axios.defaults.headers.common['access-token'] = value };
-        if(key === 'client_id'){ axios.defaults.headers.common['client'] = value };
+        if(key === 'token'){ axios.defaults.headers.common['access-token'] = value }
+        if(key === 'client_id'){ axios.defaults.headers.common['client'] = value }
       });
     }
     axios.put('api/auth/password', data)
@@ -188,7 +187,7 @@ export function authError(errors){
     }
   }else{
     const errorGroup = {};
-    Object.keys(errors).forEach(function(key,index) {
+    Object.keys(errors).forEach(function(key) {
       errorGroup[key] = errors[key];
     });
     return {
@@ -199,6 +198,8 @@ export function authError(errors){
 }
 
 function receiveLogout() {
+  localStorage.clear()
+  sessionStorage.clear()
   return {
     type: LOGOUT_SUCCESS,
     isAuthenticated: false

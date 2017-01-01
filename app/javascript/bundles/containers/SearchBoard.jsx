@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withState, withHandlers, compose, pure } from 'recompose';
 import { Button } from 'react-materialize';
 import MusicSearchResults from '../components/MusicSearchResults'
-import { fetchYoutubeVideos } from '../actions/index';
+import { fetchYoutubeVideos, loadSearch } from '../actions/index';
 
 
 const term = withState('term', 'setTerm', '')
 
 const handlers = withHandlers({
-  onInputSubmit: ({ setTerm, fetchYoutubeVideos }) => (event) => {
+  onInputSubmit: ({ loadSearch, setTerm, fetchYoutubeVideos }) => (event) => {
+    loadSearch()
     event.preventDefault()
     setTerm("");
     const term = event.target.search_term.value
@@ -18,7 +19,21 @@ const handlers = withHandlers({
   }
 })
 
-let SearchBoard = ({ search_term, onInputSubmit, term, setTerm, playMusicInLibrary, roomId, libraryId, playlists, youtube_videos, inModal, inLibrary, libraryMusics }) => {
+let SearchBoard = ({
+  search_term,
+  onInputSubmit,
+  term,
+  setTerm,
+  playMusicInLibrary,
+  roomId,
+  libraryId,
+  playlists,
+  youtube_videos,
+  inModal,
+  inLibrary,
+  libraryMusics,
+  loading
+}) => {
   return(
     <div className="col s12 full-screen-container">
       <form onSubmit={onInputSubmit.bind(this)}>
@@ -41,16 +56,20 @@ let SearchBoard = ({ search_term, onInputSubmit, term, setTerm, playMusicInLibra
         :
           <p/>
       }
-      <MusicSearchResults
-        playMusicInLibrary={playMusicInLibrary}
-        roomId={roomId}
-        libraryId={libraryId}
-        playlists={playlists}
-        musics={youtube_videos}
-        inModal={inModal}
-        inLibrary={inLibrary}
-        libraryMusics={libraryMusics}
-      />
+      {loading ?
+        <div>LOADING...</div>
+      :
+        <MusicSearchResults
+          playMusicInLibrary={playMusicInLibrary}
+          roomId={roomId}
+          libraryId={libraryId}
+          playlists={playlists}
+          musics={youtube_videos}
+          inModal={inModal}
+          inLibrary={inLibrary}
+          libraryMusics={libraryMusics}
+        />
+      }
     </div>
   )
 }
@@ -62,13 +81,14 @@ SearchBoard = compose(
 )(SearchBoard)
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchYoutubeVideos }, dispatch);
+  return bindActionCreators({ fetchYoutubeVideos, loadSearch }, dispatch);
 }
 
 function mapStateToProps({ music_search }) {
   return {
     youtube_videos: music_search.youtube_videos,
-    search_term: music_search.search_term
+    search_term: music_search.search_term,
+    loading: music_search.loading
   }
 }
 

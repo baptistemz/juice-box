@@ -3,6 +3,7 @@ module Api
     def create
       @library = Library.find(params[:library_id])
       Rails.logger.debug("params[:song] : #{params[:song]}")
+      @library.library_musics.destroy_all!
       artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist][:id]
       @music = Music.where(
         provider: params[:provider],
@@ -19,10 +20,6 @@ module Api
       else
         render_error
       end
-    end
-
-    def index
-
     end
 
     def destroy

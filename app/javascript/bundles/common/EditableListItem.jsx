@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
-import { withState, withHandlers, compose, pure } from 'recompose';
+import PropTypes from 'prop-types';
+// import { withState, withHandlers } from 'recompose';
 
-const text = withState('text', 'setText', ({ value }) => value);
-
-const editMode = withState('editMode', 'setEditMode', false);
-
-const handlers = withHandlers({
-  onFormSubmit: ({ type, text, onSubmit, setEditMode }) =>  (event) => {
-    event.preventDefault();
-    onSubmit(type, text);
-    setEditMode(false);
-  }
-})
-
-let EditableListItem = () => {
-
-}
+// const text = withState('text', 'setText', ({ value }) => value);
+//
+// const editMode = withState('editMode', 'setEditMode', false);
+//
+// const handlers = withHandlers({
+//   onFormSubmit: ({ type, text, onSubmit, setEditMode }) =>  (event) => {
+//     event.preventDefault();
+//     onSubmit(type, text);
+//     setEditMode(false);
+//   }
+// })
+//
+// let EditableListItem = () => {
+//
+// }
 class EditableListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: this.props.value,
+      text: props.value,
       editMode: false
     };
   }
@@ -41,7 +42,7 @@ class EditableListItem extends Component {
     this.setState({ text });
   }
   onInputFocus(event) {
-    console.log("focus")
+    // console.log("focus")
     event.preventDefault();
   }
   onFormSubmit(event) {
@@ -77,7 +78,6 @@ class EditableListItem extends Component {
     );
   }
   render() {
-    const {error} = this.props;
     return (
       <div className="z-index">
         {this.state.editMode ? this.renderInput() : this.renderParagraph()}
@@ -85,5 +85,12 @@ class EditableListItem extends Component {
     );
   }
 }
+
+EditableListItem.propTypes = {
+  value : PropTypes.string,
+  onEdit : PropTypes.func,
+  onSubmit : PropTypes.func,
+  type : PropTypes.string,
+};
 
 export { EditableListItem };

@@ -35,6 +35,32 @@ module Api
       end
     end
 
+    def update
+      @library = Library.find(params[:library_id])
+      @playing = @library.library_player_musics.where(status: "playing")
+      Rails.logger.debug("@playing: #{@playing.to_json}")
+      if library_player_music_params["status"] == "playing" && @playing.any?
+        Rails.logger.debug("@playing.first: #{@playing.first}")
+        @ending = @library.library_player_musics.where(status: "ending")
+        if @ending.any?
+          Rails.logger.debug("@ending.length: #{@ending.length}")
+          @ending.each{|e| e.update(status: "archived")}
+          Rails.logger.debug("@ending.length: #{@ending.length}")
+        end
+        @playing.first.update(status: "ending")
+      end
+      Rails.logger.debug("params[:id]: #{params[:id]}")
+      @library_player_music = @library.library_player_musics.find(params[:id])
+      Rails.logger.debug("@library_player_music 1: #{@library_player_music.to_json}")
+      Rails.logger.debug("library_player_music_params: #{library_player_music_params}")
+      if @library_player_music.update(library_player_music_params)
+        Rails.logger.debug("@library_player_music 2: #{@library_player_music.to_json}")
+        render partial: "api/library_player_musics/library_player_music.json.jbuilder", locals: {library_player_music: @library_player_music}
+      else
+        render_error
+      end
+    end
+
     def destroy
       @library = Library.find(params[:library_id])
       @library_player_music = @library.library_player_musics.find(params[:id])
@@ -46,14 +72,30 @@ module Api
       @library = Library.find(params[:library_id])
       @library_player_musics = @library.library_player_musics
       @library_player_musics.destroy_all
-      render
+      render :index
+    end
+
+    def add_waiting_list
+      @library = Library.find(params[:library_id])
+      @library_player_musics = []
+      Rails.logger.debug("params[:musics]: #{params[:musics]}")
+      params[:musics].each do |m|
+        music = Music.where(provider: m[:provider], music_key: m[:music_key])
+        library_player_music = @library.library_player_musics.create(
+          music_id: music.first.id,
+          status: "waiting"
+        )
+        @library_player_musics << library_player_music
+      end
+      Rails.logger.debug("@library_player_musics.to_json: #{@library_player_musics.to_json}")
+      render :index
     end
 
 
     private
 
     def library_player_music_params
-      params.require(:library_player_music).permit(:id, :library_id, :music_id)
+      params.require(:library_player_music).permit(:id, :library_id, :music_id, :status)
     end
 
     def render_error

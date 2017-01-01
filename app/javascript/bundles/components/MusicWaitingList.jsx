@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import SortableListItem from '../common/SortableListItem';

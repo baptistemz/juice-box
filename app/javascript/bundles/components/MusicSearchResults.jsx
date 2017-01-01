@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withState, withHandlers, compose, pure } from 'recompose';
-import { browserHistory } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { addMusicToRoom, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
 import YoutubeSnippet from '../components/YoutubeSnippet';
@@ -54,7 +53,7 @@ const handlers = withHandlers({
   },
   playMusicInLibrary: ({ getMusicParams, playMusicInLibrary }) => (music) => {
     const params = getMusicParams(music);
-    playMusicInLibrary(params);
+    playMusicInLibrary(params, []);
   },
   openModal: ({ setAdding }) => (music) => {
     // console.log("OPEN MODAL")

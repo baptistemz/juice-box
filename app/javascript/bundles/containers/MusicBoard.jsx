@@ -7,7 +7,7 @@ import { toastr } from 'react-redux-toastr';
 import YoutubePlayer from '../components/YoutubePlayer';
 import MusicWaitingList from '../components/MusicWaitingList';
 import SimulatedPlayer from '../components/SimulatedPlayer';
-import { updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom } from "../actions/index"
+import { updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom } from "../actions/index"
 
 
 class MusicBoard extends Component {
@@ -108,7 +108,7 @@ class MusicBoard extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom }, dispatch);
+  return bindActionCreators({ updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom }, dispatch);
 }
 
 function mapStateToProps({ music_board: { waiting_list, music_0, music_1, volume_balance, hidden_player }}) {

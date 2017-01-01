@@ -1,5 +1,6 @@
 import React from 'react';
-var ReactLoader = require('react-loaders').Loader;
+import PropTypes from 'prop-types';
+// var ReactLoader = require('react-loaders').Loader;
 
 const Loader = ({ color, style }) => {
   return (
@@ -15,5 +16,10 @@ const Loader = ({ color, style }) => {
 
   )
 }
+
+Loader.propTypes = {
+  color: PropTypes.string,
+  style: PropTypes.object,
+};
 
 export {Loader}

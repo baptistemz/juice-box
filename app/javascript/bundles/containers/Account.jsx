@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PictureUpdate from '../components/PictureUpdate';
-import { EditableField, Button, Loader } from '../common/index';
+import { EditableField } from '../common/index';
 import PasswordChange from '../components/Auth/PasswordChange';
 import { updateProfile, authError, logoutUser } from '../actions/index';
 

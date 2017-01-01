@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field } from 'redux-form'
+import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
 
 const Input = ({ name, icon, type, value, error, label, autoFocus }) => {
   return (
@@ -12,6 +13,16 @@ const Input = ({ name, icon, type, value, error, label, autoFocus }) => {
         </label>
     </div>
   );
+};
+
+Input.propTypes = {
+  name: PropTypes.string,
+  icon: PropTypes.string,
+  type: PropTypes.string,
+  error: PropTypes.string,
+  label: PropTypes.string,
+  autoFocus: PropTypes.bool,
+  value: PropTypes.string,
 };
 
 export { Input };

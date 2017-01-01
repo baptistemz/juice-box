@@ -74,7 +74,7 @@ class LibraryArtist extends Component {
         {selectedArtistMusics.length > 0 ?
           <div className="my-music-records-list">
             <ul className="collection library-collection">
-              {selectedArtistMusics.map((music) => {
+              {selectedArtistMusics.map((music, index) => {
                 return(
                   <MusicListElement
                     libraryId={libraryId}
@@ -82,7 +82,7 @@ class LibraryArtist extends Component {
                     key={`artist_music_${music.music_key}`}
                     id={`artist_music_${music.music_key}`}
                     music={music}
-                    playMusicInLibrary={playMusicInLibrary}
+                    playMusicInLibrary={() => playMusicInLibrary(music, selectedArtistMusics.slice(index + 1))}
                     handleAddClick={this.handleAddClick}
                     inRoom={inRoom}
                     addMusicToRoom={addMusicToRoom}

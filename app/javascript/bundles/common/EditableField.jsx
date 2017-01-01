@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import { withState, withHandlers, compose, pure } from 'recompose';
-
+import PropTypes from 'prop-types';
 const text = withState('text', 'setText', ({ value }) => value);
 
 const editMode = withState('editMode', 'setEditMode', false);
@@ -40,7 +40,7 @@ const ParagraphRenderer = ({ value, setEditMode }) => {
   );
 }
 
-let EditableField = ({ label, error, onFormSubmit, text, setText, editMode, setEditMode, value }) => {
+let EditableField = ({ label, error, onFormSubmit, text, setText, editMode, setEditMode }) => {
   return(
     <div>
       <label>{label}
@@ -60,6 +60,28 @@ let EditableField = ({ label, error, onFormSubmit, text, setText, editMode, setE
     </div>
   )
 }
+
+EditableField.propTypes = {
+  error: PropTypes.string,
+  label: PropTypes.string,
+  text: PropTypes.string,
+  onFormSubmit: PropTypes.func,
+  setEditMode: PropTypes.func,
+  setText: PropTypes.func,
+  editMode: PropTypes.bool
+};
+
+InputRenderer.propTypes = {
+  text: PropTypes.string,
+  onFormSubmit: PropTypes.func,
+  setEditMode: PropTypes.func,
+  setText: PropTypes.func,
+};
+
+ParagraphRenderer.propTypes = {
+  value: PropTypes.string,
+  setEditMode: PropTypes.func,
+};
 
 EditableField = compose(
   text,

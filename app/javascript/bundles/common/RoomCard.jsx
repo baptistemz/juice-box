@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const RoomCard = ({ name, contributorsNumber, playing, ownerName, slug }) => {
+const RoomCard = ({ name, ownerName, slug }) => {
   return (
     <Link to={`/rooms/${slug}`} className="room-list-item">
       <div className="dark-background room-card">
@@ -14,6 +15,13 @@ const RoomCard = ({ name, contributorsNumber, playing, ownerName, slug }) => {
       </div>
     </Link>
   );
+};
+
+RoomCard.propTypes = {
+  name: PropTypes.string,
+  slug: PropTypes.string,
+  ownerName: PropTypes.string,
+  contributorsNumber: PropTypes.number
 };
 
 export { RoomCard };

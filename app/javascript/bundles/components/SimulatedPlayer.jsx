@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '../common/index';
 
 const SimulatedPlayer = ({ hidden, buttonsDisabled, name }) => {
   return(

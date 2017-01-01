@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const ArtistListElement = ({ artist, match, inRoom, editItem }) => {
-  console.log("ArtistListElement", `${match.url}/${artist.id}`, inRoom)
+  // console.log("ArtistListElement", `${match.url}/${artist.id}`, inRoom)
   return(
     <Link to={`${match.url}/${artist.id}`}>
       <div className="collection-item-overlay">
@@ -21,5 +22,12 @@ const ArtistListElement = ({ artist, match, inRoom, editItem }) => {
     </Link>
   )
 }
+
+ArtistListElement.propTypes = {
+  artist : PropTypes.object,
+  match : PropTypes.object,
+  inRoom : PropTypes.bool,
+  editItem : PropTypes.func
+};
 
 export { ArtistListElement };

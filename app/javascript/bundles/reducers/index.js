@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
 import { reducer as toastrReducer } from 'react-redux-toastr';

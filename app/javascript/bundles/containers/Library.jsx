@@ -3,7 +3,7 @@ import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { withRouter, Link, Route } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import LibraryPlayer from './LibraryPlayer';
 import LibrarySettings from '../components/Library/LibrarySettings';
 import LibraryArtists from '../components/Library/LibraryArtists';
@@ -12,7 +12,6 @@ import LibraryMusics from '../components/Library/LibraryMusics';
 import LibraryPlaylists from '../components/Library/LibraryPlaylists';
 import LibraryPlaylist from '../components/Library/LibraryPlaylist';
 import LibraryNewPlaylist from '../components/Library/LibraryNewPlaylist';
-import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
 import { addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer, fetchLibrary } from '../actions/index';
 
@@ -84,9 +83,6 @@ class Library extends Component {
       $('#search_modal').modal({ endingTop: "0%"  });
     }
   }
-  componentWillUnmount(){
-    this.props.emptyLibraryPlayer(this.props.libraryId)
-  }
   openSearchModal(activeTab, url){
     if($(window).width() > 600){
       this.setState({ activeTab });
@@ -114,8 +110,8 @@ class Library extends Component {
       this.props.deleteMusicFromLibrary(this.props.libraryId, music.id);
     }
   }
-  playMusicInLibrary(music, fromPlaylist = false){
-    this.props.playMusicInLibrary(this.props.libraryId, music, fromPlaylist)
+  playMusicInLibrary(music, waitingList, fromPlaylist = false){
+    this.props.playMusicInLibrary(this.props.libraryId, music, waitingList, fromPlaylist)
   }
   render() {
     const { handleSubmit, playlists, artists, musics, playerMusics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
@@ -147,7 +143,7 @@ class Library extends Component {
             <div className="row no-margin dark-background padding-10">
               <div className="col s12">
                 <div className={`my-music-player ${this.state.tabsVisible ? "" : "tabs-hidden"}`}>
-                  <LibraryPlayer playerMusics={playerMusics} width={this.state.width}/>
+                  <LibraryPlayer libraryId={libraryId} playerMusics={playerMusics} width={this.state.width} transitionSpeed={10} />
                 </div>
                 <div className="my-music-nav">
                   <div className="tabs-vertical">
@@ -179,39 +175,39 @@ class Library extends Component {
                   <Route exact path="/" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>}/>
                   <Route exact path="/library" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>}/>
                   <Route exact path="/library/playlists" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>} />
-                  <Route exact path="/library/search" render={routeProps =>
-                      <SearchBoard
-                        libraryMusics={musics}
-                        libraryId={libraryId}
-                        playlists={playlists}
-                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
-                        inLibrary
-                        inModal={false} />}/>
+                  <Route exact path="/library/search" render={() =>
+                    <SearchBoard
+                      libraryMusics={musics}
+                      libraryId={libraryId}
+                      playlists={playlists}
+                      playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                      inLibrary
+                      inModal={false} />}/>
                   <Route path="/library/new_playlist" component={LibraryNewPlaylist} />
-                  <Route path="/library/playlists/:id" render={routeProps =>
-                      <LibraryPlaylist
-                        playMusicInLibrary={(music) => this.playMusicInLibrary(music, true)}
-                        addMusicTo={this.addMusicTo.bind(this)}
-                        deleteMusicFrom={this.deleteMusicFrom.bind(this)}
-                        openSearch={() => this.openSearchModal("/library/search")} />} />
-                  <Route exact path="/library/artists" render={routeProps => <LibraryArtists artists={artists}/>} />
-                  <Route path="/library/artists/:id" render={routeProps =>
-                      <LibraryArtist
-                        libraryId={libraryId}
-                        playlists={playlists}
-                        selectedArtist={selectedArtist}
-                        selectedArtistMusics={selectedArtistMusics}
-                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
-                        addMusicTo={this.addMusicTo.bind(this)}
-                        deleteMusicFrom={this.deleteMusicFrom.bind(this)} />} />
-                  <Route exact path="/library/musics" render={routeProps =>
-                      <LibraryMusics
-                        libraryId={libraryId}
-                        playlists={playlists}
-                        musics={musics}
-                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
-                        addMusicTo={this.addMusicTo.bind(this)}
-                        deleteMusicFrom={this.deleteMusicFrom.bind(this)} /> } />
+                  <Route path="/library/playlists/:id" render={() =>
+                    <LibraryPlaylist
+                      playMusicInLibrary={(music, waitingList) => this.playMusicInLibrary(music, waitingList, true)}
+                      addMusicTo={this.addMusicTo.bind(this)}
+                      deleteMusicFrom={this.deleteMusicFrom.bind(this)}
+                      openSearch={() => this.openSearchModal("/library/search")} />} />
+                  <Route exact path="/library/artists" render={() => <LibraryArtists artists={artists}/>} />
+                  <Route path="/library/artists/:id" render={() =>
+                    <LibraryArtist
+                      libraryId={libraryId}
+                      playlists={playlists}
+                      selectedArtist={selectedArtist}
+                      selectedArtistMusics={selectedArtistMusics}
+                      playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                      addMusicTo={this.addMusicTo.bind(this)}
+                      deleteMusicFrom={this.deleteMusicFrom.bind(this)} />} />
+                  <Route exact path="/library/musics" render={() =>
+                    <LibraryMusics
+                      libraryId={libraryId}
+                      playlists={playlists}
+                      musics={musics}
+                      playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                      addMusicTo={this.addMusicTo.bind(this)}
+                      deleteMusicFrom={this.deleteMusicFrom.bind(this)} /> } />
                 </div>
               </div>
             </div>

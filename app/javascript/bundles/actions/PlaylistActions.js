@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { push } from 'react-router-redux';
-import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
+import { setNextHeaders } from '../utils/tokenManagement';
 import { errorHandling } from '../utils/errorHandling';
 import {
   GOT_PLAYLISTS,

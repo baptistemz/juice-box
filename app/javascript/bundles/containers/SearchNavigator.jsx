@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter, Link, Route, Router, Redirect } from 'react-router-dom';
+import { withRouter, Link, Route, Redirect } from 'react-router-dom';
 import { Button } from 'react-materialize';
 import PrivateRoute from './PrivateRoute';
 import LibraryMusics from '../components/Library/LibraryMusics';
@@ -10,8 +8,7 @@ import LibraryArtists from '../components/Library/LibraryArtists';
 import LibraryPlaylists from '../components/Library/LibraryPlaylists';
 import LibraryPlaylist from '../components/Library/LibraryPlaylist';
 import SearchBoard from './SearchBoard';
-import { addMusicToRoom } from '../actions/index';
-import { lifecycle, withState, withHandlers, compose, pure } from 'recompose';
+import { lifecycle, withState, compose, pure } from 'recompose';
 
 
 const visibleModal = withState("visibleModal", "setVisibleModal", ({ location, match }) =>{
