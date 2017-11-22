@@ -65,7 +65,6 @@ RSpec.describe "ApiAuth", type: :request do
       end
       it "grants access to protected resource multiple times" do
         (1..10).each do |i|
-          puts i
           get api_authcheck_checkme_path, headers:access_tokens
           expect(response).to have_http_status(:ok)
       end
