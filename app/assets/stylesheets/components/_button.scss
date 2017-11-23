@@ -1,0 +1,13 @@
+.primary-btn{
+  background-color: $primary-color;
+  &:hover{
+    background-color: #6A85AD;
+  }
+}
+
+.secondary-btn{
+  background-color: $secondary-color;
+  &:hover{
+    background-color: #BB566C;
+  }
+}

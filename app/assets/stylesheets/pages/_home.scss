@@ -1,0 +1,56 @@
+#home_title{
+  font-family: 'Montserrat';
+  text-transform: capitalize;
+  text-align: center;
+  margin: calc(30vh + 5vw) 5% auto 5%;
+}
+
+#home_logo{
+  position : absolute;
+  bottom : 2%;
+  left: 2%;
+  height: calc(80px + 1vw * 10);
+}
+
+#room_name_form{
+  padding: 10px;
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  & .btn{
+    margin: auto 1rem;
+  }
+  & input, label {
+    margin-left: 8%;
+    width: 100%;
+  }
+}
+
+.login-btn-group{
+  position: absolute;
+  & p{
+    text-align: center;
+  }
+  & button {
+    width: calc(17vw + 10px);
+    max-width: 165px;
+    min-width: 110px;
+  }
+}
+
+.home-background{
+  background-image: url('/home_background.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.back-icon{
+  margin-top: 2%;
+  margin-left: 2%;
+}

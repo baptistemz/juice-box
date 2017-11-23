@@ -1,0 +1,9 @@
+@import "materialize/components/color";
+$primary-color: #4F79A3 !default;
+$secondary-color: #D1405B !default;
+@import "materialize";
+@import "material_icons";
+@import  './variables/index';
+@import './utilities/index';
+@import './pages/index';
+@import './components/index';

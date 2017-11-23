@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderComponent, expect } from '../test_helper';
-import Home from '../../bundles/components/Home';
+import PreHome from '../../bundles/components/PreHome';
 
-describe('Home', () => {
+describe('PreHome', () => {
   let component;
   beforeEach(() => {
-    component = renderComponent(Home)
+    component = renderComponent(PreHome)
   });
   it('displays the input', () => {
     expect(component.find('.home')).to.exist;
