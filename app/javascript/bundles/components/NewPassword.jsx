@@ -20,7 +20,7 @@ class NewPassword extends Component{
   render(){
     const { handleSubmit, errorMessages } = this.props;
     return (
-      <div className="app-background">
+      <div className="auth-background">
         <div className="center-page-content">
           <div className="container">
             <br />

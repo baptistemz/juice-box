@@ -1,5 +1,12 @@
 .app-background {
-  background-color: #22212B;
+  background-color: $soft-background;
+  height: 100vh;
+  width: calc(100vw - 60px);
+  margin-left: 60px;
+}
+
+.auth-background {
+  background-color: $dark-background;
   height: 100vh;
 }
 

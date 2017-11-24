@@ -13,7 +13,7 @@ class PasswordForgotten extends Component{
   render(){
     const { handleSubmit, errorMessages } = this.props;
     return (
-      <div className="app-background">
+      <div className="auth-background">
         <Link to="/login">
           <i className="white-text back-icon material-icons">arrow_back</i>
         </Link>

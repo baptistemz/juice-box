@@ -1,29 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { reduxForm } from 'redux-form';
-import { Input, Button } from '../common/index';
+import { Button, RoomCreation } from '../common/index';
 
 
 class PreHome extends React.Component {
-  submit(value){
-    console.log("create " + value.room_name)
-  }
   render() {
-    const { handleSubmit } = this.props;
-
     return (
       <div className="home-background">
         <div className="container">
-          <div>
-            <form
-              id="room_name_form"
-              className='padding-auto justify-center align-items-center clear-background'
-              onSubmit={handleSubmit(value => this.submit(value))}>
-              <p>CREATE YOUR PLAYLIST</p>
-              <Input name="room_name" label="room name" type="text"/>
-              <Button>Create</Button>
-            </form>
-          </div>
+          <RoomCreation />
           <div className="login-btn-group">
             <Link to={"/login"}>
               <Button>Log in</Button>
@@ -44,9 +29,5 @@ class PreHome extends React.Component {
     );
   }
 }
-
-PreHome = reduxForm({
-  form: 'new_room'
-})(PreHome);
 
 export default PreHome;

@@ -30,8 +30,8 @@ class Login extends Component{
   render(){
     const { handleSubmit, errorMessages } = this.props;
     return (
-        <div className="app-background">
-          <Link to={this.props.location.state ? this.props.location.state.from : "/"}>
+        <div className="auth-background">
+          <Link to={"/"}>
             <i className="white-text back-icon material-icons">arrow_back</i>
           </Link>
           <div className="container">

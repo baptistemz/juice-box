@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
 import { signupUser, authError } from '../actions/index';
-import { Input, Button, Header } from '../common/index';
+import { Input, Button } from '../common/index';
 
 const sanitize = (field) => {
   const sanitized_field = field ? field.trim() : '';
@@ -24,7 +24,7 @@ class Signup extends Component{
   render(){
     const { handleSubmit, errorMessages } = this.props;
     return (
-      <div className="app-background">
+      <div className="auth-background">
         <Link to={this.props.location.state ? this.props.location.state.from : "/"}>
           <i className="white-text back-icon material-icons">arrow_back</i>
         </Link>
