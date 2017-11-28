@@ -1,6 +1,6 @@
 module Api
   class RoomsController < BaseController
-    before_action :authenticate_api_user!, only: [:create]
+    before_action :authenticate_api_user!, only: [:create, :index, :delete]
     def create
       @room = current_api_user.rooms.create(room_params)
       if @room.save

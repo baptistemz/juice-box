@@ -1,4 +1,11 @@
 @media only screen and (min-width: 0px) and (max-width: 600px){
+  .app-background{
+    width: 100vw;
+    margin-left: 0;
+  }
+  .bottomnav{
+    display: flex;
+  }
   #room_name_form{
     width: 96%
   }
@@ -10,6 +17,13 @@
   html, p, body { font-size: 12px; }
 }
 @media only screen and (min-width: 601px) and (max-width: 992px){
+  .app-background{
+    width: calc(100vw - 60px);
+    margin-left: 60px;
+  }
+  .bottomnav{
+    display: none;
+  }
   #room_name_form{
     &.clear-background{
       width: 75%
@@ -28,6 +42,13 @@
   html, p, body { font-size: 14px; }
 }
 @media only screen and (min-width: 992px){
+  .app-background{
+    width: calc(100vw - 60px);
+    margin-left: 60px;
+  }
+  .bottomnav{
+    display: none;
+  }
   #room_name_form{
     &.clear-background{
       width: 75%

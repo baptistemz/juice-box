@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist'
 import history from './history';
 import reducers from '../reducers';
+import { validateToken, rehydrationComplete } from "../actions/index";
 
 const routingMiddleware = routerMiddleware(history)
 

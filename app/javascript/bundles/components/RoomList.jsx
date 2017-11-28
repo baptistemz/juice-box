@@ -6,9 +6,6 @@ import Sidenav from './Sidenav';
 import { fetchRooms } from '../actions/index'
 
 class RoomList extends Component {
-  componentWillMount(){
-    this.props.fetchRooms()
-  }
   contributorRooms(){
     const { contributorRoomList } = this.props;
     if(contributorRoomList.length === 0){
@@ -60,12 +57,18 @@ class RoomList extends Component {
             <h3 className="margin-left-10">Rooms you contributed to</h3>
             <div className="room-list-container">
               {this.contributorRooms()}
-              <div className="gradient-wrapper-left">
-                <div className="gradient-border-left"></div>
-              </div>
-              <div className="gradient-wrapper-right">
-                <div className="gradient-border-right"></div>
-              </div>
+              {this.props.contributorRoomList.length > 0 ?
+                <div>
+                  <div className="gradient-wrapper-left">
+                    <div className="gradient-border-left"></div>
+                  </div>
+                  <div className="gradient-wrapper-right">
+                    <div className="gradient-border-right"></div>
+                  </div>
+                </div>
+              :
+                <div/>
+              }
             </div>
           </div>
         </div>

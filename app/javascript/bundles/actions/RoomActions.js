@@ -17,7 +17,7 @@ export function createRoom(values){
   return dispatch => {
     axios.post('api/rooms', values)
       .then(response => {
-        setNextHeaders(response.headers)
+        setNextHeaders(response.headers);
         dispatch(roomCreated(response.data));
         dispatch(push(`/rooms/${response.data.slug}`));
         toastr.success(`Your room has been created`);
@@ -29,9 +29,11 @@ export function createRoom(values){
 };
 
 export function fetchRooms(values){
+  console.log("fetchRooms before", axios.defaults.headers.common)
   return dispatch => {
     axios.get('api/rooms')
       .then(response => {
+        console.log(response.headers)
         setNextHeaders(response.headers)
         dispatch(gotRooms(response.data));
       }).catch((error)=>{

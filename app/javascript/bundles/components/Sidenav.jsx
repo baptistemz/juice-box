@@ -7,9 +7,9 @@ import { Button } from '../common/index'
 
 const SIDENAV_TABS = {
   authenticated: [
-    { url: "/", name: "Dashboard", icon: "home"},
+    { url: "/", name: "My music", icon: "music_note"},
     { url: "/rooms", name: "Music rooms", icon: "list"},
-    { url: "/account", name: "Account", icon: "person"}
+    { url: "/account", name: "Account", icon: "account_box"}
   ],
   notAuthenticated: [
     { url: "/", name: "Home", icon: "home"},
@@ -20,12 +20,20 @@ const SIDENAV_TABS = {
 
 class Sidenav extends Component {
   componentDidMount(){
-    $('.dropdown-button').dropdown({
+    $('.dropdown-button.side-drop').dropdown({
         inDuration: 300,
         outDuration: 300,
         constrainWidth: true, // Does not change width of dropdown to that of the activator
-        hover: false, // Activate on hover
         gutter: 60, // Spacing from edge
+        belowOrigin: false, // Displays dropdown below the button
+        alignment: 'left', // Displays dropdown with edge aligned to the left of button
+        stopPropagation: false // Stops event propagation
+      });
+    $('.dropdown-button.bottom-drop').dropdown({
+        inDuration: 300,
+        outDuration: 300,
+        constrainWidth: false, // Does not change width of dropdown to that of the activator
+        gutter: -92, // Spacing from edge
         belowOrigin: false, // Displays dropdown below the button
         alignment: 'left', // Displays dropdown with edge aligned to the left of button
         stopPropagation: false // Stops event propagation
@@ -73,15 +81,15 @@ class Sidenav extends Component {
     const { profile_picture, isAuthenticated } = this.props;
     return(
       <div>
-        <div className="sidenav right">
+        <div className="hide-on-small-only sidenav">
           {isAuthenticated ?
             <div>
-              <a className="dropdown-button" data-activates='dropdown_avatar'>
+              <a className="dropdown-button side-drop" data-activates='dropdown_side_avatar'>
                 <div className="avatar-group">
                   <img className="avatar" src={profile_picture || "/avatar.png"} alt=""/>
                 </div>
               </a>
-              <div id="dropdown_avatar">
+              <div id="dropdown_side_avatar">
                 { this.userData() }
               </div>
             </div>
@@ -90,6 +98,23 @@ class Sidenav extends Component {
           }
           {this.tabs()}
           <img className="sidenav-logo" src="/logo.png" alt=""/>
+        </div>
+        <div className="bottomnav">
+          {this.tabs()}
+          {isAuthenticated ?
+            <div>
+              <a className="dropdown-button bottom-drop" data-activates='dropdown_mobile_avatar'>
+                <div className="mobile-avatar-group">
+                  <img className="avatar" src={profile_picture || "/avatar.png"} alt=""/>
+                </div>
+              </a>
+              <div id="dropdown_mobile_avatar">
+                { this.userData() }
+              </div>
+            </div>
+            :
+            <div/>
+          }
         </div>
       </div>
     )

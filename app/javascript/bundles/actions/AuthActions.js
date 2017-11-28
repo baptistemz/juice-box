@@ -18,12 +18,14 @@ export function validateToken(){
   return dispatch => {
     if(localStorage["persist:root"] && JSON.parse(JSON.parse(localStorage["persist:root"]).auth).isAuthenticated){
       axios.defaults.headers.common = getHeadersObject(localStorage);
+      console.log("validate before", axios.defaults.headers.common)
       const request = axios.get('/api/auth/validate_token?unbatch=true')
       return request
         .then(response => {
           if(response.data.success){
-            dispatch(receiveUser(response.data.data));
             setNextHeaders(response.headers);
+            dispatch(receiveUser(response.data.data));
+            console.log("validate response", response.headers)
           }else{
             dispatch(receiveLogout());
           }
