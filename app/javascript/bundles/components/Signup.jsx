@@ -25,9 +25,9 @@ class Signup extends Component{
     const { handleSubmit, errorMessages } = this.props;
     return (
       <div className="auth-background">
-        <Link to={this.props.location.state ? this.props.location.state.from : "/"}>
+        <a className="pointer" onClick={() => this.props.history.goBack()}>
           <i className="white-text back-icon material-icons">arrow_back</i>
-        </Link>
+        </a>
         <div className="container">
           <div className="row">
             <div className="col s12 m10 l8 offset-m1 offset-l2">
@@ -47,7 +47,7 @@ class Signup extends Component{
             </div>
           </div>
           <div className="text-center margin-bottom-20 text-20">
-            <Link to={{ pathname: '/login', state: { from: "/signup" } }}>Already registered? Log in</Link>
+            <Link to="/login">Already registered? Log in</Link>
           </div>
         </div>
       </div>

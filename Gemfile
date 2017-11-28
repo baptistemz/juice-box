@@ -28,6 +28,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+gem 'active_model_serializers', '~> 0.10.6'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -38,6 +39,9 @@ gem 'devise_token_auth', '~> 0.1.42'
 gem 'jquery-rails'
 gem 'materialize-sass', '~> 0.98'
 gem 'material_icons'
+gem 'carrierwave-base64'
+gem 'cloudinary'
+gem 'friendly_id', '~> 5.2'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'

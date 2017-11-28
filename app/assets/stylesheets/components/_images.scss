@@ -1,0 +1,21 @@
+.picture-update-group{
+  display: flex;
+  align-items: center;
+  padding: auto;
+
+  .fileLabel {
+    cursor: pointer;
+    color: #00b1ca;
+    font-weight: bold;
+    & .btn {
+      line-height: 35px;
+      overflow: hidden
+    }
+    &:hover {
+        color: #25a5c4;
+    }
+  }
+  .fileInput {
+    display: none;
+  }
+}

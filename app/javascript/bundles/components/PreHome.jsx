@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, RoomCreation } from '../common/index';
 
 
-class PreHome extends React.Component {
+class PreHome extends Component {
   render() {
     return (
       <div className="home-background">
         <div className="container">
-          <RoomCreation />
+          <RoomCreation topRightCorner={true} background="clear-background" />
           <div className="login-btn-group">
             <Link to={"/login"}>
               <Button>Log in</Button>

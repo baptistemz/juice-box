@@ -16,7 +16,7 @@ import {
 
 export function validateToken(){
   return dispatch => {
-    if(localStorage["reduxPersist:auth"] && JSON.parse(localStorage["reduxPersist:auth"]).isAuthenticated){
+    if(localStorage["persist:root"] && JSON.parse(JSON.parse(localStorage["persist:root"]).auth).isAuthenticated){
       axios.defaults.headers.common = getHeadersObject(localStorage);
       const request = axios.get('/api/auth/validate_token?unbatch=true')
       return request
@@ -42,10 +42,10 @@ export function loginUser(data, next_path) {
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
-        //Send a flash message
-        toastr.success('Connecté', 'Succés de la connexion');
         //REDIRECT USER
         dispatch(push(next_path ? next_path.pathname : '/'));
+        //Send a flash message
+        toastr.success('Connecté', 'Succés de la connexion');
       }).catch((error) => {
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
@@ -83,6 +83,7 @@ export function updateProfile(data, success_message, next_path) {
       dispatch(profileUpdated(response.data.data))
       if(next_path){dispatch(push(next_path.pathname))};
     }).catch((error) => {
+      console.log(error.response)
       dispatch(authError(error.response.data.errors));
       errorHandling(error);
     })

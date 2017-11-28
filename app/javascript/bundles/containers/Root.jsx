@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
-import { persistStore } from 'redux-persist';
+import { validateToken } from '../actions/index'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import configureStore from '../store/configureStore';
 import { Loader } from '../common/index';
@@ -16,7 +16,7 @@ class RootWithoutRailsContext extends Component {
   render() {
     const { store, persistor } = this.props;
     const onBeforeLift = () => {
-      console.log("BEFORE LIFT")
+      store.dispatch(validateToken());
     }
     return (
       <Provider store={store}>
@@ -27,8 +27,10 @@ class RootWithoutRailsContext extends Component {
           <div>
             <Routes rehydrated={ this.state.rehydrated } />
             <ReduxToastr
-              timeOut={4000}
+              timeOut={5000}
               preventDuplicates
+              transitionIn="fadeIn"
+              transitionOut="fadeOut"
               position="bottom-right"
             />
           </div>

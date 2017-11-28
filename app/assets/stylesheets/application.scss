@@ -1,11 +1,15 @@
 @import "materialize/components/color";
-$primary-color: #4F79A3 !default;
-$secondary-color: #D1405B !default;
+$primary-color: #4f80e2 !default;
+$secondary-color: #DB2B57 !default;
+$error-color: #FF5722 !default;
 $dark-background: #22212B !default;
 $soft-background: #3D3B49 !default;
 @import "materialize";
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 @import "material_icons";
 @import  './variables/index';
 @import './utilities/index';
 @import './pages/index';
 @import './components/index';
+@import '../../../node_modules/react-redux-toastr/src/styles/index';

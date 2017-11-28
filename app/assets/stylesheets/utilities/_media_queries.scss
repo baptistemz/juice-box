@@ -11,7 +11,12 @@
 }
 @media only screen and (min-width: 601px) and (max-width: 992px){
   #room_name_form{
-    width: 75%
+    &.clear-background{
+      width: 75%
+    }
+    &.dark-background{
+      width: 96%
+    }
   }
   .login-btn-group{
     top: 2%;
@@ -24,7 +29,12 @@
 }
 @media only screen and (min-width: 992px){
   #room_name_form{
-    width: 75%
+    &.clear-background{
+      width: 75%
+    }
+    &.dark-background{
+      width: 96%
+    }
   }
   .login-btn-group{
     top: 2%;

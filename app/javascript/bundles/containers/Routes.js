@@ -12,17 +12,25 @@ import Signup from '../components/Signup';
 import Login from '../components/Login';
 import Sidenav from '../components/Sidenav';
 import Dashboard from '../components/Dashboard';
-import Playlists from '../components/Playlists';
-import NewPlaylist from '../components/NewPlaylist';
+import RoomList from '../components/RoomList';
 import Account from '../components/Account';
+import Room from '../components/Room';
 import history from '../store/history';
 
-
-
 class Routes extends Component{
+  constructor(props){
+    super(props)
+    const inDashboard = props.isAuthenticated && history.location.pathname === ('/')
+    const sideNav =  inDashboard || history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account"
+    this.state = { sideNav };
+  }
   render(){
+    history.listen((location, action) => {
+      const inDashboard = this.props.isAuthenticated && history.location.pathname === ('/')
+      const sideNav =  inDashboard || history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account"
+      this.setState({ sideNav })
+    })
     const { isAuthenticated, isMecano, rehydrated, profile_picture, email, username } = this.props;
-    console.log(this.props)
     const Home = isAuthenticated ? Dashboard : PreHome;
     return(
       <ConnectedRouter history={history}>
@@ -31,16 +39,15 @@ class Routes extends Component{
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/new_password" component={NewPassword} />
-          <div>
-            {isAuthenticated ?
-              <Sidenav username={username} profile_picture={profile_picture} email={email}/>
-              :
-              <div/>}
-            <Route path="/password_forgotten" component={PasswordForgotten}/>
-            <PrivateRoute path="/account" isAuthenticated={isAuthenticated} registerMethod="login" component={Account} />
-            <PrivateRoute path="/playlists" isAuthenticated={isAuthenticated} registerMethod="login" component={Playlists} />
-            <PrivateRoute path="/new_playlist" isAuthenticated={isAuthenticated} registerMethod="login" component={NewPlaylist} />
-          </div>
+          { this.state.sideNav ?
+            <Sidenav />
+          :
+            <div/>
+          }
+          <Route path="/password_forgotten" component={PasswordForgotten}/>
+          <PrivateRoute path="/account" isAuthenticated={isAuthenticated} registerMethod="login" component={Account} />
+          <PrivateRoute exact path="/rooms" isAuthenticated={isAuthenticated} registerMethod="login" component={RoomList} />
+          <Route path="/rooms/:roomId" component={Room}/>
         </div>
       </ConnectedRouter>
     )

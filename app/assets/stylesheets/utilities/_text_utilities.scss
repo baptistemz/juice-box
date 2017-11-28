@@ -4,7 +4,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Oswald';
+  font-family: 'Abel';
   text-transform: uppercase;
 }
 
@@ -22,4 +22,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .white-text{
   color: white;
+}
+
+.error-text{
+  color: $error-color;
+}
+
+.primary-text{
+  color: $primary-color;
+}
+
+.secondary-text{
+  color: $secondary-color;
 }

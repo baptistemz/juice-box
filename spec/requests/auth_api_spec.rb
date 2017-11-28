@@ -7,6 +7,7 @@ RSpec.describe "ApiAuth", type: :request do
   context "signup" do
     context "valid registration" do
       it "successfully creates an account" do
+        pp user_props
         signup(user_props)
         payload = parsed_body
         expect(payload).to include("status"=>"success")

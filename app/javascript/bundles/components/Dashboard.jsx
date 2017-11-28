@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Sidenav from './Sidenav';
 
-
-class Dashboard extends React.Component {
+class Dashboard extends Component {
   render() {
     const { handleSubmit } = this.props;
     return (
-      <div className="app-background">
-        <div className="container">
+      <div>
+        <div className="app-background">
           <h1>Dashboard</h1>
+          <hr/>
+          <div className="container">
+          </div>
         </div>
       </div>
     );

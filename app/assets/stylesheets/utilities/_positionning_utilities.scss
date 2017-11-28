@@ -18,6 +18,16 @@
   align-items: center;
 }
 
+.align-items-end{
+  display: flex;
+  align-items: flex-end;
+}
+
+.direction-row{
+  display: flex;
+  flex-direction: row;
+}
+
 .margin-auto{
   margin: auto;
 }
@@ -36,4 +46,29 @@
 
 .margin-bottom-20{
   margin-bottom: 20px;
+}
+
+.margin-right-20{
+  margin-right: 20px;
+}
+
+.margin-left-10{
+  margin-left: 10px;
+}
+
+.no-margin{
+  margin: 0
+}
+
+.app-centered-content{
+  height: calc( 100vh -  90px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.top-right-corner{
+  position: absolute;
+  top: 2%;
+  right: 2%;
 }

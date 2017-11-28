@@ -31,9 +31,9 @@ class Login extends Component{
     const { handleSubmit, errorMessages } = this.props;
     return (
         <div className="auth-background">
-          <Link to={"/"}>
+          <a className="pointer" onClick={() => this.props.history.goBack()}>
             <i className="white-text back-icon material-icons">arrow_back</i>
-          </Link>
+          </a>
           <div className="container">
             <div className="row">
               <div className="col s12 m10 l8 offset-m1 offset-l2">
@@ -53,7 +53,7 @@ class Login extends Component{
             <div className="text-center margin-top-20 margin-bottom-20 text-20">
               <Link to='/password_forgotten'>Password forgotten</Link>
               <br/>
-              <Link to={{ pathname: '/signup', state: { from: "/login" } }}>No account yet? Create one !</Link>
+              <Link to="/signup">No account yet? Create one !</Link>
             </div>
           </div>
         </div>

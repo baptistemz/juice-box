@@ -5,6 +5,7 @@ import { reducer as toastrReducer } from 'react-redux-toastr';
 import { routerReducer } from 'react-router-redux';
 import storage from 'redux-persist/es/storage'
 import AuthReducer from './auth_reducer'
+import RoomReducer from './room_reducer'
 
 const config = {
   key: 'root',
@@ -16,6 +17,7 @@ const rootReducer = persistCombineReducers( config, {
   toastr: toastrReducer,
   router: routerReducer,
   auth: AuthReducer,
+  room: RoomReducer,
 });
 
 export default rootReducer;

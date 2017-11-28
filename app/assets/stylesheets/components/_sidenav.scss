@@ -8,12 +8,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     height: 100%;
     width: 60px;
     background: $dark-background;
+    z-index: 10;
   }
 
 
@@ -42,7 +43,7 @@ body {
       }
 
       .sidenav .nav.active .description, .sidenav .nav.active .icon {
-        background: #D1405B;
+        background: $secondary-color;
       }
 
       .sidenav .icon {
@@ -60,11 +61,10 @@ body {
       .sidenav .description {
         position: relative;
         right: 60px;
-        left: -130px;
+        left: -132px;
         color: #eee;
-        min-width: 140px;
+        min-width: 190px;
         padding-left: 20px;
-        padding-right: 20px;
         height: 100%;
       }
 
@@ -86,6 +86,11 @@ body {
     left: 5px;
   }
 
+  .avatar{
+    border-radius: 50%;
+    border: 1px solid $dark-background;
+  }
+
   .avatar-group{
     height: auto;
     position: absolute;
@@ -94,7 +99,7 @@ body {
     width: 60px;
     height: 60px;
     &:hover{
-      background-color: $soft-background;
+      background-color: $secondary-color;
       cursor: pointer;
     }
     & img{
@@ -104,12 +109,17 @@ body {
   }
 
   .avatar-dropdown{
+    z-index: 10;
     width: 200px;
     height: 168px;
     background-color: $dark-background;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
-    top: -169.5px;
+    top: calc(-50vh + 121px);
+    -webkit-box-shadow:inset 0px 0px 0px 2px $soft-background;
+    -moz-box-shadow:inset 0px 0px 0px 2px $soft-background;
+    box-shadow:inset 0px 0px 0px 2px $soft-background;
   }
