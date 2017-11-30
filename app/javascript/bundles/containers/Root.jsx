@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
 import { validateToken } from '../actions/index'
-import { PersistGate } from 'redux-persist/es/integration/react'
+import { PersistGate } from 'redux-persist/es/integration/react';
+import { getHeadersObject } from '../utils/tokenManagement';
 import configureStore from '../store/configureStore';
 import { Loader } from '../common/index';
 import Routes from './Routes';
@@ -16,7 +18,9 @@ class RootWithoutRailsContext extends Component {
   render() {
     const { store, persistor } = this.props;
     const onBeforeLift = () => {
-      store.dispatch(validateToken());
+      // console.log("before lift 1", getHeadersObject(localStorage))
+      axios.defaults.headers.common = getHeadersObject(localStorage);
+      // console.log("before lift 2", axios.defaults.headers.common)
     }
     return (
       <Provider store={store}>

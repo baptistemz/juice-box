@@ -1,9 +1,10 @@
 @import "materialize/components/color";
 $primary-color: #4f80e2 !default;
+$primary-darker: #2d63ce !default;
 $secondary-color: #DB2B57 !default;
 $error-color: #FF5722 !default;
-$dark-background: #22212B !default;
-$soft-background: #3D3B49 !default;
+$dark-background: #17171c !default;
+$soft-background: #34323d !default;
 @import "materialize";
 @import "material_icons";
 @import  './variables/index';

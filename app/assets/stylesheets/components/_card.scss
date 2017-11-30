@@ -1,0 +1,64 @@
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating){
+   color: $primary-color;
+   margin: 0;
+   cursor: pointer;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover,
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover > i{
+ -o-transition: all 0.2s linear;
+ -moz-transition: all 0.2s linear;
+ -webkit-transition: all 0.2s linear;
+ -ms-transition: all 0.2s linear;
+ transition: all 0.2s linear;
+ color: $primary-darker;
+}
+.card-action a{
+  display:flex;
+  align-items: center;
+}
+.card-action{
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+}
+.card{
+  position: flex;
+  vertical-align: center;
+  justify-content: center;
+  border: 1px solid $dark-background;
+  border-bottom: 1px solid transparent ;
+  border-radius: 3;
+  background-color: $dark-background;
+}
+.card-image{
+  position: relative
+}
+.card-image div{
+  height: 160px;
+  background-size: 120%;
+  background-position: center
+}
+.card-title{
+  text-shadow: 1px 1px 3px #565454;
+  width: 100%;
+  height: 130px;
+  color: white;
+  position : absolute;
+  top:0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-duration{
+  background-color: rgba(15,15,15,0.7);
+  padding: 8px 10px 22px 10px;
+  height: 20px;
+  color: white;
+  margin: 0;
+  line-height: 14px;
+  font-size: 14px;
+  position : absolute;
+  bottom:0;
+  right:0;
+}

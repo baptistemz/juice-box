@@ -11,3 +11,4 @@ export const ROOM_CREATED = 'ROOM_CREATED';
 export const ROOM_ERROR = 'ROOM_ERROR';
 export const GOT_ROOM_LIST = 'GOT_ROOM_LIST';
 export const GOT_ROOM = 'GOT_ROOM';
+export const GOT_YOUTUBE_VIDEOS = 'GOT_YOUTUBE_VIDEOS';

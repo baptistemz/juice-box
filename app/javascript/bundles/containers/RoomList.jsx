@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { RoomCreation, RoomCard } from '../common/index';
-import Sidenav from './Sidenav';
 import { fetchRooms } from '../actions/index'
 
 class RoomList extends Component {
+  componentDidMount(){
+    this.props.fetchRooms();
+  }
   contributorRooms(){
     const { contributorRoomList } = this.props;
     if(contributorRoomList.length === 0){

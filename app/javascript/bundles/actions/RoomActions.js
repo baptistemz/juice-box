@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
 import { push } from 'react-router-redux';
 import { toastr } from 'react-redux-toastr';
+import { errorHandling } from '../utils/errorHandling';
 import {
   ROOM_CREATED,
   ROOM_ERROR,
@@ -15,43 +16,46 @@ import slugify from "../utils/slugify";
 export function createRoom(values){
   values['slug'] = slugify(values['name'])
   return dispatch => {
-    axios.post('api/rooms', values)
+    axios.post('/api/rooms', values)
       .then(response => {
-        setNextHeaders(response.headers);
+        setNextHeaders(response.headers)
         dispatch(roomCreated(response.data));
         dispatch(push(`/rooms/${response.data.slug}`));
         toastr.success(`Your room has been created`);
       }).catch((error)=>{
-        console.log(error.response)
+        errorHandling(error)
         dispatch(roomCreationError(error.response.data.errors));
       })
   };
 };
 
 export function fetchRooms(values){
-  console.log("fetchRooms before", axios.defaults.headers.common)
+  // console.log("before fetchrooms", axios.defaults.headers.common)
   return dispatch => {
-    axios.get('api/rooms')
+    axios.get('/api/rooms')
       .then(response => {
-        console.log(response.headers)
+        // console.log(" fetchrooms response", response.headers)
         setNextHeaders(response.headers)
+        // console.log(" fetchrooms response axios", axios.defaults.headers.common)
         dispatch(gotRooms(response.data));
       }).catch((error)=>{
-        console.log(error)
+        errorHandling(error)
       })
   };
 };
 
-export function fetchRoom(slug) {
-  const getUrl = `/api${slug}`;
-  const request = axios.get(getUrl);
-  return (dispatch) => {
-    request.then((response) => {
-      console.log(response)
-      dispatch({ type: GOT_ROOM, payload: response.data });
-    });
+export function fetchRoom(slug){
+  return dispatch => {
+    axios.get(`/api${slug}`)
+      .then(response => {
+        setNextHeaders(response.headers)
+        dispatch(gotRoom(response.data));
+      }).catch((error)=>{
+        errorHandling(error)
+      })
   };
-}
+};
+
 
 function roomCreated(data) {
   return {
@@ -63,6 +67,13 @@ function roomCreated(data) {
 function gotRooms(data) {
   return {
     type: GOT_ROOM_LIST,
+    payload: data
+  };
+}
+
+function gotRoom(data) {
+  return {
+    type: GOT_ROOM,
     payload: data
   };
 }

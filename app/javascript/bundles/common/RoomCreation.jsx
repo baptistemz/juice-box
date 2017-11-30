@@ -11,7 +11,6 @@ class RoomCreation extends Component{
   }
   render(){
     const { handleSubmit, background, topRightCorner, errors } = this.props;
-    console.log(errors)
     return (
       <div>
         <form

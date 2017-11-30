@@ -11,7 +11,7 @@ export function setNextHeaders(headers){
 
 export function getHeadersObject(data) {
   const headers = {'Authorization': 'Bearer'}
-  const localSubset = _.pick(data, [ 'access-token', 'access-token', 'client', 'expiry', 'uid']);
+  const localSubset = _.pick(data, [ 'access-token', 'client', 'expiry', 'uid']);
   Object.keys(localSubset).forEach(function(key,index) {
     headers[key] = localSubset[key];
   });

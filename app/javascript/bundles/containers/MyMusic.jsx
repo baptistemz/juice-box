@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import Sidenav from './Sidenav';
 
-class Dashboard extends Component {
+class MyMusic extends Component {
   render() {
     const { handleSubmit } = this.props;
     return (
       <div>
         <div className="app-background">
-          <h1>Dashboard</h1>
+          <h1>My Music</h1>
           <hr/>
           <div className="container">
           </div>
@@ -17,4 +16,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default MyMusic;

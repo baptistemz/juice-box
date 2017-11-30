@@ -11,7 +11,7 @@ const INITIAL_STATE = {
     contributors_number: null,
     id: null,
     errors: {},
-    owner: "",
+    owner_name: "",
     user_id: null,
     ownerRoomList: [],
     contributorRoomList: [],

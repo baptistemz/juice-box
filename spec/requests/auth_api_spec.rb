@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'pp'
 
 RSpec.describe "ApiAuth", type: :request do
+  pp Rails.env
   let(:user_props) { FactoryBot.attributes_for(:user) }
 
   context "signup" do

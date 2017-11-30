@@ -11,27 +11,30 @@ import NewPassword from '../components/NewPassword';
 import Signup from '../components/Signup';
 import Login from '../components/Login';
 import Sidenav from '../components/Sidenav';
-import Dashboard from '../components/Dashboard';
-import RoomList from '../components/RoomList';
-import Account from '../components/Account';
-import Room from '../components/Room';
+import MyMusic from './MyMusic';
+import RoomList from './RoomList';
+import Account from './Account';
+import Room from './Room';
+import NotFound from '../components/NotFound';
 import history from '../store/history';
 
 class Routes extends Component{
   constructor(props){
     super(props)
-    const inDashboard = props.isAuthenticated && history.location.pathname === ('/')
-    const sideNav =  inDashboard || history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account"
+    const inMyMusic = props.isAuthenticated && history.location.pathname === ('/')
+    const inSidenavPage = history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account" || location.pathname === "/404"
+    const sideNav =  inMyMusic || inSidenavPage
     this.state = { sideNav };
   }
   render(){
     history.listen((location, action) => {
-      const inDashboard = this.props.isAuthenticated && history.location.pathname === ('/')
-      const sideNav =  inDashboard || history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account"
+      const inMyMusic = this.props.isAuthenticated && location.pathname === ('/');
+      const inSidenavPage = history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account" || location.pathname === "/404"
+      const sideNav =  inMyMusic || inSidenavPage
       this.setState({ sideNav })
     })
     const { isAuthenticated, isMecano, rehydrated, profile_picture, email, username } = this.props;
-    const Home = isAuthenticated ? Dashboard : PreHome;
+    const Home = isAuthenticated ? MyMusic : PreHome;
     return(
       <ConnectedRouter history={history}>
         <div>
@@ -48,18 +51,19 @@ class Routes extends Component{
           <PrivateRoute path="/account" isAuthenticated={isAuthenticated} registerMethod="login" component={Account} />
           <PrivateRoute exact path="/rooms" isAuthenticated={isAuthenticated} registerMethod="login" component={RoomList} />
           <Route path="/rooms/:roomId" component={Room}/>
+          <Route path="/404" component={NotFound} />
         </div>
       </ConnectedRouter>
     )
   }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, error }) {
   return {
     isAuthenticated: auth.isAuthenticated,
     username: auth.username,
     email: auth.email,
-    profile_picture: auth.profile_picture
+    profile_picture: auth.profile_picture,
   }
 }
 

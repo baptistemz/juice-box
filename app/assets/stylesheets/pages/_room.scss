@@ -1,0 +1,36 @@
+.full-screen-container{
+
+}
+
+#search_modal{
+  max-height: 90%;
+  height: 90%;
+  margin: 5% auto;
+  .modal-close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}
+
+.search-modal-btn{
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  background-color: $primary-color;
+  &:hover{
+    background-color: $primary-darker;
+  }
+}
+
+input[type=search]{
+  border-bottom: 1px solid $primary-color;
+}
+
+.input-field input[type=search] + label{
+  color: $primary-color
+}
+
+.input-field input[type=search] ~ .material-icons{
+  top: 8px;
+}

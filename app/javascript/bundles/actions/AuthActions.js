@@ -17,15 +17,16 @@ import {
 export function validateToken(){
   return dispatch => {
     if(localStorage["persist:root"] && JSON.parse(JSON.parse(localStorage["persist:root"]).auth).isAuthenticated){
+      console.log("before validate token", getHeadersObject(localStorage))
       axios.defaults.headers.common = getHeadersObject(localStorage);
-      console.log("validate before", axios.defaults.headers.common)
       const request = axios.get('/api/auth/validate_token?unbatch=true')
       return request
         .then(response => {
           if(response.data.success){
+            console.log("after validate token, reponse headers", response.headers)
             setNextHeaders(response.headers);
+            console.log("after validate token, axios headers", axios.defaults.headers)
             dispatch(receiveUser(response.data.data));
-            console.log("validate response", response.headers)
           }else{
             dispatch(receiveLogout());
           }
@@ -94,11 +95,12 @@ export function updateProfile(data, success_message, next_path) {
 
 export function logoutUser() {
   return dispatch => {
-    axios.delete('api/auth/sign_out')
+    axios.delete('/api/auth/sign_out')
       .then(response => {
         localStorage.clear();
         toastr.success('Déconnexion', 'A bientôt !');
         dispatch(receiveLogout());
+        dispatch(push('/'));
       }).catch((error)=>{
         console.log("logoutUser error", error);
         localStorage.clear();

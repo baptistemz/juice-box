@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     get 'authcheck/checkme'
     resources :rooms, only: [:create, :index, :show]
   end
+  get '/404' => 'react_app#index'
   get '/*path' => 'react_app#index'
 end

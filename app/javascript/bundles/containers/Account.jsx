@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PictureUpdate from './PictureUpdate';
+import PictureUpdate from '../components/PictureUpdate';
 import { EditableField, Button, Loader } from '../common/index';
-import PasswordChange from './PasswordChange';
+import PasswordChange from '../components/PasswordChange';
 import { updateProfile, authError, logoutUser } from '../actions/index';
-import Sidenav from './Sidenav';
 
 class Account extends Component {
   constructor(props){
