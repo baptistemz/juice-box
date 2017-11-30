@@ -17,7 +17,7 @@ class Room extends Component {
     });
   }
   render() {
-    const { id,user_id, slug, name, owner_name, contributors_number, isAuthenticated } = this.props;
+    const { id, user_id, slug, name, owner_name, contributors_number, isAuthenticated } = this.props;
     return (
       <div>
         <div className="app-background">
@@ -32,11 +32,11 @@ class Room extends Component {
           </div>
           <hr/>
           <div className="row">
-            <div className="col s12 l7">
-              <MusicBoard />
+            <div className="col s12 l6">
+              <MusicBoard roomId={id}/>
             </div>
-            <div className="col s12 l5 hide-on-med-and-down">
-              <SearchBoard />
+            <div className="col s12 l6 hide-on-med-and-down">
+              <SearchBoard roomId={id}/>
             </div>
             <a className="hide-on-large-only btn-floating btn-large waves-effect waves-light modal-trigger search-modal-btn" href="#search_modal">
               <i className="material-icons">search</i>
@@ -45,7 +45,7 @@ class Room extends Component {
               <div className="col s12">
                 <div className="modal-close material-icons">clear</div>
                 <br/>
-                <SearchBoard />
+                <SearchBoard roomId={id}/>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchRoom }, dispatch);
 }
 
-function mapStateToProps({ auth, room: { id,user_id, slug, name, owner_name, contributors_number }}) {
+function mapStateToProps({ auth, room: { id, user_id, slug, name, owner_name, contributors_number }}) {
   return {
     id,
     user_id,

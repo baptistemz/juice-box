@@ -11,8 +11,7 @@ class SearchBoard extends Component {
   }
   componentWillReceiveProps(newProps){
     if(newProps.search_term != this.props.search_term){
-      console.log("Oui")
-      this.setState({ term: newProps.search_term });
+      this.setState({ term: "" });
       $('#search').blur();
     }
   }
@@ -31,7 +30,13 @@ class SearchBoard extends Component {
             <i className="material-icons">close</i>
           </div>
         </form>
-        <MusicSearchResults musics={this.props.youtube_videos} />
+        {
+          this.props.search_term ?
+            <p className= "no-margin">Results for "{this.props.search_term}"</p>
+          :
+            <p/>
+        }
+        <MusicSearchResults roomId={this.props.roomId} musics={this.props.youtube_videos} />
       </div>
     )
   }

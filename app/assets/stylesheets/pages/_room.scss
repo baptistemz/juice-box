@@ -15,22 +15,30 @@
 
 .search-modal-btn{
   position: fixed;
-  bottom: 5%;
+  bottom: 70px;
   right: 5%;
-  background-color: $primary-color;
+  background-color: $secondary-color;
   &:hover{
-    background-color: $primary-darker;
+    background-color: saturate( $secondary-color, 20% );
   }
 }
 
 input[type=search]{
-  border-bottom: 1px solid $primary-color;
+  border-bottom: 1px solid $secondary-color;
+  margin-bottom: 10px;
 }
 
 .input-field input[type=search] + label{
-  color: $primary-color
+  color: $secondary-color
 }
 
 .input-field input[type=search] ~ .material-icons{
   top: 8px;
+}
+
+.search-scroll{
+  height: calc(100vh - 194px);
+  & .row .col{
+    padding: 0 0.28rem;
+  }
 }

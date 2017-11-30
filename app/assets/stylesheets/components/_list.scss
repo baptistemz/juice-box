@@ -1,0 +1,34 @@
+.list-container{
+
+}
+
+.collection{
+  border-left: none;
+  border-right: none;
+  border-top-width: 3px;
+  border-color: $soft-background;
+}
+.collection .collection-item{
+  background-color: $dark-background;
+  border-color: $soft-background;
+  padding: 10px 20px;
+  &.movable{
+    cursor: move;
+  }
+  & p{
+    margin: 0;
+    color: $soft-background;
+  }
+  & .avatar{
+    width: 42px;
+    height: 42px;
+  }
+}
+.primary-content{
+  display: flex;
+  justify-content: flex-start;
+}
+.secondary-content{
+  margin-top: -32px;
+  cursor: pointer;
+}

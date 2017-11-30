@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable
           #, :confirmable, :omniauthable
 
-  has_many :rooms
+  has_many :rooms, dependent: :destroy
   include DeviseTokenAuth::Concerns::User
   mount_base64_uploader :profile_picture, ProfilePictureUploader
   validates_uniqueness_of :email, :username

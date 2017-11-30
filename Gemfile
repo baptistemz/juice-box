@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'figaro'
+gem 'figaro', '~> 1.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use pg as the database for Active Record
@@ -38,10 +38,11 @@ gem 'devise_token_auth', '~> 0.1.42'
 # gem 'capistrano-rails', group: :development
 gem 'jquery-rails'
 gem 'materialize-sass', '~> 0.98'
-gem 'material_icons'
-gem 'carrierwave-base64'
-gem 'cloudinary'
+gem 'material_icons', '~> 2.2.1'
+gem 'carrierwave-base64', '~> 2.5.2'
+gem 'cloudinary', '~> 1.8.1'
 gem 'friendly_id', '~> 5.2'
+gem 'enumerize', '~> 2.1.2'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'

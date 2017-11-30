@@ -1,4 +1,5 @@
 .bottomnav{
+  z-index: 10;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -22,9 +23,12 @@
       left: 28px;
       top: 10px;
     }
+    &.active{
+      color: $secondary-color;
+    }
   }
   .nav:hover{
-    background-color: $secondary-color;
+    color: $secondary-color;
   }
 }
 
@@ -32,7 +36,7 @@
   width: 80px;
   height: 60px;
   &:hover{
-    background-color: $secondary-color;
+    color: $secondary-color;
     cursor: pointer;
   }
   & img{

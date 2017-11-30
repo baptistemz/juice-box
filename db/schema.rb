@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127092254) do
+ActiveRecord::Schema.define(version: 20171130165809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "musics", force: :cascade do |t|
+    t.string "artist"
+    t.string "song"
+    t.string "whole_name"
+    t.string "provider"
+    t.string "music_key"
+  end
+
+  create_table "room_musics", force: :cascade do |t|
+    t.bigint "room_id"
+    t.bigint "music_id"
+    t.index ["music_id"], name: "index_room_musics_on_music_id"
+    t.index ["room_id"], name: "index_room_musics_on_room_id"
+  end
 
   create_table "rooms", force: :cascade do |t|
     t.string "name"
@@ -52,5 +67,7 @@ ActiveRecord::Schema.define(version: 20171127092254) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "room_musics", "musics"
+  add_foreign_key "room_musics", "rooms"
   add_foreign_key "rooms", "users"
 end

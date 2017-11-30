@@ -7,7 +7,7 @@
   & img{
     position: absolute;
     left: calc( 50% - 30px);
-    top: 28px;
+    top: 30px;
     width: 60px;
     margin-bottom: 5px;
   }
@@ -24,7 +24,7 @@
 
   & .white-text{
     position: absolute;
-    bottom: 3px;
+    bottom: 5px;
     white-space: nowrap;
     text-overflow: ellipsis;
     display: block;

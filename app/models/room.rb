@@ -1,6 +1,6 @@
 class Room < ApplicationRecord
   belongs_to :user
-  # has_many :musics, dependent: :destroy
+  has_many :room_musics, dependent: :destroy
   # has_many :invitations, dependent: :destroy
   extend FriendlyId
   friendly_id :slug

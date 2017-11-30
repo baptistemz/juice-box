@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     mount_devise_token_auth_for 'User', at: 'auth'
     get 'authcheck/whoami'
     get 'authcheck/checkme'
-    resources :rooms, only: [:create, :index, :show]
+    resources :rooms, only: [:create, :index, :show] do
+      resources :room_musics, only: [:create, :index]
+    end
   end
   get '/404' => 'react_app#index'
   get '/*path' => 'react_app#index'

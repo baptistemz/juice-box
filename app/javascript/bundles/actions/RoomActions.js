@@ -56,6 +56,28 @@ export function fetchRoom(slug){
   };
 };
 
+export function addMusicToRoom(room_id, music){
+  const params = {
+    provider: "youtube",
+    music_key: music.id.videoId,
+    whole_name: music.snippet.title,
+  }
+  if(music.snippet.title.split('-').length === 2){
+    params['artist'] = music.snippet.title.split('-')[0].trim();
+    params['song'] = music.snippet.title.split('-')[1].trim();
+  }
+  return dispatch => {
+    axios.post(`/api/rooms/${room_id}/room_musics`, params)
+      .then(response => {
+        setNextHeaders(response.headers)
+        console.log(response)
+        dispatch(gotRoom(response.data));
+      }).catch((error)=>{
+        errorHandling(error)
+      })
+  };
+};
+
 
 function roomCreated(data) {
   return {

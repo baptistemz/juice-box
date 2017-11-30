@@ -4,22 +4,18 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { toastr } from 'react-redux-toastr';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { addMusic } from '../actions/index';
+import { addMusicToRoom } from '../actions/index';
 import YoutubeSnippet from '../components/YoutubeSnippet';
 
 class MusicSearchResults extends Component {
-  playMusic(music) {
-    console.log("play", music)
-    // this.props.addMusic(this.props.room_id, music, status);
-  }
   addMusicToList(music) {
-    // this.props.addMusic(this.props.room_id, music, status);
     console.log("add", music)
+    this.props.addMusicToRoom(this.props.roomId, music);
   }
   render() {
     const musics = this.props.musics;
     return (
-      <div>
+      <div className="overflow-scroll search-scroll">
         <div className="row">
           <ReactCSSTransitionGroup
             transitionName="fade"
@@ -29,7 +25,6 @@ class MusicSearchResults extends Component {
             { musics.map((music) => {
               return (
                 <YoutubeSnippet
-                  onVideoSelect={this.playMusic.bind(this, music)}
                   addVideoToList={this.addMusicToList.bind(this, music)}
                   key={music.etag}
                   video={music}
@@ -45,6 +40,6 @@ class MusicSearchResults extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addMusic }, dispatch);
+  return bindActionCreators({ addMusicToRoom }, dispatch);
 }
 export default connect(null, mapDispatchToProps)(MusicSearchResults);
