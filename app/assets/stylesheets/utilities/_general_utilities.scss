@@ -8,28 +8,42 @@ input#search:-webkit-autofill {
     -webkit-text-fill-color: black !important;
 }
 
+.full-width{
+  width: 100%;
+}
+
 .pointer{
   cursor: pointer;
+}
+
+.hidden{
+  visibility: hidden;
+  height: 0;
 }
 
 li {
   list-style-type: none;
 }
 
+.icon-only-btn{
+  margin-right: 0 !important;
+  padding-bottom: 34px;
+}
+
 .overflow-scroll{
   overflow-y: scroll;
+  padding-right: 5px;
 }
 
 .overflow-scroll::-webkit-scrollbar-track
 {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+	-webkit-box-shadow: inset 0 0 6px transparent;
+	background-color: transparent;
 }
 
 .overflow-scroll::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
 }
 
 .overflow-scroll::-webkit-scrollbar-thumb

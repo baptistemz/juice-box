@@ -9,7 +9,6 @@ import YoutubeSnippet from '../components/YoutubeSnippet';
 
 class MusicSearchResults extends Component {
   addMusicToList(music) {
-    console.log("add", music)
     this.props.addMusicToRoom(this.props.roomId, music);
   }
   render() {

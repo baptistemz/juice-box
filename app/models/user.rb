@@ -1,11 +1,12 @@
 class User < ActiveRecord::Base
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :trackable, :validatable
-          #, :confirmable, :omniauthable
+  :recoverable, :rememberable, :trackable, :validatable
+  #, :confirmable, :omniauthable
+  include DeviseTokenAuth::Concerns::User
 
   has_many :rooms, dependent: :destroy
-  include DeviseTokenAuth::Concerns::User
+  has_many :room_musics, dependent: :nullify
   mount_base64_uploader :profile_picture, ProfilePictureUploader
   validates_uniqueness_of :email, :username
   validates_presence_of :username, :email

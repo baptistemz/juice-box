@@ -6,6 +6,7 @@ export function setNextHeaders(headers){
   if(headers['access-token']){
     setStorage(getHeadersObject(headers));
     axios.defaults.headers.common = getHeadersObject(headers);
+    console.log("HEADERS OBJECT SAVED", axios.defaults.headers.common)
   }
 }
 

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     get 'authcheck/whoami'
     get 'authcheck/checkme'
     resources :rooms, only: [:create, :index, :show] do
-      resources :room_musics, only: [:create, :index]
+      resources :room_musics, only: [:create, :index, :update]
     end
   end
   get '/404' => 'react_app#index'

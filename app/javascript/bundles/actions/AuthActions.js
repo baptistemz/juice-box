@@ -3,6 +3,7 @@ import axios from 'axios';
 import { reset } from 'redux-form';
 import { push } from 'react-router-redux';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
+import { fetchRooms } from "./index";
 import { errorHandling } from '../utils/errorHandling';
 import {
   LOGOUT_SUCCESS,
@@ -15,17 +16,18 @@ import {
 // API CALLS
 
 export function validateToken(){
+  console.log("CALL VALIDATE TOKEN")
   return dispatch => {
     if(localStorage["persist:root"] && JSON.parse(JSON.parse(localStorage["persist:root"]).auth).isAuthenticated){
-      console.log("before validate token", getHeadersObject(localStorage))
+      // console.log("before validate token", getHeadersObject(localStorage))
       axios.defaults.headers.common = getHeadersObject(localStorage);
       const request = axios.get('/api/auth/validate_token?unbatch=true')
       return request
         .then(response => {
           if(response.data.success){
-            console.log("after validate token, reponse headers", response.headers)
+            // console.log("after validate token, reponse headers", response.headers)
             setNextHeaders(response.headers);
-            console.log("after validate token, axios headers", axios.defaults.headers)
+            // console.log("after validate token, axios headers", axios.defaults.headers)
             dispatch(receiveUser(response.data.data));
           }else{
             dispatch(receiveLogout());
@@ -41,6 +43,7 @@ export function loginUser(data, next_path) {
   return dispatch => {
     return axios.post('/api/auth/sign_in', data)
       .then(response => {
+        console.log(response)
         //STORE TOKEN IN LOCAL STORAGE AND IN AXIOS HEADERS FOR NEXT REQUEST
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
@@ -48,7 +51,7 @@ export function loginUser(data, next_path) {
         //REDIRECT USER
         dispatch(push(next_path ? next_path.pathname : '/'));
         //Send a flash message
-        toastr.success('Connecté', 'Succés de la connexion');
+        toastr.success('Logged in', 'authentification success');
       }).catch((error) => {
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
@@ -65,7 +68,7 @@ export function signupUser(data, next_path) {
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
         //Send a flash message
-        toastr.success('Connecté', 'Succés de la connexion');
+        toastr.success('Logged in', 'authentification success');
         //REDIRECT USER
         dispatch(push(next_path ? next_path.pathname : '/'));
       }).catch((error) => {
@@ -76,9 +79,11 @@ export function signupUser(data, next_path) {
 }
 
 export function updateProfile(data, success_message, next_path) {
+  console.log("CALL update profile headers", axios.defaults.headers.common)
   return dispatch => {
     return axios.put('/api/auth/', data)
     .then(response => {
+      console.log("update profile RESPONSE headers", response.headers)
       setNextHeaders(response.headers)
       if(success_message){
         toastr.success(success_message);
@@ -98,7 +103,7 @@ export function logoutUser() {
     axios.delete('/api/auth/sign_out')
       .then(response => {
         localStorage.clear();
-        toastr.success('Déconnexion', 'A bientôt !');
+        toastr.success('Log out', 'see you soon');
         dispatch(receiveLogout());
         dispatch(push('/'));
       }).catch((error)=>{
@@ -154,7 +159,7 @@ export function authError(errors){
   if(!errors){
     return {
       type: AUTH_ERROR,
-      payload: {main: "Une erreur est survenue. Réessayez ou contactez-nous."}
+      payload: {main: "An error occured. Retry later or contact us."}
     }
   }else if (errors.length === 0){
     return {

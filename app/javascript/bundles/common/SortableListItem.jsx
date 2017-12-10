@@ -6,16 +6,14 @@ class ListItem extends Component {
     this.props.deleteMusicFromList(music);
   }
   render() {
-    console.log(this.props)
     const childProps = this.props.children;
-    const { ...otherProps } = this.props;
     return (
       <li className="collection-item movable">
         <div className="primary-content">
           <img src="/youtube_icon.png" alt="" className="avatar" />
           <span className="margin-left-10">
-            {childProps.snippet.title}
-            <p>youtube</p>
+            {childProps.whole_name ? childProps.whole_name : `${childProps.artist} - ${childProps.song}`}
+            <p>{childProps.provider}</p>
           </span>
         </div>
         <a className="secondary-content" onClick={this.deleteFromList.bind(this, childProps)}>

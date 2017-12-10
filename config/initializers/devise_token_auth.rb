@@ -43,6 +43,7 @@ DeviseTokenAuth.setup do |config|
   # By default, only Bearer Token authentication is implemented out of the box.
   # If, however, you wish to integrate with legacy Devise authentication, you can
   # do so by enabling this flag. NOTE: This feature is highly experimental!
+  # config.enable_standard_devise_support = true
   # config.enable_standard_devise_support = false
   config.default_password_reset_url = URI::HTTP.build(ActionMailer::Base.default_url_options.merge!(path: '/new_password'))
 end

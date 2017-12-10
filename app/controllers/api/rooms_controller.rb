@@ -4,6 +4,7 @@ module Api
     def create
       @room = current_api_user.rooms.create(room_params)
       if @room.save
+        @is_owner = current_api_user ? current_api_user.id == @room.user_id : false
         render :show, status: :created
       else
         render_error
@@ -18,6 +19,7 @@ module Api
 
     def show
       @room = Room.friendly.find(params[:id])
+      @is_owner = current_api_user ? current_api_user.id == @room.user_id : false
       render :show
     end
 

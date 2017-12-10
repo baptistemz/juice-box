@@ -23,61 +23,43 @@ export function createRoom(values){
         dispatch(push(`/rooms/${response.data.slug}`));
         toastr.success(`Your room has been created`);
       }).catch((error)=>{
-        errorHandling(error)
+        errorHandling(error, (action) => dispatch(action))
         dispatch(roomCreationError(error.response.data.errors));
       })
   };
 };
 
 export function fetchRooms(values){
-  // console.log("before fetchrooms", axios.defaults.headers.common)
+  console.log("before fetchrooms", axios.defaults.headers.common)
   return dispatch => {
     axios.get('/api/rooms')
       .then(response => {
-        // console.log(" fetchrooms response", response.headers)
+        console.log(" fetchrooms response headers", response.headers)
         setNextHeaders(response.headers)
-        // console.log(" fetchrooms response axios", axios.defaults.headers.common)
+        console.log(" fetchrooms after response axios", axios.defaults.headers.common)
         dispatch(gotRooms(response.data));
       }).catch((error)=>{
-        errorHandling(error)
+        errorHandling(error, (action) => dispatch(action))
       })
   };
 };
 
 export function fetchRoom(slug){
+  console.log("fetchRoom CALL headers", axios.defaults.headers.common)
   return dispatch => {
     axios.get(`/api${slug}`)
       .then(response => {
+        console.log("fetchRoom RESPONSE headers", response.headers)
         setNextHeaders(response.headers)
+        console.log(" fetchroom after response axios", axios.defaults.headers.common)
         dispatch(gotRoom(response.data));
       }).catch((error)=>{
-        errorHandling(error)
+        errorHandling(error, (action) => dispatch(action))
       })
   };
 };
 
-export function addMusicToRoom(room_id, music){
-  const params = {
-    provider: "youtube",
-    music_key: music.id.videoId,
-    whole_name: music.snippet.title,
-  }
-  if(music.snippet.title.split('-').length === 2){
-    params['artist'] = music.snippet.title.split('-')[0].trim();
-    params['song'] = music.snippet.title.split('-')[1].trim();
-  }
-  return dispatch => {
-    axios.post(`/api/rooms/${room_id}/room_musics`, params)
-      .then(response => {
-        setNextHeaders(response.headers)
-        console.log(response)
-        dispatch(gotRoom(response.data));
-      }).catch((error)=>{
-        errorHandling(error)
-      })
-  };
-};
-
+//action creators
 
 function roomCreated(data) {
   return {
@@ -99,6 +81,7 @@ function gotRoom(data) {
     payload: data
   };
 }
+
 
 function roomCreationError(errors) {
   return {

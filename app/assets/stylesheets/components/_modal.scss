@@ -1,7 +1,18 @@
-.modal-content{
-  color: black;
-}
+
 
 #search_modal{
   overflow: hidden
+}
+
+#settings_modal{
+
+}
+
+.right-modal.open{
+  margin: 0;
+  top: 0px;
+  bottom: 0;
+  right: 0;
+  left: auto;
+  width: 183px;
 }

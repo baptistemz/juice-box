@@ -5,30 +5,19 @@ import SortableListItem from '../common/SortableListItem';
 
 class MusicWaitingList extends Component {
   render() {
-    console.log(this.props)
-    const smallListItems = this.props.list.map((item) => {
-      return (
-        <li className="waiting-list-icon" key={item.etag}>
-          <img src="/youtube_icon.png" alt="" className="circle avatar-sizing" />
-          <p className="hover-chip truncate">
-            {item.snippet.title}
-          </p>
-        </li>
-      );
-    });
-    const listItems = this.props.list.map((item, i) => {
+    const listItems = this.props.list.map((music, i) => {
       return (
         <SortableListItem
           key={i}
           index={i}
           outline="list"
           deleteMusicFromList={this.props.deleteMusicFromList}
-        >{item}</SortableListItem>
+        >{music}</SortableListItem>
       );
     }, this);
     return (
       <div className="">
-        <div>
+        <div className="room-music-list overflow-scroll">
           <ul className="collection">
             <ReactCSSTransitionGroup
               transitionName="fade-right"

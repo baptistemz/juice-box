@@ -15,8 +15,8 @@
 
 .search-modal-btn{
   position: fixed;
-  bottom: 70px;
-  right: 5%;
+  bottom: 3%;
+  right: 3%;
   background-color: $secondary-color;
   &:hover{
     background-color: saturate( $secondary-color, 20% );
@@ -41,4 +41,55 @@ input[type=search]{
   & .row .col{
     padding: 0 0.28rem;
   }
+}
+
+
+.room-music-list{
+  height: calc(100vh - 220px);
+}
+
+.volume-input{
+  width: 80%;
+  margin: 20px 10% auto 10%;
+}
+
+.collection-item{
+  .avatar {
+      width: 35px !important;
+      height: 35px !important;
+  }
+  .margin-left-10{
+    line-height: 1.3rem;
+  }
+}
+
+input[type="range"]{
+  border: none;
+}
+input[type="range"]::-webkit-slider-thumb{
+  margin-top: -10px;
+  height: 22px;
+  width:22px;
+  background-image: url('/volume.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+input[type="range"]::-ms-thumb{
+  margin-top: -10px;
+  height: 22px;
+  width:22px;
+  background-image: url('/volume.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+input[type="range"]::-moz-range-thumb{
+  margin-top: -10px;
+  height: 22px;
+  width:22px;
+  background-image: url('/volume.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
