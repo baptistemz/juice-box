@@ -1,8 +1,6 @@
 .app-background {
   background-color: $soft-background;
   height: 100vh;
-  overflow-y: hidden;
-  max-height:100vh;
   & h1{
     margin: 0;
     font-size: 2rem;
@@ -16,7 +14,6 @@
 .auth-background {
   background-color: $dark-background;
   height: 100vh;
-  max-height:100vh;
 }
 
 .clear-background {

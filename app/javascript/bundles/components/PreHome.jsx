@@ -5,7 +5,7 @@ import { Button, RoomCreation } from '../common/index';
 
 class PreHome extends Component {
   componentDidMount(){
-    var viewportHeight = $('.home-background').outerHeight();
+    var viewportHeight = $('.home-background').innerHeight();
     $('.home-background').css({ height: viewportHeight });
   }
   render() {
