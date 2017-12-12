@@ -1,10 +1,11 @@
 
 
 #search_modal{
+  padding-top: 10px;
   overflow: hidden;
   max-height: calc(100% - 60px);
   height: 100%;
-  margin: 5% auto;
+  margin: 4% auto;
   .modal-close{
     position: absolute;
     top: 5px;

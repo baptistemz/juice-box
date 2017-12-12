@@ -6,6 +6,11 @@
   .bottomnav{
     display: flex;
   }
+
+  #search_modal{
+    margin: 0;
+  }
+
   #room_name_form{
     width: 96%
   }
@@ -15,7 +20,7 @@
     right: 2%
   }
   .room-music-list{
-    height: calc(100vh - 250px);
+    height: calc(100vh - 300px);
   }
   .player-controlls{
     width: 150px;
