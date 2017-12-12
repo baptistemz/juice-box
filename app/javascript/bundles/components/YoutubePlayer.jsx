@@ -60,7 +60,7 @@ class YoutubePlayer extends Component {
           onPlay={() => this.onPlay()}
           onDuration={(duration) => this.onDuration(duration)}
           volume={this.state.volume}
-          config={{ youtube: { playerVars: { showinfo: 1 }, preload: true  } }}
+          config={{ youtube: { playerVars: { showinfo: 1, controls: 1 }, preload: true  } }}
         />
 
         <div className="margin-left-10 space-around direction-column">

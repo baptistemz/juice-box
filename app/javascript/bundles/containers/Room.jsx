@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
-import NoSleep from 'nosleep.js';
+import NoSleep from '../utils/nosleep.js';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import MusicBoard from "./MusicBoard";
@@ -12,6 +12,12 @@ import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom } from '../
 
 
 class Room extends Component {
+  constructor(){
+    super();
+    this.state = {
+      alerted: false
+    }
+  }
   receiveRoomData(data) {
     console.log("DATA RECEIVED", data)
     switch(data.action) {
@@ -54,6 +60,15 @@ class Room extends Component {
     }
   }
   componentDidMount(){
+    const alertOnce = () => {
+      if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
+        toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 20000})
+        this.setState({ alerted: true });
+      }
+    }
+    $(window).focus(function(e) {
+      alertOnce()
+    });
     const url = this.props.location.pathname
     this.props.fetchRoom(url);
     $('.modal').modal({
