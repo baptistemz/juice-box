@@ -113,7 +113,9 @@ class Sidenav extends Component {
               </div>
             </div>
             :
-            <div/>
+            <Link to={"/about"}>
+              <div className={`nav ${location.pathname === "/about" ?"active" : ""}`}><div className="description">About</div><i className="icon material-icons">info_outline</i></div>
+            </Link>
           }
         </div>
       </div>
