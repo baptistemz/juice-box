@@ -11,4 +11,4 @@ path = Pathname.new(__FILE__)
 $:.unshift File.expand_path "../..", path.realpath
 
 require "bundler/setup"
-load File.expand_path "../../../../../.rvm/gems/ruby-2.4.2/gems/webpacker-3.0.2/exe/webpack", path.realpath
+load File.expand_path "../../../../../.rvm/gems/webpacker-3.0.2/exe/webpack", path.realpath
