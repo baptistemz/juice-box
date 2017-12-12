@@ -5,6 +5,7 @@ import { setNextHeaders } from './tokenManagement';
 
 export function errorHandling(error, dispatchAction){
   if(!error.response){
+    console.log(error)
     toastr.error("An error occured. Please try again or contact us");
   }else{
     console.log(error.response.headers)

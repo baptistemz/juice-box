@@ -17,6 +17,16 @@ module Api
       render :index
     end
 
+    def update
+      @room = Room.find(params[:id])
+      if @room.update(room_params)
+        @is_owner = current_api_user ? current_api_user.id == @room.user_id : false
+        render partial: "api/rooms/room.json.jbuilder", locals: {room: @room, is_owner: @is_owner}
+      else
+        render_error
+      end
+    end
+
     def show
       @room = Room.friendly.find(params[:id])
       @is_owner = current_api_user ? current_api_user.id == @room.user_id : false
@@ -41,7 +51,7 @@ module Api
     private
 
     def room_params
-      params.require(:room).permit(:name, :slug, :contributors_number)
+      params.require(:room).permit(:name, :slug, :contributors_number, :transition_speed)
     end
 
     def render_error

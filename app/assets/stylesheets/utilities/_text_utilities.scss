@@ -35,3 +35,9 @@ h1, h2, h3, h4, h5, h6 {
 .secondary-text{
   color: $secondary-color;
 }
+
+.two-lines-p{
+  height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

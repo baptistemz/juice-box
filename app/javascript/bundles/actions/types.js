@@ -8,6 +8,7 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const PROFILE_UPDATED = 'PROFILE_UPDATED';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const ROOM_CREATED = 'ROOM_CREATED';
+export const ROOM_UPDATED = 'ROOM_UPDATED';
 export const ROOM_ERROR = 'ROOM_ERROR';
 export const GOT_ROOM_LIST = 'GOT_ROOM_LIST';
 export const GOT_ROOM = 'GOT_ROOM';

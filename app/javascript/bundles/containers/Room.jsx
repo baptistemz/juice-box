@@ -1,12 +1,14 @@
 import React, { Component} from 'react';
 import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
+import NoSleep from 'nosleep.js';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
-import { fetchRoom, musicEnded, musicAdded, musicStarted } from '../actions/index'
+import RoomSettings from '../components/RoomSettings';
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom } from '../actions/index'
 
 
 class Room extends Component {
@@ -57,13 +59,22 @@ class Room extends Component {
     $('.modal').modal({
       endingTop: "0%"
     });
+    $('.button-collapse').sideNav({
+       menuWidth: 300, // Default is 300
+       edge: 'right', // Choose the horizontal origin
+       closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+       draggable: false, // Choose whether you can drag to open on touch screens,
+     }
+   );
   }
   render() {
-    const { id, user_id, slug, name, owner_name, contributors_number, isAuthenticated, musics, is_owner } = this.props;
+    const { id, user_id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner } = this.props;
+    const noSleep = new NoSleep();
+    noSleep.enable();
     return (
       <div>
         <div className="app-background">
-          <div className="space-between">
+          <div className="space-between align-items-end">
             <div className="direction-row align-items-end">
               {isAuthenticated ?
                 <Link to="/rooms"><i className="material-icons margin-left-10 secondary-text">arrow_back</i></Link>
@@ -75,14 +86,18 @@ class Room extends Component {
             </div>
             {is_owner ?
               <div>
-                <a className="modal-trigger" href="#settings_modal">
-                  <i className="material-icons">
+                <a href="#" data-activates="slide-out" className="button-collapse">
+                  <i className="primary-text margin-right-10 material-icons">
                     settings
                   </i>
                 </a>
-                <div id="settings_modal" className="app-background modal right-modal">
-                  <h3>{name} settings</h3>
-                  <div className="modal-close material-icons">clear</div>
+                <div id="slide-out" className="primary-background side-nav">
+                  <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons">clear</div>
+                  <RoomSettings
+                    roomId={id}
+                    onTransitionSpeedChange={this.props.updateRoom}
+                    transitionSpeed={this.props.transition_speed}
+                  />
                 </div>
               </div>
               :
@@ -92,7 +107,7 @@ class Room extends Component {
           <hr/>
           <div className="row">
             <div className="col s12 l6">
-              <MusicBoard roomId={id} isOwner={this.props.is_owner}/>
+              <MusicBoard transitionSpeed={transition_speed} roomId={id} isOwner={this.props.is_owner}/>
             </div>
             <div className="col s12 l6 hide-on-med-and-down">
               <SearchBoard roomId={id}/>
@@ -117,15 +132,16 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom }, dispatch);
 }
 
-function mapStateToProps({ auth, room: { id, user_id, slug, name, owner_name, contributors_number, is_owner }}) {
+function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }}) {
   return {
     id,
     user_id,
     slug,
     name,
+    transition_speed,
     owner_name,
     contributors_number,
     is_owner,

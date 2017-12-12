@@ -5,6 +5,7 @@ import { toastr } from 'react-redux-toastr';
 import { errorHandling } from '../utils/errorHandling';
 import {
   ROOM_CREATED,
+  ROOM_UPDATED,
   ROOM_ERROR,
   GOT_ROOM_LIST,
   GOT_ROOM
@@ -59,11 +60,29 @@ export function fetchRoom(slug){
   };
 };
 
+export function updateRoom(room_id, params){
+  return dispatch => {
+    axios.put(`/api/rooms/${room_id}`, params).then((response) =>{
+      setNextHeaders(response.headers)
+      dispatch(roomUpdated(response.data));
+    }).catch((error)=>{
+      errorHandling(error)
+    })
+  };
+};
+
 //action creators
 
 function roomCreated(data) {
   return {
     type: ROOM_CREATED,
+    payload: data
+  };
+}
+
+function roomUpdated(data) {
+  return {
+    type: ROOM_UPDATED,
     payload: data
   };
 }

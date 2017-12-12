@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     mount_devise_token_auth_for 'User', at: 'auth'
     get 'authcheck/whoami'
     get 'authcheck/checkme'
-    resources :rooms, only: [:create, :index, :show] do
+    resources :rooms, only: [:create, :index, :show, :update] do
       resources :room_musics, only: [:create, :index, :update]
     end
   end

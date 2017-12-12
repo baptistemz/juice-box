@@ -20,8 +20,13 @@
     color: $soft-background;
   }
   & .avatar{
-    width: 42px;
-    height: 42px;
+    width: 35px !important;
+    min-width: 35px !important;
+    height: 35px !important;
+  }
+  .margin-left-10{
+    margin-top: 2px;
+    line-height: 1.2rem;
   }
 }
 .primary-content{
@@ -31,4 +36,5 @@
 .secondary-content{
   margin-top: -32px;
   cursor: pointer;
+  position: relative;
 }

@@ -1,7 +1,15 @@
 
 
 #search_modal{
-  overflow: hidden
+  overflow: hidden;
+  max-height: calc(100% - 60px);
+  height: 100%;
+  margin: 5% auto;
+  .modal-close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
 }
 
 #settings_modal{

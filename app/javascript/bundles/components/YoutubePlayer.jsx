@@ -1,135 +1,76 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Youtube from 'react-youtube';
+import ReactPlayer from 'react-player';
 import { Button } from '../common/index';
-
-const OPTS = {
-  height: '78',
-  width: '128',
-  playerVars: { // https://developers.google.com/youtube/player_parameters
-    autoplay: 1
-  }
-};
 
 class YoutubePlayer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      player: null,
-      playerState: 0,
-      playerVolume: `${100 * props.volumeShare}`,
-      ended: false
+      playing: true,
+      volume: props.volumeShare,
+      inTransition: false,
+      duration: 0
     }
   }
   componentDidUpdate(previousProps){
-    this.setVolume(`${100 * this.props.volumeShare}`)
-  }
-  onReady(event) {
-    event.target.setVolume(this.state.playerVolume)
-    event.target.playVideo();
-    this.setState({
-      player: event.target,
-    });
-    const player = this.state.player;
-    if (this.props.isFirstMusic) {
-      player.playVideo();
+    if(this.props.volumeShare !== previousProps.volumeShare){
+      this.setState({ volume: this.props.volumeShare })
     }
-    this.detectEnd(player);
   }
-  detectEnd(player) {
-    const etag = player.etag;
-    const updateTime = function (video) {
-      let videoTime = 0;
-      const oldTime = videoTime;
-      if (this.state.ended || video.getCurrentTime() === video.getDuration()) {
-        clearInterval(fadeLoop);
-      } else {
-        const transitionTime = video.getDuration() - 20;
-        if (video && video.getCurrentTime()) {
-          videoTime = video.getCurrentTime();
-        }
-        if (videoTime !== oldTime) {
-          const progress = this.onProgress(Math.trunc(videoTime), Math.trunc(transitionTime));
-          console.log("progress", progress)
-          if (!progress) {
-            console.log(progress)
-            clearInterval(fadeLoop);
-          }
-        }
-      }
-    };
-    const fadeLoop = setInterval(updateTime.bind(this, player), 1000);
-  }
-  onProgress(currentTime, transitionTime) {
-    console.log("currentTime", currentTime)
-    console.log("transitionTime", transitionTime)
-    if (currentTime >= transitionTime) {
+  onProgress(status){
+    const timeForTransition = this.state.duration - (this.props.transitionSpeed + 5);
+    if (status.playedSeconds >= timeForTransition && !this.state.inTransition) {
       this.props.nextVideo()
-      return false;
-    }
-    return true;
-  }
-  onStateChange(e){
-    this.setState({ player: e.target ,playerState: e.target.getPlayerState(), playerVolume: e.target.getVolume()})
-    switch (e.data) {
-      case -1:
-        break;
-      case 0:
-        this.setState({ ended: true });
-        break;
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-      case 5:
-        this.onReady(event);
-        break;
-      default:
-        break;
+      this.setState({ inTransition: true });
     }
   }
-  setVolume(value){
-    const player = this.state.player;
-    if(!_.isEmpty(player))player.setVolume(value)
+  onDuration(duration){
+    this.setState({ duration })
   }
-  pauseVideo(){
-    const player = this.state.player;
-    player.pauseVideo()
-    this.setState({ playerState: player.getPlayerState() });
+  onStart(){
+    _.delay(() => this.props.onReady(this.props.video), 2000)
   }
-  playVideo(){
-    const player = this.state.player;
-    player.playVideo()
-    this.setState({ playerState: player.getPlayerState() });
+  onPause(){
+    this.setState({ playing: false });
   }
-  onVolumeChange(volume){
-    const player = this.state.player;
-    player.setVolume(volume);
-    this.setState({ playerVolume: player.getVolume() });
+  onPlay(){
+    this.setState({ playing: true });
+  }
+  pause(){
+    this.setState({ playing: false });
+  }
+  play(){
+    this.setState({ playing: true });
   }
   render(){
     const { video, name, hidden, nextVideo, buttonsDisabled } = this.props;
     return(
       <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
-        <Youtube
-          onError={(error) => console.log(error)}
-          videoId={video.music_key}
-          onReady={this.onReady.bind(this)}
-          opts={OPTS}
-          onStateChange={this.onStateChange.bind(this)}
-          />
+        <ReactPlayer
+          url={`https://www.youtube.com/watch?v=${video.music_key}`}
+          playing={this.state.playing}
+          onProgress={(status) => this.onProgress(status)}
+          controls={false}
+          width={128}
+          height={78}
+          onStart={() => this.onStart()}
+          onPause={() => this.onPause()}
+          onPlay={() => this.onPlay()}
+          onDuration={(duration) => this.onDuration(duration)}
+          volume={this.state.volume}
+          config={{ youtube: { playerVars: { showinfo: 1 }, preload: true  } }}
+        />
+
         <div className="margin-left-10 space-around direction-column">
-          <p className="no-margin">{this.props.name}</p>
-          <div className="space-around">
+          <p className="no-margin two-lines-p">{this.props.name}</p>
+          <div className="player-controlls space-between">
             <Button
               disabled={buttonsDisabled}
-              icon={`${this.state.playerState === 1 ? "pause" : "play_arrow"}`}
+              icon={`${this.state.playing ? "pause" : "play_arrow"}`}
               iconOnly
-              clickTrigger={this.state.playerState === 1 ? this.pauseVideo.bind(this) : this.playVideo.bind(this) }
+              clickTrigger={this.state.playing ? () => this.pause() : () => this.play() }
               />
             <Button
               disabled={buttonsDisabled}
