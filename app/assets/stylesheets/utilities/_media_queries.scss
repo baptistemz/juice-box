@@ -2,9 +2,11 @@
   .app-background{
     width: 100vw;
     margin-left: 0;
+    height: calc(100vh - 60px);
   }
   .bottomnav{
     display: flex;
+    font-size: 0.96rem;
   }
 
   #search_modal{
@@ -22,14 +24,11 @@
   .room-music-list{
     height: calc(100vh - 300px);
   }
-  .player-controlls{
-    width: 150px;
-  }
   .search-modal-btn{
     bottom: calc(55px + 3%);
-    left: 5%;
+    // left: 5%;
   }
-  html, p, body { font-size: 12px; }
+  html, p, body { font-size: 13px; }
 }
 @media only screen and (min-width: 601px) and (max-width: 992px){
   .app-background{
@@ -46,9 +45,6 @@
     &.dark-background{
       width: 96%
     }
-  }
-  .player-controlls{
-    width: 175px;
   }
   .login-btn-group{
     top: 2%;
@@ -74,9 +70,6 @@
     &.dark-background{
       width: 96%
     }
-  }
-  .player-controlls{
-    width: 200px;
   }
   .login-btn-group{
     top: 2%;

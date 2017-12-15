@@ -36,7 +36,7 @@ class Signup extends Component{
                   <div className="text-center padded-20">
                     <h1>Create an account</h1>
                   </div>
-                  <Input icon="perm_identity" name="username" label="username" type="text" error={errorMessages["username"]} />
+                  <Input icon="perm_identity" name="username" label="username" type="text" error={errorMessages["username"]} autoFocus />
                   <Input icon="email" name="email" label="email" type="email" error={errorMessages["email"]} />
                   <Input icon="lock_outline" name="password" label="password"  type="password" error={errorMessages["password"]} />
                   <Input icon="lock_outline" name="password_confirmation" label="password confirmation" type="password" error={errorMessages["password_confirmation"]} />

@@ -43,6 +43,7 @@ export function updateMusic(room_id, room_music_id, params){
 //ACTION CREATORS
 
 export function musicEnded(music) {
+  console.log("music ended action", music)
   return {
     type: MUSIC_ENDED,
     payload: music
@@ -50,6 +51,7 @@ export function musicEnded(music) {
 }
 
 export function musicStarted(music) {
+  console.log("music started action", music)
   return {
     type: MUSIC_STARTED,
     payload: music

@@ -36,14 +36,6 @@ class Account extends Component {
           <div className="container">
             <div className="app-centered-content">
               <div className="row">
-                <div className="col s12">
-                  <div className="direction-row align-items-center margin-bottom-20 justify-center">
-                    <p className="margin-right-20">You are currently logged in.</p>
-                    <a onClick={this.logout.bind(this)}><div className="btn btn-small">Log out</div></a>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
                 <div className="col s6 m4 margin-bottom-20">
                   <EditableField
                     label="prénom"
@@ -63,7 +55,7 @@ class Account extends Component {
                     />
                 </div>
                 <div className="col s12 m4">
-                  <div style={{ height: "70px" }} className="align-items-center">
+                  <div style={{ height: "70px" }} className="align-items-center justify-center">
                     <PasswordChange errorMessages={errorMessages} />
                   </div>
                 </div>

@@ -42,7 +42,7 @@ class Login extends Component{
                     <div className="text-center padded-20">
                       <h1>Log in</h1>
                     </div>
-                    <Input icon="email" name="email" label="email" type="email" />
+                    <Input icon="email" name="email" label="email" type="email" autoFocus />
                     <Input icon="lock_outline" name="password" label="password" type="password" />
                     <p className="red-text">{errorMessages.main ? errorMessages.main : ''}</p>
                     <Button fullWidth={true} icon="lock_open" type="submit">Log in</Button>

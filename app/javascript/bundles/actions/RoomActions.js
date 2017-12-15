@@ -50,9 +50,8 @@ export function fetchRoom(slug){
   return dispatch => {
     axios.get(`/api${slug}`)
       .then(response => {
-        console.log("fetchRoom RESPONSE headers", response.headers)
         setNextHeaders(response.headers)
-        console.log(" fetchroom after response axios", axios.defaults.headers.common)
+        console.log(response.data)
         dispatch(gotRoom(response.data));
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))

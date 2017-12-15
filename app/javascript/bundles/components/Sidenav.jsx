@@ -33,7 +33,7 @@ class Sidenav extends Component {
         inDuration: 300,
         outDuration: 300,
         constrainWidth: false, // Does not change width of dropdown to that of the activator
-        gutter: -92, // Spacing from edge
+        gutter: -25, // Spacing from edge
         belowOrigin: false, // Displays dropdown below the button
         alignment: 'left', // Displays dropdown with edge aligned to the left of button
         stopPropagation: false // Stops event propagation
@@ -100,7 +100,6 @@ class Sidenav extends Component {
           <img className="sidenav-logo" src="/logo.png" alt=""/>
         </div>
         <div className="bottomnav">
-          {this.tabs()}
           {isAuthenticated ?
             <div>
               <a className="dropdown-button bottom-drop" data-activates='dropdown_mobile_avatar'>
@@ -117,6 +116,7 @@ class Sidenav extends Component {
               <div className={`nav ${location.pathname === "/about" ?"active" : ""}`}><div className="description">About</div><i className="icon material-icons">info_outline</i></div>
             </Link>
           }
+          {this.tabs()}
         </div>
       </div>
     )

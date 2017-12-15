@@ -32,7 +32,7 @@
     "webpack": "^3.10.0"
   },
   "scripts": {
-    "s": "concurrently --kill-others \"rails s\"  \"bin/webpack-dev-server\"",
+    "s": "concurrently --kill-others \"redis-server\" \"rails s\"  \"bin/webpack-dev-server\"",
     "test": "mocha --compilers js:babel-core/register --compilers jsx:babel-core/register --require ./app/javascript/test/test_helper.js --recursive ./app/javascript/test",
     "test:watch": "npm run test -- --watch"
   },

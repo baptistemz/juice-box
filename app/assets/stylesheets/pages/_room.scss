@@ -8,6 +8,18 @@
   }
 }
 
+.player-controlls{
+  width: 14vh;
+  & a{
+    color: $secondary-color;
+    cursor: pointer;
+    & i{
+      font-size: 40px;
+    }
+  }
+
+}
+
 input[type=search]{
   border-bottom: 1px solid $secondary-color;
   margin-bottom: 10px;
@@ -22,6 +34,7 @@ input[type=search]{
 }
 
 .search-scroll{
+  padding-bottom: 30px;
   height: calc(100vh - 194px);
   & .row .col{
     padding: 0 0.28rem;
@@ -34,7 +47,7 @@ input[type=search]{
 }
 
 .room-music-list{
-  height: calc(100vh - 220px);
+  height: calc(100vh - 282px);
 }
 
 .volume-input{

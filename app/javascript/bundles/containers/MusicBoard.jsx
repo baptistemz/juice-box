@@ -12,7 +12,7 @@ import { updateMusic, changeVolumeBalance, changeWaitingListOrder } from "../act
 class MusicBoard extends Component {
   constructor(props){
     super(props);
-    this.state = { items: props.waiting_list, musicReady: null }
+    this.state = { items: props.waiting_list, musicReady: null, inTransition: false }
   }
   onSortEnd = ({oldIndex, newIndex}) => {
     if (this.props.isOwner){
@@ -22,22 +22,20 @@ class MusicBoard extends Component {
     }
   };
   transition(music,  music_number){
+    this.setState({ inTransition: true });
     const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props
     const newMusicId = waiting_list[0].id
-    updateMusic(roomId, newMusicId, {state: "playing"});
+    updateMusic(roomId, newMusicId, {state: "playing"})
     waiting_list.shift()
-    changeWaitingListOrder(waiting_list)
     let counter = 0;
     const volumeTransition = function () {
       if (counter < transitionSpeed) {
-        if(this.state.musicReady === newMusicId){
-          changeVolumeBalance(music_number, 1/transitionSpeed)
-          counter += 1;
-        }else{
-          console.log("ON ATTEND")
-        }
+        changeVolumeBalance(music_number, 1/transitionSpeed)
+        counter += 1;
       } else {
+        changeWaitingListOrder(waiting_list)
         updateMusic(roomId, music.id , {state: "archived"})
+        this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
       }
     };
@@ -55,12 +53,12 @@ class MusicBoard extends Component {
       return <YoutubePlayer
         hidden={music_number === hidden_player}
         video={music}
+        inTransition={this.state.inTransition}
         transitionSpeed={transitionSpeed}
         onReady={this.playerReady.bind(this, music)}
         name={ music.whole_name ? music.whole_name : `${music.artist} - ${music.song}` }
         volumeShare={music_number === 0 ? 1 - volume_balance : volume_balance}
         nextVideo={this.transition.bind(this, music, music_number)}
-        buttonsDisabled= {music_0 && music_1}
         />
     }
     return <SimulatedPlayer

@@ -15,7 +15,7 @@ module Api
       ).first_or_create!
       Rails.logger.debug("current_api_user:#{current_api_user}")
       Rails.logger.debug("state: #{state}")
-      @room_music = @room.room_musics.create(state: state, music_id: @music.id, user_id: @user_id)
+      @room_music = @room.room_musics.build(state: state, music_id: @music.id, user_id: @user_id)
       if @room_music.save
         Rails.logger.debug("@room_music:#{@room_music.to_json}")
         render partial: "api/room_musics/room_music.json.jbuilder", locals: {room_music: @room_music}

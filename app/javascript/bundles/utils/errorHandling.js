@@ -8,8 +8,8 @@ export function errorHandling(error, dispatchAction){
     console.log(error)
     toastr.error("An error occured. Please try again or contact us");
   }else{
-    console.log(error.response.headers)
-    // setNextHeaders(error.response.headers)
+    console.log(error.response)
+    if(error.response.headers['access-token']){setNextHeaders(error.response.headers)}
     switch (error.response.status) {
       case 404:{
         console.log(error.response)
@@ -20,9 +20,17 @@ export function errorHandling(error, dispatchAction){
         dispatchAction(logoutUser());
       }
       default:
-        const messages = error.response.data.errors.full_messages || error.response.data.errors;
-        for (var i = 0; i < messages.length; i++) {
-          toastr.error(messages[i]);
+        const full_messages = error.response.data.errors.full_messages
+        const messages = error.response.data.errors;
+        const message_keys = Object.keys(messages)
+        if(full_messages){
+          for (var i = 0; i < message_keys.length; i++) {
+            toastr.error(full_messages[i]);
+          }
+        }else{
+          for (var i = 0; i < message_keys.length; i++) {
+            toastr.error(messages[message_keys[i]]);
+          }
         }
     }
   }

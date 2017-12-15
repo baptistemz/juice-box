@@ -8,9 +8,8 @@ class YoutubePlayer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      playing: true,
+      playing: false,
       volume: props.volumeShare,
-      inTransition: false,
       duration: 0
     }
   }
@@ -18,12 +17,15 @@ class YoutubePlayer extends Component {
     if(this.props.volumeShare !== previousProps.volumeShare){
       this.setState({ volume: this.props.volumeShare })
     }
+    if(this.props.video.state === "playing" && previousProps.video.state === "waiting"){
+      console.log("LET's Play !!")
+      this.setState({ playing: true })
+    }
   }
   onProgress(status){
     const timeForTransition = this.state.duration - (this.props.transitionSpeed + 5);
-    if (status.playedSeconds >= timeForTransition && !this.state.inTransition) {
+    if (status.playedSeconds >= timeForTransition && !this.props.inTransition) {
       this.props.nextVideo()
-      this.setState({ inTransition: true });
     }
   }
   onDuration(duration){
@@ -38,14 +40,8 @@ class YoutubePlayer extends Component {
   onPlay(){
     this.setState({ playing: true });
   }
-  pause(){
-    this.setState({ playing: false });
-  }
-  play(){
-    this.setState({ playing: true });
-  }
   render(){
-    const { video, name, hidden, nextVideo, buttonsDisabled } = this.props;
+    const { video, name, hidden, nextVideo } = this.props;
     return(
       <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
         <ReactPlayer
@@ -58,6 +54,7 @@ class YoutubePlayer extends Component {
           onStart={() => this.onStart()}
           onPause={() => this.onPause()}
           onPlay={() => this.onPlay()}
+          onError={(error) => console.log(error)}
           onDuration={(duration) => this.onDuration(duration)}
           volume={this.state.volume}
           config={{ youtube: { playerVars: { showinfo: 1, controls: 1 }, preload: true  } }}
@@ -66,18 +63,12 @@ class YoutubePlayer extends Component {
         <div className="margin-left-10 space-around direction-column">
           <p className="no-margin two-lines-p">{this.props.name}</p>
           <div className="player-controlls space-between">
-            <Button
-              disabled={buttonsDisabled}
-              icon={`${this.state.playing ? "pause" : "play_arrow"}`}
-              iconOnly
-              clickTrigger={this.state.playing ? () => this.pause() : () => this.play() }
-              />
-            <Button
-              disabled={buttonsDisabled}
-              icon="skip_next"
-              iconOnly
-              clickTrigger={() => nextVideo()}
-              />
+            <a disabled={this.props.inTransition} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
+              <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>  
+            </a>
+            <a disabled={this.props.inTransition} onClick={() => nextVideo()}>
+              <i className="material-icons">skip_next</i>
+            </a>
           </div>
         </div>
       </div>
