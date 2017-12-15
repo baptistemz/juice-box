@@ -21,11 +21,16 @@
     right: 2%
   }
   .room-music-list{
-    height: calc(100vh - 300px);
+    height: calc(100vh - 250px);
   }
   .search-modal-btn{
     bottom: calc(55px + 3%);
     // left: 5%;
+  }
+  .next-btn{
+    position: absolute;
+    left: 220px;
+    top: 115px;
   }
   html, p, body { font-size: 13px; }
 }
@@ -55,6 +60,11 @@
       margin: 2px;
     }
   }
+  .next-btn{
+    position: absolute;
+    left: 290px;
+    top: 118px;
+  }
   html, p, body { font-size: 14px; }
 }
 @media only screen and (min-width: 992px){
@@ -82,6 +92,11 @@
     & p {
       margin: 4px;
     }
+  }
+  .next-btn{
+    position: absolute;
+    left: 290px;
+    top: 127px;
   }
   html, p, body { font-size: 16px; }
 }

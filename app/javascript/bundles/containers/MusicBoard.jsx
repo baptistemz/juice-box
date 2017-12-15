@@ -12,7 +12,7 @@ import { updateMusic, changeVolumeBalance, changeWaitingListOrder } from "../act
 class MusicBoard extends Component {
   constructor(props){
     super(props);
-    this.state = { items: props.waiting_list, musicReady: null, inTransition: false }
+    this.state = { items: props.waiting_list, inTransition: false }
   }
   onSortEnd = ({oldIndex, newIndex}) => {
     if (this.props.isOwner){
@@ -21,11 +21,12 @@ class MusicBoard extends Component {
       toastr.info("Only the room owner can change the list order")
     }
   };
-  transition(music,  music_number){
+  transition(music_number){
     this.setState({ inTransition: true });
-    const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props
-    const newMusicId = waiting_list[0].id
-    updateMusic(roomId, newMusicId, {state: "playing"})
+    const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
+    const newMusic = this.props[`music_${music_number}`]
+    const endingMusicId = this.props[music_number === 1 ? "music_0" : "music_1"].id;
+    updateMusic(roomId, newMusic.id, {state: "playing"})
     waiting_list.shift()
     let counter = 0;
     const volumeTransition = function () {
@@ -34,15 +35,12 @@ class MusicBoard extends Component {
         counter += 1;
       } else {
         changeWaitingListOrder(waiting_list)
-        updateMusic(roomId, music.id , {state: "archived"})
+        updateMusic(roomId, endingMusicId , {state: "archived"})
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
       }
     };
     const volumeTransitionInterval = setInterval(volumeTransition.bind(this), 50*transitionSpeed);
-  }
-  playerReady(music){
-    this.setState({ musicReady: music.id })
   }
   musicPlayer(music, music_number){
     const { hidden_player, transitionSpeed, volume_balance, music_0, music_1 } = this.props;
@@ -55,10 +53,10 @@ class MusicBoard extends Component {
         video={music}
         inTransition={this.state.inTransition}
         transitionSpeed={transitionSpeed}
-        onReady={this.playerReady.bind(this, music)}
         name={ music.whole_name ? music.whole_name : `${music.artist} - ${music.song}` }
         volumeShare={music_number === 0 ? 1 - volume_balance : volume_balance}
-        nextVideo={this.transition.bind(this, music, music_number)}
+        nextVideoButton={this.transition.bind(this, music_number)}
+        nextVideoAuto={this.transition.bind(this, music_number === 1 ? 0 : 1)}
         />
     }
     return <SimulatedPlayer

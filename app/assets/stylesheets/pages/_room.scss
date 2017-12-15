@@ -10,12 +10,10 @@
 
 .player-controlls{
   width: 14vh;
-  & a{
-    color: $secondary-color;
-    cursor: pointer;
-    & i{
-      font-size: 40px;
-    }
+  color: $secondary-color;
+  cursor: pointer;
+  & i{
+    font-size: 40px;
   }
 
 }

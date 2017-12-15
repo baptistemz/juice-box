@@ -20,7 +20,6 @@ export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_ROOM:{
       const { musics } = action.payload;
-      console.log(musics)
       const playing = _.filter(musics, {state: "playing"})
       const waiting_list = _.filter(musics, {state: "waiting"})
       return { ...state, waiting_list, volume_balance: 0, music_0: playing[0], music_1: waiting_list[0], hidden_player: 1 }
@@ -42,12 +41,13 @@ export default function (state = INITIAL_STATE, action) {
       }
     }
     case MUSIC_STARTED:{
-      console.log("music started reducer: new hidden player",  state.hidden_player === 1 ? 0 : 1 )
+      console.log("music started reducer: new hidden player",  state.hidden_player === 1 ? 0 : 1)
+      console.log("action.payload", action.payload)
       const hidden_player = state.hidden_player;
       return { ...state, hidden_player: hidden_player === 1 ? 0 : 1, [`music_${hidden_player}`]: action.payload }
     }
     case VOLUME_BALANCE_CHANGED:{
-      const variation = action.payload.music_number === 1 ? (0 - action.payload.amount) : action.payload.amount
+      const variation = action.payload.music_number === 1 ? action.payload.amount : (0 - action.payload.amount)
       return { ...state, volume_balance: state.volume_balance + variation}
     }
     case WAITING_LIST_ORDER_CHANGED:{

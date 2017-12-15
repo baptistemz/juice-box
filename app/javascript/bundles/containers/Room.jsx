@@ -120,7 +120,7 @@ class Room extends Component {
             }
           </div>
           <hr/>
-          <div className="row">
+          <div className="row no-margin">
             <div className="col s12 l6">
               <MusicBoard transitionSpeed={transition_speed} roomId={id} isOwner={is_owner && isAuthenticated}/>
             </div>
