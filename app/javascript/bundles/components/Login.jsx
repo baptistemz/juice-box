@@ -23,12 +23,13 @@ class Login extends Component{
         toastr.info("Veuillez vous connecter pour réaliser cette action")
     }
   }
-  submit({ email, password }){
+  submit({ email, password }, next_path){
     const creds = { email: sanitize(email), password: sanitize(password) };
-    this.props.loginUser(creds);
+    this.props.loginUser(creds, next_path);
   }
   render(){
     const { handleSubmit, errorMessages } = this.props;
+    const next_path = this.props.location.state ? this.props.location.state.from : null
     return (
         <div className="auth-background">
           <a className="pointer" onClick={() => this.props.history.goBack()}>
@@ -38,7 +39,7 @@ class Login extends Component{
             <div className="row">
               <div className="col s12 m10 l8 offset-m1 offset-l2">
                 <div className="box-shadow padded-50-except-top">
-                  <form onSubmit={handleSubmit(values => this.submit(values))}>
+                  <form onSubmit={handleSubmit(values => this.submit(values, next_path))}>
                     <div className="text-center padded-20">
                       <h1>Log in</h1>
                     </div>
@@ -51,9 +52,9 @@ class Login extends Component{
               </div>
             </div>
             <div className="text-center margin-top-20 margin-bottom-20 text-20">
-              <Link to='/password_forgotten'>Password forgotten</Link>
+              <Link to={{ pathname: '/password_forgotten', state: { from: next_path } }}>Password forgotten</Link>
               <br/>
-              <Link to="/signup">No account yet? Create one !</Link>
+              <Link to={{ pathname: '/signup', state: { from: next_path } }}>No account yet? Create one !</Link>
             </div>
           </div>
         </div>

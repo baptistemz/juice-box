@@ -31,8 +31,9 @@ export default function (state = INITIAL_STATE, action) {
     }
     case MUSIC_ADDED:{
       if (action.payload.state === "waiting"){
-        if(state.waiting_list.length < 1){
-          console.log("first music added reducer", { ...state, waiting_list: [...state.waiting_list, action.payload], [`music_${state.hidden_player}`]: action.payload  })
+        if(state.waiting_list.includes(action.payload)){
+          return state
+        } else if(state.waiting_list.length < 1){
           return { ...state, waiting_list: [...state.waiting_list, action.payload], [`music_${state.hidden_player}`]: action.payload  }
         }
         return { ...state, waiting_list: [...state.waiting_list, action.payload]  }

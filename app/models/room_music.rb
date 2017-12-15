@@ -5,7 +5,7 @@ class RoomMusic < ApplicationRecord
   extend Enumerize
   after_create :broadcast_added_music
   after_update :broadcast_updated_music
-  validates_uniqueness_of :music_id, scope: [:state, :room_id] , :on => [:create]
+  validates_uniqueness_of :music_id, scope: [:state, :room_id] , :on => [:create], message: "This music is already in the waiting list"
   # after_destroy :broadcast_deleted_music
   enumerize :state, in: ["waiting", "playing", "archived"]
 

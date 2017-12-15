@@ -49,7 +49,7 @@ export function loginUser(data, next_path) {
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
         //REDIRECT USER
-        dispatch(push(next_path ? next_path.pathname : '/'));
+        dispatch(push(next_path ? next_path : '/'));
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
       }).catch((error) => {
@@ -70,7 +70,7 @@ export function signupUser(data, next_path) {
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
         //REDIRECT USER
-        dispatch(push(next_path ? next_path.pathname : '/'));
+        dispatch(push(next_path ? next_path : '/'));
       }).catch((error) => {
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
@@ -89,7 +89,7 @@ export function updateProfile(data, success_message, next_path) {
         toastr.success(success_message);
       }
       dispatch(profileUpdated(response.data.data))
-      if(next_path){dispatch(push(next_path.pathname))};
+      if(next_path){dispatch(push(next_path))};
     }).catch((error) => {
       console.log(error.response)
       dispatch(authError(error.response.data.errors));
@@ -105,7 +105,6 @@ export function logoutUser() {
         localStorage.clear();
         toastr.success('Log out', 'see you soon');
         dispatch(receiveLogout());
-        dispatch(push('/'));
       }).catch((error)=>{
         console.log("logoutUser error", error);
         localStorage.clear();

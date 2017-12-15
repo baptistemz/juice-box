@@ -35,7 +35,7 @@ input[type=search]{
 
 .search-scroll{
   padding-bottom: 30px;
-  height: calc(100vh - 194px);
+  height: calc(100vh - 186px);
   & .row .col{
     padding: 0 0.28rem;
   }
@@ -44,10 +44,6 @@ input[type=search]{
 #settings_title{
   text-align: center;
   margin-top: -25px;
-}
-
-.room-music-list{
-  height: calc(100vh - 282px);
 }
 
 .volume-input{

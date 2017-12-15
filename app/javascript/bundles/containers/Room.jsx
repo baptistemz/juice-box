@@ -62,7 +62,7 @@ class Room extends Component {
   componentDidMount(){
     const alertOnce = () => {
       if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
-        toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 20000})
+        toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 0})
         this.setState({ alerted: true });
       }
     }
@@ -99,7 +99,7 @@ class Room extends Component {
               <h1>{name}</h1>
               <p className="no-margin">by {owner_name}</p>
             </div>
-            {is_owner ?
+            {is_owner && isAuthenticated ?
               <div>
                 <a href="#" data-activates="slide-out" className="button-collapse">
                   <i className="primary-text margin-right-10 material-icons">
@@ -122,7 +122,7 @@ class Room extends Component {
           <hr/>
           <div className="row">
             <div className="col s12 l6">
-              <MusicBoard transitionSpeed={transition_speed} roomId={id} isOwner={this.props.is_owner}/>
+              <MusicBoard transitionSpeed={transition_speed} roomId={id} isOwner={is_owner && isAuthenticated}/>
             </div>
             <div className="col s12 l6 hide-on-med-and-down">
               <SearchBoard roomId={id}/>

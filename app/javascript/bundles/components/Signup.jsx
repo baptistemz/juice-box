@@ -14,15 +14,17 @@ class Signup extends Component{
   componentWillMount(){
     this.props.authError({})
   }
-  submit({ username, email, password, password_confirmation }){
+  submit({ username, email, password, password_confirmation }, next_path){
     const creds = { username: sanitize(username),
                     email: sanitize(email) ,
                     password: sanitize(password),
                     password_confirmation: sanitize(password_confirmation) };
-    this.props.signupUser(creds);
+    this.props.signupUser(creds, next_path);
   }
   render(){
     const { handleSubmit, errorMessages } = this.props;
+    const next_path = this.props.location.state ? this.props.location.state.from : null
+    console.log(next_path)
     return (
       <div className="auth-background">
         <a className="pointer" onClick={() => this.props.history.goBack()}>
@@ -32,7 +34,7 @@ class Signup extends Component{
           <div className="row">
             <div className="col s12 m10 l8 offset-m1 offset-l2">
               <div className="box-shadow padded-50-except-top">
-                <form onSubmit={handleSubmit(values => this.submit(values))}>
+                <form onSubmit={handleSubmit(values => this.submit(values, next_path))}>
                   <div className="text-center padded-20">
                     <h1>Create an account</h1>
                   </div>
@@ -47,7 +49,7 @@ class Signup extends Component{
             </div>
           </div>
           <div className="text-center margin-bottom-20 text-20">
-            <Link to="/login">Already registered? Log in</Link>
+            <Link to={{ pathname: '/login', state: { from: next_path } }}>Already registered? Log in</Link>
           </div>
         </div>
       </div>

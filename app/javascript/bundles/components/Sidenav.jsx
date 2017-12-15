@@ -5,39 +5,42 @@ import { bindActionCreators } from 'redux';
 import { logoutUser } from '../actions/index';
 import { Button } from '../common/index'
 
-const SIDENAV_TABS = {
-  authenticated: [
-    { url: "/", name: "My music", icon: "music_note"},
-    { url: "/rooms", name: "Music rooms", icon: "list"},
-    { url: "/account", name: "Account", icon: "account_box"}
-  ],
-  notAuthenticated: [
-    { url: "/", name: "Home", icon: "home"},
-    { url: "/login", name: "Log in", icon: "lock_outline"},
-    { url: "/signup", name: "Sign up", icon: "create"}
-  ]
-}
-
 class Sidenav extends Component {
+  constructor(props){
+    super(props);
+    console.log(props)
+    this.state = {
+      authenticated: [
+        { url: "/", name: "My music", icon: "music_note"},
+        { url: "/rooms", name: "Music rooms", icon: "list"},
+        { url: "/account", name: "Account", icon: "account_box"}
+      ],
+      notAuthenticated: [
+        { url: "/", name: "Home", icon: "home"},
+        { url: { pathname: '/login', state: { from: props.location.pathname } }, name: "Log in", icon: "lock_outline"},
+        { url: { pathname: '/signup', state: { from: props.location.pathname } }, name: "Sign up", icon: "create"}
+      ]
+    }
+  }
   componentDidMount(){
     $('.dropdown-button.side-drop').dropdown({
-        inDuration: 300,
-        outDuration: 300,
-        constrainWidth: true, // Does not change width of dropdown to that of the activator
-        gutter: 60, // Spacing from edge
-        belowOrigin: false, // Displays dropdown below the button
-        alignment: 'left', // Displays dropdown with edge aligned to the left of button
-        stopPropagation: false // Stops event propagation
-      });
+      inDuration: 300,
+      outDuration: 300,
+      constrainWidth: true, // Does not change width of dropdown to that of the activator
+      gutter: 60, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    });
     $('.dropdown-button.bottom-drop').dropdown({
-        inDuration: 300,
-        outDuration: 300,
-        constrainWidth: false, // Does not change width of dropdown to that of the activator
-        gutter: -25, // Spacing from edge
-        belowOrigin: false, // Displays dropdown below the button
-        alignment: 'left', // Displays dropdown with edge aligned to the left of button
-        stopPropagation: false // Stops event propagation
-      });
+      inDuration: 300,
+      outDuration: 300,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      gutter: -25, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    });
   }
   logout(event){
     event.preventDefault();
@@ -61,7 +64,7 @@ class Sidenav extends Component {
   tabs(){
     const { location, isAuthenticated } = this.props;
     if(isAuthenticated){
-      return SIDENAV_TABS.authenticated.map(tab => {
+      return this.state.authenticated.map(tab => {
         return(
           <Link key={tab.url} to={tab.url}>
             <div className={`nav ${location.pathname === tab.url ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
@@ -69,9 +72,9 @@ class Sidenav extends Component {
         )
       })
     }
-    return SIDENAV_TABS.notAuthenticated.map(tab => {
+    return this.state.notAuthenticated.map(tab => {
       return(
-        <Link key={tab.url} to={tab.url}>
+        <Link key={tab.icon} to={tab.url}>
           <div className={`nav ${location.pathname === tab.url ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
         </Link>
       )

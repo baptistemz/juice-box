@@ -8,7 +8,6 @@
     display: flex;
     font-size: 0.96rem;
   }
-
   #search_modal{
     margin: 0;
   }
@@ -46,6 +45,9 @@
       width: 96%
     }
   }
+  .room-music-list {
+    height: calc(100vh - 195px);
+  }
   .login-btn-group{
     top: 2%;
     left: 2%;
@@ -70,6 +72,9 @@
     &.dark-background{
       width: 96%
     }
+  }
+  .room-music-list {
+    height: calc(100vh - 205px);
   }
   .login-btn-group{
     top: 2%;

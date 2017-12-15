@@ -25,11 +25,11 @@ export function errorHandling(error, dispatchAction){
         const message_keys = Object.keys(messages)
         if(full_messages){
           for (var i = 0; i < message_keys.length; i++) {
-            toastr.error(full_messages[i]);
+            toastr.error(full_messages[i][0]);
           }
         }else{
           for (var i = 0; i < message_keys.length; i++) {
-            toastr.error(messages[message_keys[i]]);
+            toastr.error(messages[message_keys[i]][0]);
           }
         }
     }

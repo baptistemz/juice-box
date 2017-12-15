@@ -12,6 +12,13 @@ input#search:-webkit-autofill {
   width: 100%;
 }
 
+a.disabled {
+   pointer-events: none;
+   cursor: default;
+   color: white;
+   opacity: 0.5
+}
+
 .pointer{
   cursor: pointer;
 }

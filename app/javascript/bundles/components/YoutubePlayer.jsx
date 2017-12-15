@@ -63,10 +63,10 @@ class YoutubePlayer extends Component {
         <div className="margin-left-10 space-around direction-column">
           <p className="no-margin two-lines-p">{this.props.name}</p>
           <div className="player-controlls space-between">
-            <a disabled={this.props.inTransition} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
-              <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>  
+            <a className={this.props.inTransition ? "disabled" : ""} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
+              <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
             </a>
-            <a disabled={this.props.inTransition} onClick={() => nextVideo()}>
+            <a className={this.props.inTransition ? "disabled" : ""} onClick={() => nextVideo()}>
               <i className="material-icons">skip_next</i>
             </a>
           </div>

@@ -35,7 +35,7 @@ class RootWithoutRailsContext extends Component {
               preventDuplicates
               transitionIn="fadeIn"
               transitionOut="fadeOut"
-              position="bottom-right"
+              position="bottom-left"
             />
           </div>
         </PersistGate>
