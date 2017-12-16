@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {arrayMove} from 'react-sortable-hoc';
 import { connect } from 'react-redux';
+import _ from 'lodash'
 import { bindActionCreators } from 'redux';
 import { toastr } from 'react-redux-toastr';
 import YoutubePlayer from '../components/YoutubePlayer';
 import MusicWaitingList from '../components/MusicWaitingList';
 import SimulatedPlayer from '../components/SimulatedPlayer';
-import { updateMusic, changeVolumeBalance, changeWaitingListOrder } from "../actions/index"
+import { updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom } from "../actions/index"
 
 
 class MusicBoard extends Component {
@@ -16,25 +17,33 @@ class MusicBoard extends Component {
   }
   onSortEnd = ({oldIndex, newIndex}) => {
     if (this.props.isOwner){
-      this.props.changeWaitingListOrder(arrayMove(this.state.items, oldIndex, newIndex));
+      const new_items = arrayMove(this.state.items, oldIndex, newIndex)
+      this.setState({ items: new_items });
+      const room_music_ids = _.map( new_items, "id")
+      this.props.changeWaitingListOrder(this.props.roomId, room_music_ids);
     }else{
       toastr.info("Only the room owner can change the list order")
     }
   };
+  componentDidUpdate(previousProps){
+    if(previousProps.waiting_list !== this.props.waiting_list){
+      this.setState({ items: this.props.waiting_list });
+    }
+  }
   transition(music_number){
     this.setState({ inTransition: true });
     const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusicId = this.props[music_number === 1 ? "music_0" : "music_1"].id;
     updateMusic(roomId, newMusic.id, {state: "playing"})
-    waiting_list.shift()
+    // waiting_list.shift()
     let counter = 0;
     const volumeTransition = function () {
       if (counter < transitionSpeed) {
         changeVolumeBalance(music_number, 1/transitionSpeed)
         counter += 1;
       } else {
-        changeWaitingListOrder(waiting_list)
+        // changeWaitingListOrder(waiting_list)
         updateMusic(roomId, endingMusicId , {state: "archived"})
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
@@ -70,10 +79,13 @@ class MusicBoard extends Component {
         {this.musicPlayer(this.props.music_0, 0)}
         {this.musicPlayer(this.props.music_1, 1)}
         <MusicWaitingList
-          deleteMusicFromList={(music) => console.log("delete music", music)}
-          list={this.props.waiting_list}
+          deleteMusicFromRoom={(music) => console.log("delete music", music)}
+          isOwner={this.props.isOwner}
+          list={this.state.items}
           roomId={this.props.roomId}
           onSortEnd={this.onSortEnd}
+          lockAxis="y"
+          shouldCancelStart={(e) => {if (['a', 'i'].indexOf(e.target.tagName.toLowerCase()) !== -1){return true}}}
         />
       </div>
     )
@@ -81,7 +93,7 @@ class MusicBoard extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updateMusic, changeVolumeBalance, changeWaitingListOrder }, dispatch);
+  return bindActionCreators({ updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom }, dispatch);
 }
 
 function mapStateToProps({ music_board: { waiting_list, music_0, music_1, volume_balance, hidden_player }}) {

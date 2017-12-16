@@ -11,7 +11,8 @@ class MusicWaitingList extends Component {
           key={i}
           index={i}
           outline="list"
-          deleteMusicFromList={this.props.deleteMusicFromList}
+          deleteMusicFromRoom={this.props.deleteMusicFromRoom}
+          isOwner={this.props.isOwner}
         >{music}</SortableListItem>
       );
     }, this);

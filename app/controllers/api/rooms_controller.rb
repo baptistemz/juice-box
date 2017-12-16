@@ -36,6 +36,17 @@ module Api
     def delete
     end
 
+    def change_order
+      @room = Room.find(params[:room_id])
+      RoomMusic.skip_callback(:update, :after, :broadcast_updated_music)
+      params[:room_music_ids].each_with_index do |id, index|
+        @room.room_musics.find(id).update(waiting_list_position: index)
+      end
+      RoomMusic.set_callback(:update, :after, :broadcast_updated_music)
+      @room.broadcast_modified_list(@room.room_musics.where(state: "waiting"))
+      render :show
+    end
+
     def increment_contributors_number
       @room = Room.friendly.find(params[:room_id])
       @room.update(contributors_number: @room.contributors_number + 1)

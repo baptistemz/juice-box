@@ -25,7 +25,6 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, waiting_list, volume_balance: 0, music_0: playing[0], music_1: waiting_list[0], hidden_player: 1 }
     }
     case MUSIC_ENDED:{
-      console.log(action)
       return state
     }
     case MUSIC_ADDED:{
@@ -41,8 +40,6 @@ export default function (state = INITIAL_STATE, action) {
       }
     }
     case MUSIC_STARTED:{
-      console.log("music started reducer: new hidden player",  state.hidden_player === 1 ? 0 : 1)
-      console.log("action.payload", action.payload)
       const hidden_player = state.hidden_player;
       return { ...state, hidden_player: hidden_player === 1 ? 0 : 1, [`music_${hidden_player}`]: action.payload }
     }

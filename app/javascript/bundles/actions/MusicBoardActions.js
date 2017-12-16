@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
 import { toastr } from 'react-redux-toastr';
+import { gotRoom } from './index'
 import { errorHandling } from '../utils/errorHandling';
 import {
   MUSIC_ENDED,
@@ -40,10 +41,31 @@ export function updateMusic(room_id, room_music_id, params){
   };
 };
 
+export function changeWaitingListOrder(room_id, room_music_ids){
+  return dispatch => {
+    axios.post(`/api/rooms/${room_id}/change_order`, {room_music_ids: room_music_ids})
+      .then((response) => {
+        setNextHeaders(response.headers)
+        // dispatch(gotRoom(response.data));
+      }).catch((error)=>{
+        errorHandling(error)
+      })
+  };
+};
+
+// export function deleteMusic(room_id, room_music_id, params){
+//   return dispatch => {
+//     axios.put(`/api/rooms/${room_id}/room_musics/${room_music_id}`, params).then((response) =>{
+//       setNextHeaders(response.headers)
+//     }).catch((error)=>{
+//       errorHandling(error)
+//     })
+//   };
+// };
+
 //ACTION CREATORS
 
 export function musicEnded(music) {
-  console.log("music ended action", music)
   return {
     type: MUSIC_ENDED,
     payload: music
@@ -51,7 +73,6 @@ export function musicEnded(music) {
 }
 
 export function musicStarted(music) {
-  console.log("music started action", music)
   return {
     type: MUSIC_STARTED,
     payload: music
@@ -72,7 +93,7 @@ export function changeVolumeBalance(music_number, amount) {
   };
 }
 
-export function changeWaitingListOrder(list) {
+export function waitingListOrderChanged(list) {
   return {
     type: WAITING_LIST_ORDER_CHANGED,
     payload: list

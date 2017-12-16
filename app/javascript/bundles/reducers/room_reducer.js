@@ -4,6 +4,7 @@ import {
   ROOM_ERROR,
   GOT_ROOM_LIST,
   GOT_ROOM,
+  LOGOUT_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -22,6 +23,8 @@ const INITIAL_STATE = {
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
+    case LOGOUT_SUCCESS:
+     return { ...state, is_owner: false }
     case ROOM_CREATED:{
       const { name, slug, contributors_number, id, user_id, owner_name, transition_speed, musics, is_owner } = action.payload;
       return { ...state, name, slug, contributors_number, id, errors: {}, owner_name, transition_speed, user_id, musics, is_owner }

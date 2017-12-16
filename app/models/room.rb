@@ -9,7 +9,14 @@ class Room < ApplicationRecord
   validates_inclusion_of :transition_speed, in: 0..20
   # validates_numericality_of :contributors_number, greater_than_or_equal_to: 0
 
-  def broadcast_modified_list(musics)
-    ActionCable.server.broadcast(self.slug, {action: "sorted", musics: ActiveSupport::JSON.decode(render_musics(musics))})
+  def broadcast_modified_list(room_musics)
+    Rails.logger.debug("room_musics: #{room_musics}")
+    ActionCable.server.broadcast(self.id, {action: "sorted", musics: ActiveSupport::JSON.decode(render_room_musics(room_musics))})
+  end
+
+  private
+  def render_room_musics(room_musics)
+    Rails.logger.debug("room_musics: #{room_musics}")
+    ApplicationController.renderer.render(template: "api/room_musics/index.json.jbuilder", locals: { room_musics: room_musics })
   end
 end

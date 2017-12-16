@@ -3,7 +3,7 @@ import { SortableElement } from 'react-sortable-hoc';
 
 class ListItem extends Component {
   deleteFromList(music) {
-    this.props.deleteMusicFromList(music);
+    this.props.deleteMusicFromRoom(music);
   }
   render() {
     const childProps = this.props.children;
@@ -16,9 +16,14 @@ class ListItem extends Component {
             <p>{childProps.provider}</p>
           </span>
         </div>
-        <a className="secondary-content" onClick={this.deleteFromList.bind(this, childProps)}>
-          <i className="material-icons">delete</i>
-        </a>
+        {
+          this.props.isOwner ?
+            <a className="secondary-content" onClick={this.deleteFromList.bind(this, childProps)}>
+              <i className="material-icons">delete</i>
+            </a>
+          :
+            <div/>
+        }
       </li>
     );
   }

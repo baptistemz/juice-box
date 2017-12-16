@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get 'authcheck/checkme'
     resources :rooms, only: [:create, :index, :show, :update] do
       resources :room_musics, only: [:create, :index, :update]
+      post 'change_order', to: 'rooms#change_order'
     end
   end
   get '/404' => 'react_app#index'

@@ -13,9 +13,7 @@ module Api
         provider: params[:provider],
         music_key: params[:music_key]
       ).first_or_create!
-      Rails.logger.debug("current_api_user:#{current_api_user}")
-      Rails.logger.debug("state: #{state}")
-      @room_music = @room.room_musics.build(state: state, music_id: @music.id, user_id: @user_id)
+      @room_music = @room.room_musics.build(state: state, music_id: @music.id, user_id: @user_id, waiting_list_position: @room.room_musics.length)
       if @room_music.save
         Rails.logger.debug("@room_music:#{@room_music.to_json}")
         render partial: "api/room_musics/room_music.json.jbuilder", locals: {room_music: @room_music}

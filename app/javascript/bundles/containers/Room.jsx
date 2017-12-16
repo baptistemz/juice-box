@@ -8,7 +8,7 @@ import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom } from '../actions/index'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged } from '../actions/index'
 
 
 class Room extends Component {
@@ -44,8 +44,8 @@ class Room extends Component {
         console.log('deleted received');
         break;
       case 'sorted':
-        this.props.receiveSortedMusics(data);
-        console.log('sorted received');
+      console.log('sorted received', data);
+        this.props.waitingListOrderChanged(data.musics);
         break;
     }
   }
@@ -147,7 +147,7 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged }, dispatch);
 }
 
 function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }}) {

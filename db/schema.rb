@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171210164357) do
+ActiveRecord::Schema.define(version: 20171216111021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20171210164357) do
     t.bigint "music_id"
     t.string "state"
     t.bigint "user_id"
+    t.integer "waiting_list_position"
     t.index ["music_id"], name: "index_room_musics_on_music_id"
     t.index ["room_id"], name: "index_room_musics_on_room_id"
     t.index ["user_id"], name: "index_room_musics_on_user_id"

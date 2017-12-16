@@ -14,8 +14,6 @@ class YoutubePlayer extends Component {
     }
   }
   componentDidUpdate(previousProps){
-    console.log("this.props.video.state", this.props.video.state)
-    console.log("previousprops.video.state", previousProps.video.state)
     if(this.props.volumeShare !== previousProps.volumeShare){
       this.setState({ volume: this.props.volumeShare })
     }
