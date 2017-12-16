@@ -8,7 +8,8 @@ import {
   MUSIC_ADDED,
   WAITING_LIST_ORDER_CHANGED,
   VOLUME_BALANCE_CHANGED,
-  MUSIC_STARTED
+  MUSIC_STARTED,
+  MUSIC_DELETED
 } from './types';
 
 export function addMusicToRoom(room_id, music){
@@ -53,15 +54,15 @@ export function changeWaitingListOrder(room_id, room_music_ids){
   };
 };
 
-// export function deleteMusic(room_id, room_music_id, params){
-//   return dispatch => {
-//     axios.put(`/api/rooms/${room_id}/room_musics/${room_music_id}`, params).then((response) =>{
-//       setNextHeaders(response.headers)
-//     }).catch((error)=>{
-//       errorHandling(error)
-//     })
-//   };
-// };
+export function deleteMusicFromRoom(room_id, music_id){
+  return dispatch => {
+    axios.delete(`/api/rooms/${room_id}/room_musics/${music_id}`).then((response) =>{
+      setNextHeaders(response.headers)
+    }).catch((error)=>{
+      errorHandling(error)
+    })
+  };
+};
 
 //ACTION CREATORS
 
@@ -82,6 +83,13 @@ export function musicStarted(music) {
 export function musicAdded(music) {
   return {
     type: MUSIC_ADDED,
+    payload: music
+  };
+}
+
+export function musicDeleted(music) {
+  return {
+    type: MUSIC_DELETED,
     payload: music
   };
 }

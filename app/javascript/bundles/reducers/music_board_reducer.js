@@ -3,6 +3,7 @@ import {
   GOT_ROOM,
   MUSIC_ENDED,
   MUSIC_ADDED,
+  MUSIC_DELETED,
   MUSIC_STARTED,
   VOLUME_BALANCE_CHANGED,
   WAITING_LIST_ORDER_CHANGED
@@ -39,9 +40,17 @@ export default function (state = INITIAL_STATE, action) {
         return { ...state, music_0: action.payload, music_1: null }
       }
     }
+    case MUSIC_DELETED:{
+      const waiting_list = state.waiting_list;
+      const index = _.findIndex(waiting_list, ['id', action.payload.music.id])
+      waiting_list.splice(index, 1);
+      return { ...state, waiting_list, [`music_${state.hidden_player}`]: waiting_list[0] }
+    }
     case MUSIC_STARTED:{
       const hidden_player = state.hidden_player;
-      return { ...state, hidden_player: hidden_player === 1 ? 0 : 1, [`music_${hidden_player}`]: action.payload }
+      const waiting_list = state.waiting_list;
+      waiting_list.splice(0, 1)
+      return { ...state, waiting_list, hidden_player: hidden_player === 1 ? 0 : 1, [`music_${hidden_player}`]: action.payload }
     }
     case VOLUME_BALANCE_CHANGED:{
       const variation = action.payload.music_number === 1 ? action.payload.amount : (0 - action.payload.amount)

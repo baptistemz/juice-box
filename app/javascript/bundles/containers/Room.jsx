@@ -8,7 +8,7 @@ import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged } from '../actions/index'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted } from '../actions/index'
 
 
 class Room extends Component {
@@ -40,7 +40,7 @@ class Room extends Component {
         }
         break;
       case 'deleted':
-        this.props.receiveDeletedMusic(data);
+        this.props.musicDeleted(data);
         console.log('deleted received');
         break;
       case 'sorted':
@@ -147,7 +147,7 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted }, dispatch);
 }
 
 function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }}) {

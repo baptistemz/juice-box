@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     get 'authcheck/whoami'
     get 'authcheck/checkme'
     resources :rooms, only: [:create, :index, :show, :update] do
-      resources :room_musics, only: [:create, :index, :update]
+      resources :room_musics, only: [:create, :index, :update, :destroy]
       post 'change_order', to: 'rooms#change_order'
     end
   end

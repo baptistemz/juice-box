@@ -37,7 +37,11 @@ module Api
       end
     end
 
-    def delete
+    def destroy
+      @room = Room.find(params[:room_id])
+      @room_music = @room.room_musics.find(params[:id])
+      @room_music.destroy
+      render partial: "api/room_musics/room_music.json.jbuilder", locals: {room_music: @room_music}
     end
 
     private

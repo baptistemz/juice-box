@@ -27,6 +27,7 @@ class MusicBoard extends Component {
   };
   componentDidUpdate(previousProps){
     if(previousProps.waiting_list !== this.props.waiting_list){
+      console.log("did update", this.props.waiting_list);
       this.setState({ items: this.props.waiting_list });
     }
   }
@@ -74,15 +75,16 @@ class MusicBoard extends Component {
       buttonsDisabled={true} />
   }
   render(){
+    const { deleteMusicFromRoom, roomId, isOwner } = this.props;
     return(
       <div className="dark-background padding-20">
         {this.musicPlayer(this.props.music_0, 0)}
         {this.musicPlayer(this.props.music_1, 1)}
         <MusicWaitingList
-          deleteMusicFromRoom={(music) => console.log("delete music", music)}
-          isOwner={this.props.isOwner}
+          deleteMusicFromRoom={(music) => deleteMusicFromRoom(roomId, music.id)}
+          isOwner={isOwner}
           list={this.state.items}
-          roomId={this.props.roomId}
+          roomId={roomId}
           onSortEnd={this.onSortEnd}
           lockAxis="y"
           shouldCancelStart={(e) => {if (['a', 'i'].indexOf(e.target.tagName.toLowerCase()) !== -1){return true}}}

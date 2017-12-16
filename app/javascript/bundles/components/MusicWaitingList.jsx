@@ -21,7 +21,7 @@ class MusicWaitingList extends Component {
         <div className="room-music-list overflow-scroll">
           <ul className="collection">
             <ReactCSSTransitionGroup
-              transitionName="fade-right"
+              transitionName="fade"
               transitionEnterTimeout={500}
               transitionLeaveTimeout={500}
             >
