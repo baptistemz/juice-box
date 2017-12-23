@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PlaylistCarousel from './PlaylistCarousel'
 
 class RoomSettings extends Component {
   constructor(props){
@@ -24,8 +25,10 @@ class RoomSettings extends Component {
     setTimeout(sendIfRangeHasntChanged.bind(this, value), 1000);
   }
   componentDidMount(){
-    $(document).ready(function(){
-      $('ul.tabs').tabs();
+    $('ul.tabs').tabs({
+      onShow: function(tab) {
+        $('.carousel').carousel();
+      }
     });
   }
   render(){
@@ -35,8 +38,8 @@ class RoomSettings extends Component {
         <h4 id="settings_title">Settings</h4>
         <br/>
         <form>
+          <h5>Transition speed :</h5>
           <p className="range-field">
-            <h5>Transition speed :</h5>
             <input
               id="transition_speed"
               onChange={(e) => this.onRangeChange(e.target.value) }
@@ -46,7 +49,7 @@ class RoomSettings extends Component {
         </form>
         <br/>
         <br/>
-        <h5>Load a music playlist in this room</h5>
+        <h5>Load a music playlist</h5>
         <div className="row">
           <div className="col s12">
             <ul className="tabs">
@@ -54,8 +57,8 @@ class RoomSettings extends Component {
               <li className="tab col s6"><a className="active" href="#public_playlists">Public playlists</a></li>
             </ul>
           </div>
-          <div id="my_playlists" className="col s12">My playlists</div>
-          <div id="public_playlists" className="col s12">Public playlists</div>
+          <div id="my_playlists" className="col s12"><PlaylistCarousel playlists={this.props.ownerPlaylists} status="owner" /></div>
+          <div id="public_playlists" className="col s12"><PlaylistCarousel playlists={this.props.publicPlaylists} status="public" /></div>
         </div>
       </div>
     )

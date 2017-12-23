@@ -4,11 +4,18 @@
     margin-left: 0;
     height: calc(100vh - 60px);
   }
+  .my-music-side{
+    width: 100%;
+    position: relative;
+  }
+  .my-music-content-container{
+    height: calc( 100vh - 280px)
+  }
   .bottomnav{
     display: flex;
     font-size: 0.96rem;
   }
-  #search_modal{
+  .app-background .room-modal{
     margin: 0;
   }
 
@@ -22,6 +29,10 @@
   }
   .room-music-list{
     height: calc(100vh - 250px);
+  }
+  .playlist-modal-list{
+    height: calc(100vh - 200px);
+    margin-bottom: 10px;
   }
   .search-modal-btn{
     bottom: calc(55px + 3%);
@@ -39,6 +50,10 @@
     width: calc(100vw - 60px);
     margin-left: 60px;
   }
+  .my-music-content-container{
+    margin-left: 220px;
+    height: calc( 100vh - 74px)
+  }
   .bottomnav{
     display: none;
   }
@@ -52,6 +67,10 @@
   }
   .room-music-list {
     height: calc(100vh - 195px);
+  }
+  .playlist-modal-list{
+    height: calc(100vh - 206px);
+    margin-bottom: 10px;
   }
   .login-btn-group{
     top: 2%;
@@ -72,6 +91,10 @@
     width: calc(100vw - 60px);
     margin-left: 60px;
   }
+  .my-music-content-container{
+    margin-left: 220px;
+    height: calc( 100vh - 82px)
+  }
   .bottomnav{
     display: none;
   }
@@ -85,6 +108,10 @@
   }
   .room-music-list {
     height: calc(100vh - 205px);
+  }
+  .playlist-modal-list{
+    height: calc(100vh - 218px);
+    margin-bottom: 10px;
   }
   .login-btn-group{
     top: 2%;

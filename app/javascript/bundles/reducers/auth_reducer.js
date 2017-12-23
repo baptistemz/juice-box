@@ -7,15 +7,14 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    isFetching: false,
-    isAuthenticated: false,
-    errors: {},
-    id: null,
-    email: '',
-    username: '',
-    profile_picture: {thumb: {url: null}, micro: {url: null}},
-    is_mecano : false
-  };
+  isFetching: false,
+  isAuthenticated: false,
+  errors: {},
+  id: null,
+  email: '',
+  username: '',
+  profile_picture: {thumb: {url: null}, micro: {url: null}},
+};
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {

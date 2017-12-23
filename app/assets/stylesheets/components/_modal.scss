@@ -1,6 +1,4 @@
-
-
-#search_modal{
+.app-background .room-modal{
   padding-top: 10px;
   overflow: hidden;
   max-height: calc(100% - 60px);
@@ -8,8 +6,9 @@
   margin: 4% auto;
   .modal-close{
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
   }
 }
 

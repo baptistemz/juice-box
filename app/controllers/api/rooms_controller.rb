@@ -38,9 +38,10 @@ module Api
 
     def change_order
       @room = Room.find(params[:room_id])
+      start_position = @room.room_musics.where(state: "archived")
       RoomMusic.skip_callback(:update, :after, :broadcast_updated_music)
       params[:room_music_ids].each_with_index do |id, index|
-        @room.room_musics.find(id).update(waiting_list_position: index)
+        @room.room_musics.find(id).update(waiting_list_position: index + start_position)
       end
       RoomMusic.set_callback(:update, :after, :broadcast_updated_music)
       @room.broadcast_modified_list(@room.room_musics.where(state: "waiting"))

@@ -9,7 +9,16 @@ import YoutubeSnippet from '../components/YoutubeSnippet';
 
 class MusicSearchResults extends Component {
   addMusicToList(music) {
-    this.props.addMusicToRoom(this.props.roomId, music);
+    const params = {
+      provider: "youtube",
+      music_key: music.id.videoId,
+      whole_name: music.snippet.title,
+    }
+    if(music.snippet.title.split('-').length === 2){
+      params['artist'] = music.snippet.title.split('-')[0].trim();
+      params['song'] = music.snippet.title.split('-')[1].trim();
+    }
+    this.props.addMusicToRoom(this.props.roomId, params);
   }
   render() {
     const musics = this.props.musics;

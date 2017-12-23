@@ -9,19 +9,11 @@ import {
   WAITING_LIST_ORDER_CHANGED,
   VOLUME_BALANCE_CHANGED,
   MUSIC_STARTED,
-  MUSIC_DELETED
+  MUSIC_DELETED,
+  PREPARE_NEXT_SONG
 } from './types';
 
-export function addMusicToRoom(room_id, music){
-  const params = {
-    provider: "youtube",
-    music_key: music.id.videoId,
-    whole_name: music.snippet.title,
-  }
-  if(music.snippet.title.split('-').length === 2){
-    params['artist'] = music.snippet.title.split('-')[0].trim();
-    params['song'] = music.snippet.title.split('-')[1].trim();
-  }
+export function addMusicToRoom(room_id, params){
   return dispatch => {
     axios.post(`/api/rooms/${room_id}/room_musics`, params)
       .then((response) =>{
@@ -98,6 +90,12 @@ export function changeVolumeBalance(music_number, amount) {
   return {
     type: VOLUME_BALANCE_CHANGED,
     payload: { music_number, amount }
+  };
+}
+
+export function prepareNextSong() {
+  return {
+    type: PREPARE_NEXT_SONG
   };
 }
 

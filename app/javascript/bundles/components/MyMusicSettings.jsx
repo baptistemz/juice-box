@@ -35,8 +35,8 @@ class MyMusicSettings extends Component {
         <h4 id="settings_title">Settings</h4>
         <br/>
         <form>
+          <h5>Transition speed :</h5>
           <p className="range-field">
-            <h5>Transition speed :</h5>
             <input
               id="transition_speed"
               onChange={(e) => this.onRangeChange(e.target.value) }

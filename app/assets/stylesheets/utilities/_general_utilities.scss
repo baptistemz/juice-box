@@ -8,8 +8,16 @@ input#search:-webkit-autofill {
     -webkit-text-fill-color: black !important;
 }
 
+#slide-out .container{
+  width: 90%;
+}
+
 .full-width{
   width: 100%;
+}
+
+a{
+  cursor: pointer;
 }
 
 a.disabled {

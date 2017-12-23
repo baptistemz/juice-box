@@ -129,6 +129,11 @@
     font-size: 1.1rem;
   }
 }
+
+.redux-toastr .toastr .close-toastr{
+  opacity: 1 !important;
+}
+
 .rrt-warning .toastr-icon{
   fill: orange !important
 }

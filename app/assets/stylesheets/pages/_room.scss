@@ -9,13 +9,14 @@
 }
 
 .player-controlls{
-  width: 14vh;
   color: $secondary-color;
   cursor: pointer;
   & i{
     font-size: 40px;
   }
-
+  &:hover{
+    color: saturate( $secondary-color, 20% );
+  }
 }
 
 input[type=search]{

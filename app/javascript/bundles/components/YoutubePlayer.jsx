@@ -18,7 +18,6 @@ class YoutubePlayer extends Component {
       this.setState({ volume: this.props.volumeShare })
     }
     if(this.props.video.state === "playing" && previousProps.video.state === "waiting"){
-      console.log("Lets PLAY")
       this.setState({ playing: true })
     }
   }
@@ -42,8 +41,7 @@ class YoutubePlayer extends Component {
     this.props.nextVideoButton()
   }
   render(){
-    const { video, name, hidden } = this.props;
-    console.log(this.props.name, "is playing ?", this.state.playing)
+    const { video, name, hidden, inSideMenu } = this.props;
     return(
       <div>
         <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
@@ -57,19 +55,33 @@ class YoutubePlayer extends Component {
             height={78}
             onPause={() => this.onPause()}
             onPlay={() => this.onPlay()}
-            onError={(error) => console.log(error)}
             onProgress={(status) => this.onProgress(status)}
             volume={this.state.volume}
-            config={{ youtube: { playerVars: { showinfo: 1, controls: 1 }, preload: true  } }}
+            config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }, preload: true  } }}
             />
 
           <div className="margin-left-10 space-around direction-column">
-            <p className="no-margin two-lines-p">{this.props.name}</p>
+            {inSideMenu ?
+              <div></div>
+              :
+              <p className="no-margin two-lines-p">{this.props.name}</p>
+            }
             <a className={`player-controlls ${this.props.inTransition ? "disabled" : ""}`} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
               <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
             </a>
           </div>
         </div>
+        {inSideMenu ?
+          <div>
+            <br/>
+            <p className="truncate no-margin">{this.props.name}</p>
+            <br/>
+            <p className="truncate no-margin">playing in :</p>
+            <br/>
+          </div>
+          :
+          <div></div>
+        }
         <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
           <i className="material-icons">skip_next</i>
         </a>

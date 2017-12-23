@@ -8,12 +8,11 @@ import { Button } from '../common/index'
 class Sidenav extends Component {
   constructor(props){
     super(props);
-    console.log(props)
     this.state = {
       authenticated: [
         { url: "/", name: "My music", icon: "music_note"},
         { url: "/rooms", name: "Music rooms", icon: "list"},
-        { url: "/account", name: "Account", icon: "account_box"}
+        { url: "/account", name: "Account", icon: "settings"}
       ],
       notAuthenticated: [
         { url: "/", name: "Home", icon: "home"},

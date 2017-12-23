@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :rooms, dependent: :destroy
+  has_many :playlists, dependent: :destroy
+  has_one :library, dependent: :destroy
   has_many :room_musics, dependent: :nullify
   mount_base64_uploader :profile_picture, ProfilePictureUploader
   validates_uniqueness_of :email, :username

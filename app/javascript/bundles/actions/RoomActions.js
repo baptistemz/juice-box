@@ -8,7 +8,8 @@ import {
   ROOM_UPDATED,
   ROOM_ERROR,
   GOT_ROOM_LIST,
-  GOT_ROOM
+  GOT_ROOM,
+  REINITIALIZE_ROOM
 } from './types';
 import slugify from "../utils/slugify";
 
@@ -31,13 +32,13 @@ export function createRoom(values){
 };
 
 export function fetchRooms(values){
-  console.log("before fetchrooms", axios.defaults.headers.common)
+  // console.log("before fetchrooms", axios.defaults.headers.common)
   return dispatch => {
     axios.get('/api/rooms')
       .then(response => {
-        console.log(" fetchrooms response headers", response.headers)
+        // console.log(" fetchrooms response headers", response.headers)
         setNextHeaders(response.headers)
-        console.log(" fetchrooms after response axios", axios.defaults.headers.common)
+        // console.log(" fetchrooms after response axios", axios.defaults.headers.common)
         dispatch(gotRooms(response.data));
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))
@@ -46,12 +47,10 @@ export function fetchRooms(values){
 };
 
 export function fetchRoom(slug){
-  console.log("fetchRoom CALL headers", axios.defaults.headers.common)
   return dispatch => {
     axios.get(`/api${slug}`)
       .then(response => {
         setNextHeaders(response.headers)
-        console.log(response.data)
         dispatch(gotRoom(response.data));
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))
@@ -71,6 +70,12 @@ export function updateRoom(room_id, params){
 };
 
 //action creators
+
+export function reinitializeRoom(){
+  return{
+    type: REINITIALIZE_ROOM
+  }
+}
 
 function roomCreated(data) {
   return {

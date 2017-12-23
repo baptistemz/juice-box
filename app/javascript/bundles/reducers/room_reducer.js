@@ -44,7 +44,6 @@ export default function (state = INITIAL_STATE, action) {
     case ROOM_ERROR:{
       return { ...state, errors: action.payload }
     }
-
     default:
       return state;
   }

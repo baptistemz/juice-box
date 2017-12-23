@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import NoSleep from '../utils/nosleep.js';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted } from '../actions/index'
+import PlaylistPreview from '../components/PlaylistPreview'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, reinitializeRoom, fetchPlaylists, fetchPlaylistMusics } from '../actions/index'
 
 
 class Room extends Component {
@@ -60,6 +62,7 @@ class Room extends Component {
     }
   }
   componentDidMount(){
+    if(this.props.isAuthenticated){this.props.fetchPlaylists()}
     const alertOnce = () => {
       if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
         toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 0})
@@ -72,7 +75,11 @@ class Room extends Component {
     const url = this.props.location.pathname
     this.props.fetchRoom(url);
     $('.modal').modal({
-      endingTop: "0%"
+      endingTop: "0%",
+      ready: (modal, trigger) => {if(_.includes(modal[0].id, "playlist") && this.props.isAuthenticated){
+        const id = modal[0].id.split("_")["3"]
+        this.props.fetchPlaylistMusics(id)
+      }}
     });
     $('.button-collapse').sideNav({
        menuWidth: 300, // Default is 300
@@ -82,8 +89,20 @@ class Room extends Component {
      }
    );
   }
+  componentWillUnmount(){
+    this.props.reinitializeRoom(this.props.id)
+  }
+  renderPlaylistModal(status, id){
+    return(
+      <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal app-background modal">
+        <div className="modal-close material-icons">clear</div>
+        <br/>
+        <PlaylistPreview roomId={this.props.id} playlistId={id}/>
+      </div>
+    )
+  }
   render() {
-    const { id, user_id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner } = this.props;
+    const { id, user_id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists } = this.props;
     const noSleep = new NoSleep();
     noSleep.enable();
     return (
@@ -112,6 +131,8 @@ class Room extends Component {
                     roomId={id}
                     onTransitionSpeedChange={this.props.updateRoom}
                     transitionSpeed={this.props.transition_speed}
+                    ownerPlaylists={ownerPlaylists}
+                    publicPlaylists={publicPlaylists}
                   />
                 </div>
               </div>
@@ -130,15 +151,15 @@ class Room extends Component {
             <a className="hide-on-large-only btn-floating btn-large waves-effect waves-light modal-trigger search-modal-btn" href="#search_modal">
               <i className="material-icons">search</i>
             </a>
-            <div id="search_modal" className="app-background modal">
+            <div id="search_modal" className="room-modal app-background modal">
               <div className="col s12">
                 <div className="modal-close material-icons">clear</div>
                 <br/>
                 <SearchBoard roomId={id}/>
               </div>
             </div>
-          </div>
-          <div className="container">
+            {ownerPlaylists.map((playlist) => {return this.renderPlaylistModal("owner", playlist.id)})}
+            {publicPlaylists.map((playlist) => {return this.renderPlaylistModal("public", playlist.id)})}
           </div>
         </div>
       </div>
@@ -147,10 +168,10 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, reinitializeRoom, fetchPlaylists, fetchPlaylistMusics }, dispatch);
 }
 
-function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }}) {
+function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }, playlist:{ ownerPlaylists, publicPlaylists }}) {
   return {
     id,
     user_id,
@@ -160,7 +181,9 @@ function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_spe
     owner_name,
     contributors_number,
     is_owner,
-    isAuthenticated: auth.isAuthenticated
+    isAuthenticated: auth.isAuthenticated,
+    ownerPlaylists,
+    publicPlaylists
   }
 }
 

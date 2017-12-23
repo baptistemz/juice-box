@@ -8,6 +8,10 @@ Rails.application.routes.draw do
       resources :room_musics, only: [:create, :index, :update, :destroy]
       post 'change_order', to: 'rooms#change_order'
     end
+    resources :playlists, only: [:create, :index, :show, :update] do
+      resources :playlist_musics, only: [:create, :index, :update, :destroy]
+      post 'change_order', to: 'playlists#change_order'
+    end
   end
   get '/404' => 'react_app#index'
   get '/*path' => 'react_app#index'

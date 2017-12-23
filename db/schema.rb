@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171216111021) do
+ActiveRecord::Schema.define(version: 20171218215157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "libraries", force: :cascade do |t|
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_libraries_on_user_id"
+  end
+
+  create_table "library_musics", force: :cascade do |t|
+    t.bigint "library_id"
+    t.bigint "music_id"
+    t.string "state"
+    t.integer "waiting_list_position"
+    t.index ["library_id"], name: "index_library_musics_on_library_id"
+    t.index ["music_id"], name: "index_library_musics_on_music_id"
+  end
 
   create_table "musics", force: :cascade do |t|
     t.string "artist"
@@ -21,6 +35,21 @@ ActiveRecord::Schema.define(version: 20171216111021) do
     t.string "whole_name"
     t.string "provider"
     t.string "music_key"
+  end
+
+  create_table "playlist_musics", force: :cascade do |t|
+    t.bigint "playlist_id"
+    t.bigint "music_id"
+    t.integer "waiting_list_position"
+    t.index ["music_id"], name: "index_playlist_musics_on_music_id"
+    t.index ["playlist_id"], name: "index_playlist_musics_on_playlist_id"
+  end
+
+  create_table "playlists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.boolean "public"
+    t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
   create_table "room_musics", force: :cascade do |t|
@@ -72,6 +101,12 @@ ActiveRecord::Schema.define(version: 20171216111021) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "libraries", "users"
+  add_foreign_key "library_musics", "libraries"
+  add_foreign_key "library_musics", "musics"
+  add_foreign_key "playlist_musics", "musics"
+  add_foreign_key "playlist_musics", "playlists"
+  add_foreign_key "playlists", "users"
   add_foreign_key "room_musics", "musics"
   add_foreign_key "room_musics", "rooms"
   add_foreign_key "rooms", "users"

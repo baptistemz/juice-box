@@ -24,7 +24,6 @@ class Signup extends Component{
   render(){
     const { handleSubmit, errorMessages } = this.props;
     const next_path = this.props.location.state ? this.props.location.state.from : null
-    console.log(next_path)
     return (
       <div className="auth-background">
         <a className="pointer" onClick={() => this.props.history.goBack()}>
