@@ -35,6 +35,7 @@ class MusicBoard extends Component {
     const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance, prepareNextSong } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
+    console.log(newMusic)
     updateMusic(roomId, newMusic.id, {state: "playing"})
     // waiting_list.shift()
     let counter = 0;
@@ -75,6 +76,7 @@ class MusicBoard extends Component {
   }
   render(){
     const { deleteMusicFromRoom, roomId, isOwner, music_0, music_1 } = this.props;
+    if(!this.state.items.length && !music_0 && !music_1){ return(<div></div>)}
     return(
       <div className="dark-background padding-20">
         {this.musicPlayer(music_0, 0)}

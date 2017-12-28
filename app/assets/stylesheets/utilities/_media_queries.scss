@@ -17,6 +17,10 @@
   }
   .app-background .room-modal{
     margin: 0;
+    max-height: 100%;
+  }
+  .search-scroll{
+    height: calc(100vh - 126px);
   }
 
   #room_name_form{

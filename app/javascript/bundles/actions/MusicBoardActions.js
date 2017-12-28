@@ -56,6 +56,16 @@ export function deleteMusicFromRoom(room_id, music_id){
   };
 };
 
+export function addPlaylistToRoom(room_id, playlist_id){
+  return dispatch => {
+    axios.post(`/api/rooms/${room_id}/add_playlist`, { playlist_id }).then((response) =>{
+      setNextHeaders(response.headers)
+    }).catch((error)=>{
+      errorHandling(error)
+    })
+  };
+};
+
 //ACTION CREATORS
 
 export function musicEnded(music) {

@@ -42,6 +42,7 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
+    console.log(video, name, hidden)
     return(
       <div>
         <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
@@ -64,7 +65,7 @@ class YoutubePlayer extends Component {
             {inSideMenu ?
               <div></div>
               :
-              <p className="no-margin two-lines-p">{this.props.name}</p>
+              <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""}`}>{this.props.name}</p>
             }
             <a className={`player-controlls ${this.props.inTransition ? "disabled" : ""}`} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
               <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>

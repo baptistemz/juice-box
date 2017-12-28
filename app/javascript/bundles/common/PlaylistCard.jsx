@@ -8,7 +8,9 @@ const PlaylistCard = ({ name, ownerName }) => {
       <div id="equalizer-container">
         <div className="active equalizer" />
       </div>
-      <i className="material-icons">music_list</i>
+      <div className="primary-text">
+        <i className="material-icons">music_list</i>
+      </div>
       <div className="white-text"><h6>{name}</h6> by {ownerName}</div>
     </div>
   );

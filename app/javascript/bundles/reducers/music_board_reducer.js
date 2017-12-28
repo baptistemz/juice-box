@@ -7,7 +7,6 @@ import {
   MUSIC_STARTED,
   VOLUME_BALANCE_CHANGED,
   WAITING_LIST_ORDER_CHANGED,
-  REINITIALIZE_ROOM,
   PREPARE_NEXT_SONG
 } from '../actions/types';
 
@@ -22,14 +21,19 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_ROOM:{
+      console.log("GOOOOT_ROOM in reducer")
       const { musics } = action.payload;
       const playing = _.filter(musics, {state: "playing"})
       const waiting_list = _.filter(musics, {state: "waiting"})
-      const music_1 = playing.length > 1 ? playing[1] : waiting_list[0]
-      return { ...state, waiting_list, volume_balance: 0, music_0: playing[0], music_1, hidden_player: 1 }
+      if( playing.length > 1){
+        waiting_list.unshift(playing[1])
+        return { ...state, waiting_list: waiting_list, music_0: playing[1], music_1: playing[0], volume_balance: 1, hidden_player: 0 }
+      }else{
+        return { ...state, waiting_list, volume_balance: 0, music_0: playing[0], music_1: waiting_list[0], hidden_player: 1 }
+      }
     }
     case MUSIC_ENDED:{
-      return { ...state, [`music_${state.hidden_player}`]: state.waiting_list[0] }
+      return { ...state, [`music_${state.hidden_player}`]: state.waiting_list[0], volume_balance: state.hidden_player === 1 ? 0 : 1 }
     }
     case MUSIC_ADDED:{
       if (action.payload.state === "waiting"){
@@ -62,13 +66,10 @@ export default function (state = INITIAL_STATE, action) {
     }
     case WAITING_LIST_ORDER_CHANGED:{
       const waiting_list = action.payload
-      return { ...state, waiting_list, [`music_${state.hidden_player}`]: action.payload[0]}
+      return { ...state, waiting_list, [`music_${state.hidden_player}`]: waiting_list[0]}
     }
     case PREPARE_NEXT_SONG:{
       return { ...state, [`music_${state.hidden_player}`]: state.waiting_list[0]}
-    }
-    case REINITIALIZE_ROOM:{
-      return INITIAL_STATE;
     }
     default:
       return state;

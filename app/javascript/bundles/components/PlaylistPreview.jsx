@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button } from "../common/index";
-import { addMusicToRoom } from "../actions/index";
+import { addMusicToRoom, addPlaylistToRoom } from "../actions/index";
 
 
 class PlaylistPreview extends Component {
@@ -19,9 +19,12 @@ class PlaylistPreview extends Component {
     }
     this.props.addMusicToRoom(this.props.roomId, params)
   }
+  addList(){
+    console.log("sreadMusics", this.props)
+    this.props.addPlaylistToRoom(this.props.roomId, this.props.playlistId)
+  }
   render(){
     const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics } = this.props;
-    console.log(selectedPlaylistId, playlistId, selectedPlaylistName, selectedPlaylistMusics)
     if(selectedPlaylistId === playlistId){
       return(
         <div className="col s12 text-center">
@@ -30,7 +33,7 @@ class PlaylistPreview extends Component {
             <ul className="collection">
               {selectedPlaylistMusics.map((music) => {
                 return(
-                  <li className="collection-item">
+                  <li key={music.music_key} className="collection-item">
                     <div className="truncate primary-content">{music.whole_name}</div>
                     <a className="secondary-content" onClick={() => this.addMusic(music)}><i className="material-icons">playlist_add</i></a>
                   </li>
@@ -38,7 +41,7 @@ class PlaylistPreview extends Component {
               })}
             </ul>
           </div>
-          <Button icon="shuffle">Spread randomly in the room</Button>
+          <Button clickTrigger={this.addList.bind(this)} icon="shuffle">Add to room (random order)</Button>
         </div>
       )
     }
@@ -49,7 +52,7 @@ class PlaylistPreview extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addMusicToRoom }, dispatch);
+  return bindActionCreators({ addMusicToRoom, addPlaylistToRoom }, dispatch);
 }
 
 function mapStateToProps({ playlist: { selectedPlaylistId, selectedPlaylistMusics, selectedPlaylistName } }) {

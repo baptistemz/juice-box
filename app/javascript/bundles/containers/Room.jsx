@@ -10,7 +10,7 @@ import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
 import PlaylistPreview from '../components/PlaylistPreview'
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, reinitializeRoom, fetchPlaylists, fetchPlaylistMusics } from '../actions/index'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics } from '../actions/index'
 
 
 class Room extends Component {
@@ -28,11 +28,11 @@ class Room extends Component {
         console.log("ADDED RECEIVED", data)
         const user = username || 'stranger';
         const title = whole_name ? whole_name  : `${artist} - ${song}` ;
-        toastr.success(`music added by ${user}`, title);
+        toastr.success(`Music added by ${user}`, title);
         this.props.musicAdded(data.music);
       }
-        break;
-      case 'updated':
+      break;
+      case 'updated': {
         console.log('UPDATED RECEIVED', data.music);
         if(data.music.state === "archived"){
           this.props.musicEnded(data.music);
@@ -40,15 +40,24 @@ class Room extends Component {
         if(data.music.state === "playing"){
           this.props.musicStarted(data.music);
         }
-        break;
-      case 'deleted':
+      }
+      break;
+      case 'deleted': {
         this.props.musicDeleted(data);
         console.log('deleted received');
-        break;
-      case 'sorted':
-      console.log('sorted received', data);
+      }
+      break;
+      case 'sorted':{
+        console.log('sorted received', data);
         this.props.waitingListOrderChanged(data.musics);
-        break;
+      }
+      break;
+      case 'added_playlist':{
+        console.log('added_playlist received', data);
+        toastr.success(`Playlist added by ${data.user}`, data.playlist);
+        this.props.waitingListOrderChanged(data.musics);
+      }
+      break;
     }
   }
   componentWillMount(){
@@ -88,9 +97,6 @@ class Room extends Component {
        draggable: false, // Choose whether you can drag to open on touch screens,
      }
    );
-  }
-  componentWillUnmount(){
-    this.props.reinitializeRoom(this.props.id)
   }
   renderPlaylistModal(status, id){
     return(
@@ -168,7 +174,7 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, reinitializeRoom, fetchPlaylists, fetchPlaylistMusics }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics }, dispatch);
 }
 
 function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }, playlist:{ ownerPlaylists, publicPlaylists }}) {

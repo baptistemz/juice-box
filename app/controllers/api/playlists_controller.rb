@@ -17,7 +17,7 @@ module Api
     end
 
     def update
-      @playlist = Playlist.find(params[:id])
+      @playlist = current_api_user.playlists.find(params[:id])
       if @playlist.update(playlist_params)
         render partial: "api/playlists/playlist.json.jbuilder", locals: {playlist: @playlist, is_owner: @is_owner}
       else
@@ -26,7 +26,7 @@ module Api
     end
 
     def show
-      @playlist = Playlist.friendly.find(params[:id])
+      @playlist = Playlist.find(params[:id])
       @is_owner = current_api_user ? current_api_user.id == @playlist.user_id : false
       render :show
     end

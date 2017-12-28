@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :rooms, only: [:create, :index, :show, :update] do
       resources :room_musics, only: [:create, :index, :update, :destroy]
       post 'change_order', to: 'rooms#change_order'
+      post 'add_playlist', to: 'rooms#add_playlist'
     end
     resources :playlists, only: [:create, :index, :show, :update] do
       resources :playlist_musics, only: [:create, :index, :update, :destroy]

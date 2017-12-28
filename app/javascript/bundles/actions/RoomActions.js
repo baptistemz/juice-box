@@ -8,8 +8,7 @@ import {
   ROOM_UPDATED,
   ROOM_ERROR,
   GOT_ROOM_LIST,
-  GOT_ROOM,
-  REINITIALIZE_ROOM
+  GOT_ROOM
 } from './types';
 import slugify from "../utils/slugify";
 
@@ -69,13 +68,22 @@ export function updateRoom(room_id, params){
   };
 };
 
+// export function reinitializeRoom(room_id){
+//   return dispatch => {
+//     console.log("IN REINITIALIZE")
+//     axios.get(`/api/rooms/${room_id}/fix_music_states`).then((response) =>{
+//       console.log("IN REINITIALIZE RESPONSE")
+//       setNextHeaders(response.headers)
+//       dispatch({ type: REINITIALIZE_ROOM });
+//     }).catch((error)=>{
+//       errorHandling(error)
+//     })
+//   }
+// }
+
+
 //action creators
 
-export function reinitializeRoom(){
-  return{
-    type: REINITIALIZE_ROOM
-  }
-}
 
 function roomCreated(data) {
   return {
