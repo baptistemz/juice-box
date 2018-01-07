@@ -12,6 +12,7 @@ import PlaylistReducer from './playlist_reducer';
 
 const config = {
   key: 'root',
+  blacklist: ['music_board', 'room'],
   storage
 }
 

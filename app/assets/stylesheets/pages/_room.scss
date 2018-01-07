@@ -8,6 +8,11 @@
   }
 }
 
+.input-field input[type=search]:focus{
+  padding-left: 50px;
+  width: calc(100% - 50px);
+}
+
 .player-controlls{
   color: $secondary-color;
   cursor: pointer;

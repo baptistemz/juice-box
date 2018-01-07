@@ -9,8 +9,7 @@ import {
   WAITING_LIST_ORDER_CHANGED,
   VOLUME_BALANCE_CHANGED,
   MUSIC_STARTED,
-  MUSIC_DELETED,
-  PREPARE_NEXT_SONG
+  MUSIC_DELETED
 } from './types';
 
 export function addMusicToRoom(room_id, params){
@@ -100,12 +99,6 @@ export function changeVolumeBalance(music_number, amount) {
   return {
     type: VOLUME_BALANCE_CHANGED,
     payload: { music_number, amount }
-  };
-}
-
-export function prepareNextSong() {
-  return {
-    type: PREPARE_NEXT_SONG
   };
 }
 

@@ -65,12 +65,6 @@ module Api
       render :show
     end
 
-    def close_channels
-      RoomMusic.skip_callback(:create, :after, :broadcast_added_music)
-      RoomMusic.skip_callback(:update, :after, :broadcast_updated_music)
-      RoomMusic.skip_callback(:delete, :after, :broadcast_deleted_music)
-    end
-
     # def increment_contributors_number
     #   @room = Room.friendly.find(params[:room_id])
     #   @room.update(contributors_number: @room.contributors_number + 1)

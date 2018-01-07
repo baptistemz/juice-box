@@ -8,7 +8,8 @@ import {
   ROOM_UPDATED,
   ROOM_ERROR,
   GOT_ROOM_LIST,
-  GOT_ROOM
+  GOT_ROOM,
+  ROOM_STARTED
 } from './types';
 import slugify from "../utils/slugify";
 
@@ -84,6 +85,13 @@ export function updateRoom(room_id, params){
 
 //action creators
 
+
+// export function startRoom() {
+//   console.log("START ROOM")
+//   return {
+//     type: ROOM_STARTED
+//   };
+// }
 
 function roomCreated(data) {
   return {

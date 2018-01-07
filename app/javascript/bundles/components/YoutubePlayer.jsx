@@ -42,7 +42,6 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
-    console.log(video, name, hidden)
     return(
       <div>
         <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
@@ -58,7 +57,7 @@ class YoutubePlayer extends Component {
             onPlay={() => this.onPlay()}
             onProgress={(status) => this.onProgress(status)}
             volume={this.state.volume}
-            config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }, preload: true  } }}
+            config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }  } }}
             />
 
           <div className="margin-left-10 space-around direction-column">

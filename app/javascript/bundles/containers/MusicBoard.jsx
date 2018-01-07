@@ -7,7 +7,7 @@ import { toastr } from 'react-redux-toastr';
 import YoutubePlayer from '../components/YoutubePlayer';
 import MusicWaitingList from '../components/MusicWaitingList';
 import SimulatedPlayer from '../components/SimulatedPlayer';
-import { updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, prepareNextSong } from "../actions/index"
+import { updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom } from "../actions/index"
 
 
 class MusicBoard extends Component {
@@ -32,7 +32,7 @@ class MusicBoard extends Component {
   }
   transition(music_number){
     this.setState({ inTransition: true });
-    const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance, prepareNextSong } = this.props;
+    const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
     console.log(newMusic)
@@ -45,7 +45,6 @@ class MusicBoard extends Component {
         counter += 1;
       } else {
         updateMusic(roomId, endingMusic.id , {state: "archived"})
-        // prepareNextSong(this.state.items)
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
       }
@@ -96,7 +95,7 @@ class MusicBoard extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, prepareNextSong }, dispatch);
+  return bindActionCreators({ updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom }, dispatch);
 }
 
 function mapStateToProps({ music_board: { waiting_list, music_0, music_1, volume_balance, hidden_player }}) {

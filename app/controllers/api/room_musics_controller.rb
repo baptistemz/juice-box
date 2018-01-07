@@ -27,8 +27,21 @@ module Api
     end
 
     def update
-      Rails.logger.debug("room_music_params: #{room_music_params}")
       @room = Room.find(params[:room_id])
+      @playing = @room.room_musics.where(state: "playing")
+      if room_music_params["state"] == "playing" && @playing.any?
+        RoomMusic.skip_callback(:update, :after, :broadcast_updated_music)
+        Rails.logger.debug("room_music_params['state']: #{room_music_params["state"]}")
+        Rails.logger.debug("@playing.first: #{@playing.first}")
+        @ending = @room.room_musics.where(state: "ending")
+        if @ending.any?
+          Rails.logger.debug("@ending.length: #{@ending.length}")
+          @ending.each{|e| e.update(state: "archived")}
+          Rails.logger.debug("@ending.length: #{@ending.length}")
+        end
+        @playing.first.update(state: "ending")
+        RoomMusic.set_callback(:update, :after, :broadcast_updated_music)
+      end
       @room_music = @room.room_musics.find(params[:id])
       if @room_music.update(room_music_params)
         render partial: "api/room_musics/room_music.json.jbuilder", locals: {room_music: @room_music}

@@ -60,14 +60,24 @@ class Room extends Component {
       break;
     }
   }
-  componentWillMount(){
+  connectChannel(){
     if (typeof App !== 'undefined') {
+      console.log("connecting to", this.props.id)
       App.room = App.cable.subscriptions.create(
         { channel: 'RoomChannel', room_id: this.props.id }, {
-        connected: function () { console.log("channel connected") },
-        disconnected: function() { console.log ("channel disconnected") },
-        received: ((data) => this.receiveRoomData(data))
-      });
+          connected: function () { console.log("channel connected") },
+          disconnected: function() { console.log ("channel disconnected") },
+          received: ((data) => this.receiveRoomData(data))
+        }
+      );
+    }
+  }
+  componentWillMount(){
+    this.connectChannel()
+  }
+  componentDidUpdate(previousProps){
+    if (previousProps.id !== this.props.id) {
+      this.connectChannel()
     }
   }
   componentDidMount(){
@@ -78,8 +88,12 @@ class Room extends Component {
         this.setState({ alerted: true });
       }
     }
-    $(window).focus(function(e) {
-      alertOnce()
+    let interval_id = 1;
+    $(window).focus(function() {
+      if (interval_id === 0){alertOnce()}
+    });
+    $(window).blur(function() {
+      interval_id = 0;
     });
     const url = this.props.location.pathname
     this.props.fetchRoom(url);
@@ -102,6 +116,7 @@ class Room extends Component {
     return(
       <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal app-background modal">
         <div className="modal-close material-icons">clear</div>
+        <br/>
         <br/>
         <PlaylistPreview roomId={this.props.id} playlistId={id}/>
       </div>
