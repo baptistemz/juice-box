@@ -1,6 +1,7 @@
 .app-background {
   background-color: $soft-background;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   & h1{
     margin: 0;
     font-size: 2rem;

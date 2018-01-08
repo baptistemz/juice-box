@@ -21,7 +21,8 @@ class Room < ApplicationRecord
     ActionCable.server.broadcast(
       self.id,
       {action: "added_playlist", musics: ActiveSupport::JSON.decode(render_room_musics(room_musics)),
-      playlist: playlist.name,
+      name: playlist.name,
+      id: playlist.id,
       user: user.username}
     )
   end

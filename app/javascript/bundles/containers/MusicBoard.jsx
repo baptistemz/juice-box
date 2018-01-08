@@ -86,7 +86,9 @@ class MusicBoard extends Component {
           list={this.state.items}
           roomId={roomId}
           onSortEnd={this.onSortEnd}
+          useWindowAsScrollContainer={true}
           lockAxis="y"
+          pressDelay={400}
           shouldCancelStart={(e) => {if (['a', 'i'].indexOf(e.target.tagName.toLowerCase()) !== -1){return true}}}
         />
       </div>

@@ -16,7 +16,7 @@ const INITIAL_STATE = {
     owner_name: "",
     transition_speed: 10,
     user_id: null,
-    is_owner: false,
+    is_owner: true,
     ownerRoomList: [],
     contributorRoomList: []
   };

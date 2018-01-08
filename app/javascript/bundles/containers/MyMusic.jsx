@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MyMusicSettings from '../components/MyMusicSettings';
 import YoutubePlayer from '../components/YoutubePlayer';
+import {Loader} from '../common/index'
 import SearchBoard from './SearchBoard';
 
 class MyMusic extends Component {
@@ -41,6 +42,7 @@ class MyMusic extends Component {
           </div>
         </div>
         <hr/>
+        <Loader/>
         {/*
         <div className="row no-margin">
           <div className="col s12">

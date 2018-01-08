@@ -44,7 +44,7 @@ class YoutubePlayer extends Component {
     const { video, name, hidden, inSideMenu } = this.props;
     return(
       <div>
-        <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
+        <div id="player_group" className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
           <ReactPlayer
             url={`https://www.youtube.com/watch?v=${video.music_key}`}
             playing={this.state.playing}

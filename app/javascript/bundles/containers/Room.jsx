@@ -17,7 +17,8 @@ class Room extends Component {
   constructor(){
     super();
     this.state = {
-      alerted: false
+      alerted: false,
+      addedPlaylists: []
     }
   }
   receiveRoomData(data) {
@@ -54,7 +55,8 @@ class Room extends Component {
       break;
       case 'added_playlist':{
         console.log('added_playlist received', data);
-        toastr.success(`Playlist added by ${data.user}`, data.playlist);
+        this.setState({ addedPlaylists: [...this.state.addedPlaylists, data]})
+        toastr.success(`Playlist added by ${data.user}`, data.name);
         this.props.waitingListOrderChanged(data.musics);
       }
       break;
@@ -113,18 +115,20 @@ class Room extends Component {
    );
   }
   renderPlaylistModal(status, id){
+    const added = !_.isUndefined(_.find(this.state.addedPlaylists, ['id', id]))
     return(
-      <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal app-background modal">
-        <div className="modal-close material-icons">clear</div>
+      <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal modal">
+        <div className="modal-close material-icons margin-5 font-30">clear</div>
         <br/>
-        <br/>
-        <PlaylistPreview roomId={this.props.id} playlistId={id}/>
+        <PlaylistPreview roomId={this.props.id} playlistId={id} added={added}/>
       </div>
     )
   }
   render() {
     const { id, user_id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists } = this.props;
     const noSleep = new NoSleep();
+    console.log("is_owner", is_owner)
+    console.log("isAuthenticated", isAuthenticated)
     noSleep.enable();
     return (
       <div>
@@ -147,7 +151,7 @@ class Room extends Component {
                   </i>
                 </a>
                 <div id="slide-out" className="primary-background side-nav">
-                  <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons">clear</div>
+                  <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons margin-5 font-30">clear</div>
                   <RoomSettings
                     roomId={id}
                     onTransitionSpeedChange={this.props.updateRoom}
@@ -172,9 +176,10 @@ class Room extends Component {
             <a className="hide-on-large-only btn-floating btn-large waves-effect waves-light modal-trigger search-modal-btn" href="#search_modal">
               <i className="material-icons">search</i>
             </a>
-            <div id="search_modal" className="room-modal app-background modal">
+            <div id="search_modal" className="room-modal modal">
               <div className="col s12">
                 <div className="modal-close material-icons">clear</div>
+                <br/>
                 <br/>
                 <SearchBoard roomId={id}/>
               </div>

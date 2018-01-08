@@ -1,13 +1,19 @@
 import React from 'react';
+var ReactLoader = require('react-loaders').Loader;
 
-const Loader = (props) => {
+const Loader = ({ color, style }) => {
   return (
-    <div className="loader-container" style = { props.background ? {backgroundColor: "white", position: "fixed", right: 0, left: 0, bottom: 0, top: 0, zIndex: 50} : {}}>
-      <span className="loader">
-        <span className="loader-inner"></span>
-      </span>
+    <div className="spinner-container">
+      <div class="spinner" style={style}>
+        <div class="rect1" style={{ backgroundColor: color }}></div>
+        <div class="rect2" style={{ backgroundColor: color }}></div>
+        <div class="rect3" style={{ backgroundColor: color }}></div>
+        <div class="rect4" style={{ backgroundColor: color }}></div>
+        <div class="rect5" style={{ backgroundColor: color }}></div>
+      </div>
     </div>
-  );
-};
 
-export { Loader };
+  )
+}
+
+export {Loader}

@@ -3,7 +3,7 @@ import { Button } from '../common/index';
 
 const SimulatedPlayer = ({ hidden, buttonsDisabled, name }) => {
   return(
-    <div className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
+    <div id="player_group" className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
       <div className="simulated-player">
         <div id="equalizer-container" className="margin-right-20">
           <div className="active equalizer" />

@@ -15,10 +15,6 @@
     display: flex;
     font-size: 0.96rem;
   }
-  .app-background .room-modal{
-    margin: 0;
-    max-height: 100%;
-  }
   .search-scroll{
     height: calc(100vh - 126px);
   }
@@ -114,7 +110,7 @@
     height: calc(100vh - 205px);
   }
   .playlist-modal-list{
-    height: calc(100vh - 218px);
+    height: calc(100vh - 238px);
     margin-bottom: 10px;
   }
   .login-btn-group{

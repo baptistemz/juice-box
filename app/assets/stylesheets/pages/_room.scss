@@ -105,3 +105,12 @@ input[type="range"]::-moz-range-thumb{
 input[type=range] + .thumb.active {
   display: none;
 }
+
+#player_group:not(.hidden){
+  border-bottom: 1px solid #e62117;
+  padding-bottom: 5px;
+  border-radius: 0;
+}
+.collection{
+  margin-top: -3px;
+}
