@@ -13,7 +13,7 @@ import { updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFr
 class MusicBoard extends Component {
   constructor(props){
     super(props);
-    this.state = { items: props.waiting_list, inTransition: false }
+    this.state = { items: props.waiting_list, inTransition: false, playing: null }
   }
   onSortEnd = ({oldIndex, newIndex}) => {
     if (this.props.isOwner){
@@ -35,9 +35,7 @@ class MusicBoard extends Component {
     const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
-    console.log(newMusic)
     updateMusic(roomId, newMusic.id, {state: "playing"})
-    // waiting_list.shift()
     let counter = 0;
     const volumeTransition = function () {
       if (counter < transitionSpeed) {
@@ -51,10 +49,19 @@ class MusicBoard extends Component {
     };
     const volumeTransitionInterval = setInterval(volumeTransition.bind(this), 50*transitionSpeed);
   }
+  onPlay(){
+    this.setState({ playing: true })
+  }
+  onPause(){
+    this.setState({ playing: false })
+  }
   musicPlayer(music, music_number){
+    console.log("music", music)
     const { hidden_player, transitionSpeed, volume_balance, music_0, music_1 } = this.props;
     if(!music){
-      return <div />
+      return(
+        <div/>
+      )
     }
     if(this.props.isOwner){
       return <YoutubePlayer
@@ -66,6 +73,9 @@ class MusicBoard extends Component {
         volumeShare={music_number === 0 ? 1 - volume_balance : volume_balance}
         nextVideoButton={this.transition.bind(this, music_number)}
         nextVideoAuto={this.transition.bind(this, music_number === 1 ? 0 : 1)}
+        onPlay={this.onPlay.bind(this)}
+        onPause={this.onPause.bind(this)}
+        roomPlaying={this.state.playing}
         />
     }
     return <SimulatedPlayer
@@ -75,7 +85,7 @@ class MusicBoard extends Component {
   }
   render(){
     const { deleteMusicFromRoom, roomId, isOwner, music_0, music_1 } = this.props;
-    if(!this.state.items.length && !music_0 && !music_1){ return(<div></div>)}
+    if(!this.state.items.length && !music_0 && !music_1){ return(<div/>)}
     return(
       <div className="dark-background padding-20">
         {this.musicPlayer(music_0, 0)}

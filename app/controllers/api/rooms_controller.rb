@@ -13,6 +13,7 @@ module Api
 
     def index
       @contributor_rooms = []
+      current_api_user.contributions.each{|c| @contributor_rooms << c.room}
       @owner_rooms = current_api_user.rooms
       render :index
     end

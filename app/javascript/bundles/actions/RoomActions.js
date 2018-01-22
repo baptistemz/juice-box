@@ -9,7 +9,10 @@ import {
   ROOM_ERROR,
   GOT_ROOM_LIST,
   GOT_ROOM,
-  ROOM_STARTED
+  ROOM_STARTED,
+  USER_CONNECTED,
+  USER_DISCONNECTED,
+  CONNECTED_STRANGER_NUMBER_CHANGED
 } from './types';
 import slugify from "../utils/slugify";
 
@@ -86,12 +89,26 @@ export function updateRoom(room_id, params){
 //action creators
 
 
-// export function startRoom() {
-//   console.log("START ROOM")
-//   return {
-//     type: ROOM_STARTED
-//   };
-// }
+export function connectUserToRoom(user) {
+  return {
+    type: USER_CONNECTED,
+    payload: user
+  };
+}
+
+export function disconnectUserFromRoom(user) {
+  return {
+    type: USER_DISCONNECTED,
+    payload: user
+  };
+}
+
+export function connectedStrangerNumberChanged(number) {
+  return {
+    type: CONNECTED_STRANGER_NUMBER_CHANGED,
+    payload: number
+  };
+}
 
 function roomCreated(data) {
   return {

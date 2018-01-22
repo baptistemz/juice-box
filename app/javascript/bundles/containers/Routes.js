@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
+import { CSSTransitionGroup } from 'react-transition-group';
 import { bindActionCreators } from 'redux';
 import ReduxToastr from 'react-redux-toastr';
 import PrivateRoute from './PrivateRoute';

@@ -1,7 +1,8 @@
 .my-music-side{
   position: absolute;
-  width: 220px;
-}
-.my-music-content-container{
-  // overflow-y: scroll;
+  width: 140px;
+  & hr {
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
 }

@@ -2,9 +2,11 @@
   background-color: $soft-background;
   padding-top: 10px;
   overflow: hidden;
-  max-height: 90%;
+  max-height: 95%;
   height: 100%;
-  margin: 4% auto;
+  max-width: 90%;
+  width: 100%;
+  margin: 2% 5%;
   .modal-close{
     position: absolute;
     top: 10px;

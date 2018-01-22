@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :rooms, dependent: :destroy
   has_many :playlists, dependent: :destroy
+  has_many :contributions, dependent: :destroy
+  has_many :connections, dependent: :destroy
   has_one :library, dependent: :destroy
   has_many :room_musics, dependent: :nullify
   mount_base64_uploader :profile_picture, ProfilePictureUploader

@@ -9,8 +9,9 @@ import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
 import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
+import RoomUsers from '../components/RoomUsers';
 import PlaylistPreview from '../components/PlaylistPreview'
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics } from '../actions/index'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged } from '../actions/index'
 
 
 class Room extends Component {
@@ -60,13 +61,28 @@ class Room extends Component {
         this.props.waitingListOrderChanged(data.musics);
       }
       break;
+      case 'new_connection':{
+        console.log('new_connection received', data);
+        this.props.connectUserToRoom(data.user)
+      }
+      break;
+      case 'deleted_connection':{
+        console.log('deleted_connection received', data);
+        this.props.disconnectUserFromRoom(data.user)
+      }
+      break;
+      case 'connected_stranger_number_changed':{
+        console.log('connected_stranger_number_changed received', data);
+        this.props.connectedStrangerNumberChanged(data.number)
+      }
+      break;
     }
   }
   connectChannel(){
-    if (typeof App !== 'undefined') {
+    if (typeof App !== 'undefined' && this.props.id) {
       console.log("connecting to", this.props.id)
       App.room = App.cable.subscriptions.create(
-        { channel: 'RoomChannel', room_id: this.props.id }, {
+        { channel: 'RoomChannel', room_id: this.props.id, user_id: this.props.user_id }, {
           connected: function () { console.log("channel connected") },
           disconnected: function() { console.log ("channel disconnected") },
           received: ((data) => this.receiveRoomData(data))
@@ -74,8 +90,17 @@ class Room extends Component {
       );
     }
   }
+  disconnectChannel(){
+    if (typeof App !== 'undefined') {
+      console.log("disconnecting from", this.props.id)
+      App.cable.subscriptions.remove(App.room);
+    }
+  }
   componentWillMount(){
     this.connectChannel()
+  }
+  componentWillUnmount(){
+    this.disconnectChannel()
   }
   componentDidUpdate(previousProps){
     if (previousProps.id !== this.props.id) {
@@ -125,10 +150,12 @@ class Room extends Component {
     )
   }
   render() {
-    const { id, user_id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists } = this.props;
+    console.log("this.props.connected_stranger_number", this.props.connected_stranger_number)
+    console.log("this.props.connectedUsers", this.props.connectedUsers)
+    console.log("this.props.connectedUsers.length + this.props.connected_stranger_number", this.props.connectedUsers.length + this.props.connected_stranger_number)
+    console.log("THIS.PROPS", this.props.location.pathname)
+    const { id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists, connectedUsers, connected_stranger_number } = this.props;
     const noSleep = new NoSleep();
-    console.log("is_owner", is_owner)
-    console.log("isAuthenticated", isAuthenticated)
     noSleep.enable();
     return (
       <div>
@@ -143,27 +170,43 @@ class Room extends Component {
               <h1>{name}</h1>
               <p className="no-margin">by {owner_name}</p>
             </div>
-            {is_owner && isAuthenticated ?
+            <div className="room-nav">
               <div>
-                <a href="#" data-activates="slide-out" className="button-collapse">
-                  <i className="primary-text margin-right-10 material-icons">
-                    settings
-                  </i>
+                <a href="#" data-activates="slide-out-users" className="button-collapse">
+                  <div className="contributors-icon secondary-text"><i className="material-icons">person</i>{connectedUsers.length + connected_stranger_number}</div>
                 </a>
-                <div id="slide-out" className="primary-background side-nav">
+                <div id="slide-out-users" className="primary-background side-nav">
                   <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons margin-5 font-30">clear</div>
-                  <RoomSettings
+                  <RoomUsers
                     roomId={id}
-                    onTransitionSpeedChange={this.props.updateRoom}
-                    transitionSpeed={this.props.transition_speed}
-                    ownerPlaylists={ownerPlaylists}
-                    publicPlaylists={publicPlaylists}
-                  />
+                    connectedUsers={connectedUsers}
+                    connectedStrangerNumber={connected_stranger_number}
+                    roomUrl={this.props.location.pathname}
+                    />
                 </div>
               </div>
-              :
-              <div/>
-            }
+              {is_owner && isAuthenticated ?
+                <div>
+                  <a href="#" data-activates="slide-out-settings" className="button-collapse">
+                    <i className="secondary-text material-icons">
+                      settings
+                    </i>
+                  </a>
+                  <div id="slide-out-settings" className="primary-background side-nav">
+                    <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons margin-5 font-30">clear</div>
+                    <RoomSettings
+                      roomId={id}
+                      onTransitionSpeedChange={this.props.updateRoom}
+                      transitionSpeed={this.props.transition_speed}
+                      ownerPlaylists={ownerPlaylists}
+                      publicPlaylists={publicPlaylists}
+                      />
+                  </div>
+                </div>
+                :
+                ""
+              }
+            </div>
           </div>
           <hr/>
           <div className="row no-margin">
@@ -194,13 +237,13 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged }, dispatch);
 }
 
-function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner }, playlist:{ ownerPlaylists, publicPlaylists }}) {
+function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner, connectedUsers, connected_stranger_number }, playlist:{ ownerPlaylists, publicPlaylists }}) {
   return {
     id,
-    user_id,
+    user_id: auth.id,
     slug,
     name,
     transition_speed,
@@ -209,7 +252,9 @@ function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_spe
     is_owner,
     isAuthenticated: auth.isAuthenticated,
     ownerPlaylists,
-    publicPlaylists
+    publicPlaylists,
+    connectedUsers,
+    connected_stranger_number
   }
 }
 

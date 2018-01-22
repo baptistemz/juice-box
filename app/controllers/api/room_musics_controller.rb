@@ -6,6 +6,9 @@ module Api
       @room = Room.find(params[:room_id])
       state = @room.room_musics.where(state: "playing").any? ? "waiting" : "playing"
       @user_id = current_api_user ? current_api_user.id : nil
+      if @user_id && @user_id != @room.user_id
+        @room.contributions.find_or_create_by(user_id: @user_id)
+      end
       @music = Music.where(
         artist: params[:artist],
         song: params[:song],

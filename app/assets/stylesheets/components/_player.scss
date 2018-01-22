@@ -1,0 +1,61 @@
+
+.simulated-player{
+  display: flex;
+  flex-direction: row;
+  & #equalizer-container{
+    display: block;
+    position: relative;
+    z-index: 10;
+    padding: 34px 46px;
+    background-image: url("/transparent_disc.png");
+    background-position: center;
+    background-size: 60px;
+    background-repeat: no-repeat;
+    background-color: #DEDEDE;
+    border-radius: 3px;
+    & .equalizer {
+      margin-bottom: 24px;
+      margin-left: 11px;
+    }
+  }
+}
+
+.player-controlls{
+  color: $secondary-color;
+  cursor: pointer;
+  & i{
+    font-size: 40px;
+  }
+  &:hover{
+    color: saturate( $secondary-color, 20% );
+  }
+}
+#player_group{
+  &:not(.hidden){
+    padding-bottom: 5px;
+    border-radius: 0;
+    & .player-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  &:not(.side-player):not(.hidden){
+    display: flex;
+    border-bottom: 1px solid $primary-color;
+    .two-lines-p{
+      padding-right: 45px;
+    }
+    & .player-content{
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  &.side-player{
+    .player-controlls{
+
+    }
+  }
+}

@@ -20,20 +20,31 @@ class YoutubePlayer extends Component {
     if(this.props.video.state === "playing" && previousProps.video.state === "waiting"){
       this.setState({ playing: true })
     }
+    if(previousProps.roomPlaying === null && this.props.roomPlaying === true && !this.state.playing){
+      // we are in the hidden player and the room is starting playing for the first time since last refresh
+      this.setState({playing: true})
+    }
   }
   onProgress(status){
     const timeForTransition = this.state.duration - (this.props.transitionSpeed + 5);
     if (status.playedSeconds >= timeForTransition && !this.props.inTransition) {
       this.props.nextVideoAuto()
     }
+    if(status.playedSeconds > 3 && !this.props.inTransition && this.props.hidden){
+      //This player has started to work around an autoplay block by youtube, it should now stop
+      console.log("STOP PLAYER STARTED FOR AUTOPLAY WORKAROUND")
+      this.setState({ playing: false })
+    }
   }
   onDuration(duration){
     this.setState({ duration })
   }
   onPause(){
+    this.props.onPause();
     this.setState({ playing: false });
   }
   onPlay(){
+    this.props.onPlay();
     this.setState({ playing: true });
   }
   nextVideo(){
@@ -42,49 +53,42 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
+    console.log("video", video)
     return(
       <div>
-        <div id="player_group" className={`dark-background direction-row ${hidden ? "hidden" : ""}`}>
-          <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${video.music_key}`}
-            playing={this.state.playing}
-            onDuration={(duration) => this.onDuration(duration)}
-            playsinline
-            controls={false}
-            width={128}
-            height={78}
-            onPause={() => this.onPause()}
-            onPlay={() => this.onPlay()}
-            onProgress={(status) => this.onProgress(status)}
-            volume={this.state.volume}
-            config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }  } }}
-            />
-
-          <div className="margin-left-10 space-around direction-column">
-            {inSideMenu ?
-              <div></div>
-              :
-              <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""}`}>{this.props.name}</p>
-            }
-            <a className={`player-controlls ${this.props.inTransition ? "disabled" : ""}`} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
-              <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
-            </a>
-          </div>
-        </div>
-        {inSideMenu ?
+        {video ?
           <div>
-            <br/>
-            <p className="truncate no-margin">{this.props.name}</p>
-            <br/>
-            <p className="truncate no-margin">playing in :</p>
-            <br/>
+            <div id="player_group" className={`dark-background ${inSideMenu ? "side-player" : ""} ${hidden ? "hidden" : ""}`}>
+              <ReactPlayer
+                url={`https://www.youtube.com/watch?v=${video.music_key}`}
+                playing={this.state.playing}
+                onDuration={(duration) => this.onDuration(duration)}
+                playsinline
+                controls={false}
+                width={140}
+                height={78}
+                onPause={() => this.onPause()}
+                onPlay={() => this.onPlay()}
+                onProgress={(status) => this.onProgress(status)}
+                volume={this.state.volume}
+                config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }  } }}
+                />
+
+              <div className="player-content">
+                <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "hidden" : ""}`}>{this.props.name}</p>
+                <a className={`player-controlls ${this.props.inTransition ? "disabled" : ""}`} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
+                  <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
+                </a>
+              </div>
+            </div>
+            <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
+              <i className="material-icons">skip_next</i>
+            </a>
+            <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "" : "hidden"}`}>{this.props.name}</p>
           </div>
-          :
-          <div></div>
+        :
+          <div/>
         }
-        <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
-          <i className="material-icons">skip_next</i>
-        </a>
       </div>
     )
   }

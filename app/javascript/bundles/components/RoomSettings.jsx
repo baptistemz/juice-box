@@ -43,7 +43,7 @@ class RoomSettings extends Component {
             <input
               id="transition_speed"
               onChange={(e) => this.onRangeChange(e.target.value) }
-              type="range" min="0" max="30" value={transitionSpeed} />
+              type="range" min="1" max="30" value={transitionSpeed} />
             <span>{transitionSpeed} seconds</span>
           </p>
         </form>

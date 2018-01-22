@@ -5,7 +5,6 @@ import SortableListItem from '../common/SortableListItem';
 
 class MusicWaitingList extends Component {
   render() {
-    console.log("this.props.list", this.props.list)
     const listItems = this.props.list.map((music, i) => {
       return (
         <SortableListItem

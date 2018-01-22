@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171218215157) do
+ActiveRecord::Schema.define(version: 20180118231449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "connections", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_connections_on_room_id"
+    t.index ["user_id"], name: "index_connections_on_user_id"
+  end
+
+  create_table "contributions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_contributions_on_room_id"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
+  end
 
   create_table "libraries", force: :cascade do |t|
     t.bigint "user_id"
@@ -70,6 +88,7 @@ ActiveRecord::Schema.define(version: 20171218215157) do
     t.integer "contributors_number"
     t.bigint "user_id"
     t.integer "transition_speed", default: 10
+    t.integer "connected_stranger_number", default: 0
     t.index ["user_id"], name: "index_rooms_on_user_id"
   end
 
@@ -101,6 +120,10 @@ ActiveRecord::Schema.define(version: 20171218215157) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "connections", "rooms"
+  add_foreign_key "connections", "users"
+  add_foreign_key "contributions", "rooms"
+  add_foreign_key "contributions", "users"
   add_foreign_key "libraries", "users"
   add_foreign_key "library_musics", "libraries"
   add_foreign_key "library_musics", "musics"

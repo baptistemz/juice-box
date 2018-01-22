@@ -3,6 +3,9 @@ input:-webkit-autofill {
     -webkit-text-fill-color: white !important;
 }
 
+input#search{
+  border-bottom-color: #db2b57;
+}
 input#search:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
     -webkit-text-fill-color: black !important;

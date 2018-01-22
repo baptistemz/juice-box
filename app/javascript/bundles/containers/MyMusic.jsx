@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import MyMusicSettings from '../components/MyMusicSettings';
 import YoutubePlayer from '../components/YoutubePlayer';
-import {Loader} from '../common/index'
+import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
+import { fetchLibrary } from '../actions/index';
 
 class MyMusic extends Component {
   constructor(props){
@@ -10,6 +11,20 @@ class MyMusic extends Component {
     this.state = { width: '0'}
   }
   componentDidMount(){
+    const alertOnce = () => {
+      if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
+        toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 0})
+        this.setState({ alerted: true });
+      }
+    }
+    let interval_id = 1;
+    $(window).focus(function() {
+      if (interval_id === 0){alertOnce()}
+    });
+    $(window).blur(function() {
+      interval_id = 0;
+    });
+    this.props.fetchLibrary()
     $('.button-collapse').sideNav({
        menuWidth: 300, // Default is 300
        edge: 'right', // Choose the horizontal origin
@@ -42,31 +57,30 @@ class MyMusic extends Component {
           </div>
         </div>
         <hr/>
-        <Loader/>
-        {/*
         <div className="row no-margin">
           <div className="col s12">
             <div className="row no-margin dark-background">
               <div className="col s12">
                 <div className="my-music-side">
-                  <div className="padding-top-10">
-                    <YoutubePlayer
-                      inSideMenu={this.state.width > "600"}
-                      video={{
-                        id: 630,
-                        state: "waiting",
-                        user_id: 1,
-                        provider: "youtube",
-                        music_key: "NF-kLy44Hls",
-                        whole_name: "Daft Punk - Lose Yourself to Dance (Official Version)",
-                        artist: "Daft Punk",
-                        song: "Lose Yourself to Dance (Official Version)",
-                        username: "emile"
-                      }}
-                      />
-                  </div>
+                  <p style={{ margin: "8px 0" }}>Playlist</p>
+                  <YoutubePlayer
+                    inSideMenu={this.state.width > "600"}
+                    video={{
+                      id: 630,
+                      state: "waiting",
+                      user_id: 1,
+                      provider: "youtube",
+                      music_key: "NF-kLy44Hls",
+                      whole_name: "Daft Punk - Lose Yourself to Dance (Official Version)",
+                      artist: "Daft Punk",
+                      song: "Lose Yourself to Dance (Official Version)",
+                      username: "emile"
+                    }}
+                    />
+                    <div style={{ height: "78px" }}>
+                      <p style={{fontSize: "13px"}}>{"No music for the moment. Let's search and add some !"}</p>
+                    </div>
                   <hr/>
-                  <br/>
                   <div className="my-music-nav">
                     <div className="tabs-vertical">
                       <ul className="hide-on-small-only tabs">
@@ -87,21 +101,30 @@ class MyMusic extends Component {
                   </div>
                 </div>
                 <div className="my-music-content-container">
-                  <div id="search" class="col s12">
+                  <div id="search" className="col s12">
                     <SearchBoard/>
                   </div>
-                  <div id="playlists" class="col s12">Test 2</div>
-                  <div id="artists" class="col s12">Test 3</div>
-                  <div id="musics" class="col s12">Test 4</div>
+                  <div id="playlists" className="col s12">Test 2</div>
+                  <div id="artists" className="col s12">Test 3</div>
+                  <div id="musics" className="col s12">Test 4</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        */}
       </div>
     );
   }
 }
 
-export default MyMusic;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchLibrary }, dispatch);
+}
+
+function mapStateToProps(props) {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyMusic);

@@ -4,12 +4,12 @@ var ReactLoader = require('react-loaders').Loader;
 const Loader = ({ color, style }) => {
   return (
     <div className="spinner-container">
-      <div class="spinner" style={style}>
-        <div class="rect1" style={{ backgroundColor: color }}></div>
-        <div class="rect2" style={{ backgroundColor: color }}></div>
-        <div class="rect3" style={{ backgroundColor: color }}></div>
-        <div class="rect4" style={{ backgroundColor: color }}></div>
-        <div class="rect5" style={{ backgroundColor: color }}></div>
+      <div className="spinner" style={style}>
+        <div className="rect1" style={{ backgroundColor: color }}></div>
+        <div className="rect2" style={{ backgroundColor: color }}></div>
+        <div className="rect3" style={{ backgroundColor: color }}></div>
+        <div className="rect4" style={{ backgroundColor: color }}></div>
+        <div className="rect5" style={{ backgroundColor: color }}></div>
       </div>
     </div>
 
