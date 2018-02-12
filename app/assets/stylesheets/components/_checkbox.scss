@@ -1,0 +1,8 @@
+.custom-checkbox{
+  label{
+    color: white;
+    &:before{
+      border: 2px solid white;
+    }
+  }
+}

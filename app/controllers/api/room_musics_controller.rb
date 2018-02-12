@@ -9,8 +9,9 @@ module Api
       if @user_id && @user_id != @room.user_id
         @room.contributions.find_or_create_by(user_id: @user_id)
       end
+      artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist].id
       @music = Music.where(
-        artist: params[:artist],
+        artist_id: artist_id,
         song: params[:song],
         whole_name: params[:whole_name],
         provider: params[:provider],

@@ -35,15 +35,16 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, name, slug, contributors_number, id, errors: {}, owner_name, transition_speed, user_id, musics, is_owner, connectedUsers: connections, connected_stranger_number: connected_stranger_number }
     }
     case ROOM_UPDATED:{
+      console.log("action.payload", action.payload)
       const { name, slug, contributors_number, id, user_id, owner_name, transition_speed, is_owner, connections, connected_stranger_number } = action.payload;
       return { ...state, name, slug, contributors_number, id, errors: {}, owner_name, transition_speed, user_id, is_owner, connectedUsers: connections, connected_stranger_number: connected_stranger_number }
     }
     case GOT_ROOM_LIST:{
-      console.log("action.payload", action.payload)
       const { owner_rooms, contributor_rooms } = action.payload;
       return { ...state, ownerRoomList: owner_rooms, contributorRoomList: contributor_rooms }
     }
     case GOT_ROOM:{
+      console.log("action.payload", action.payload)
       const { name, slug, contributors_number, id, user_id, owner_name, transition_speed, is_owner, connections, connected_stranger_number } = action.payload;
       return { ...state, name, slug, contributors_number, id, errors: {}, owner_name, transition_speed, user_id, is_owner, connectedUsers: connections, connected_stranger_number: connected_stranger_number }
     }

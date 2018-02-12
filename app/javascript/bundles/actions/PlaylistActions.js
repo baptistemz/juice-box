@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'react-router-redux';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
 import { errorHandling } from '../utils/errorHandling';
 import {
@@ -7,6 +8,20 @@ import {
 } from './types';
 
 // API CALLS
+
+export function createPlaylist(name){
+  return dispatch => {
+    axios.post('/api/playlists', {name: name})
+      .then(response => {
+        setNextHeaders(response.headers)
+        dispatch(gotPlaylistMusics(response.data));
+        dispatch(push(`/library/playlists/${response.data.playlist.id}`));
+      }).catch((error)=>{
+        console.log("error", error)
+        errorHandling(error, (action) => dispatch(action))
+      })
+  };
+};
 
 export function fetchPlaylists(){
   return dispatch => {
@@ -26,7 +41,7 @@ export function fetchPlaylistMusics(playlistId){
     axios.get(`/api/playlists/${playlistId}/playlist_musics`)
     .then(response => {
       setNextHeaders(response.headers)
-      dispatch(gotPlaylistMusics(playlistId, response.data));
+      dispatch(gotPlaylistMusics(response.data));
     }).catch((error)=>{
       console.log("error", error)
       errorHandling(error, (action) => dispatch(action))
@@ -43,10 +58,9 @@ function gotPlaylists(data){
   }
 }
 
-function gotPlaylistMusics(id, data){
+function gotPlaylistMusics(data){
   return {
     type: GOT_PLAYLIST_MUSICS,
     payload: data,
-    id
   }
 }

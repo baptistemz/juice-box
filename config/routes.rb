@@ -9,6 +9,11 @@ Rails.application.routes.draw do
       post 'change_order', to: 'rooms#change_order'
       post 'add_playlist', to: 'rooms#add_playlist'
     end
+    resources :libraries, only: [ :show, :update] do
+      resources :library_musics, only: [:create, :destroy]
+    end
+    resources :artists, only: [ :update ]
+    resources :musics, only: [ :update ]
     resources :playlists, only: [:create, :index, :show, :update] do
       resources :playlist_musics, only: [:create, :index, :update, :destroy]
       post 'change_order', to: 'playlists#change_order'

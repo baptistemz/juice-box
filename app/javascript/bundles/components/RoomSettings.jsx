@@ -57,8 +57,8 @@ class RoomSettings extends Component {
               <li className="tab col s6"><a className="active" href="#public_playlists">Public playlists</a></li>
             </ul>
           </div>
-          <div id="my_playlists" className="col s12"><PlaylistCarousel playlists={this.props.ownerPlaylists} status="owner" /></div>
-          <div id="public_playlists" className="col s12"><PlaylistCarousel playlists={this.props.publicPlaylists} status="public" /></div>
+          <div id="my_playlists"><PlaylistCarousel playlists={this.props.ownerPlaylists} status="owner" /></div>
+          <div id="public_playlists"><PlaylistCarousel playlists={this.props.publicPlaylists} status="public" /></div>
         </div>
       </div>
     )

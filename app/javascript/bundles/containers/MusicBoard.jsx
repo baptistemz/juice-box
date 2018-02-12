@@ -7,7 +7,7 @@ import { toastr } from 'react-redux-toastr';
 import YoutubePlayer from '../components/YoutubePlayer';
 import MusicWaitingList from '../components/MusicWaitingList';
 import SimulatedPlayer from '../components/SimulatedPlayer';
-import { updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom } from "../actions/index"
+import { updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom } from "../actions/index"
 
 
 class MusicBoard extends Component {
@@ -32,17 +32,17 @@ class MusicBoard extends Component {
   }
   transition(music_number){
     this.setState({ inTransition: true });
-    const { transitionSpeed, updateMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
+    const { transitionSpeed, updateRoomMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
-    updateMusic(roomId, newMusic.id, {state: "playing"})
+    updateRoomMusic(roomId, newMusic.id, {state: "playing"})
     let counter = 0;
     const volumeTransition = function () {
       if (counter < transitionSpeed) {
         changeVolumeBalance(music_number, 1/transitionSpeed)
         counter += 1;
       } else {
-        updateMusic(roomId, endingMusic.id , {state: "archived"})
+        updateRoomMusic(roomId, endingMusic.id , {state: "archived"})
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
       }
@@ -107,7 +107,7 @@ class MusicBoard extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updateMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom }, dispatch);
+  return bindActionCreators({ updateRoomMusic, changeVolumeBalance, changeWaitingListOrder, deleteMusicFromRoom, startRoom }, dispatch);
 }
 
 function mapStateToProps({ music_board: { waiting_list, music_0, music_1, volume_balance, hidden_player }}) {

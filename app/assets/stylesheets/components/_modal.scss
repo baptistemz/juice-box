@@ -1,5 +1,6 @@
 .room-modal{
   background-color: $soft-background;
+  text-align: center;
   padding-top: 10px;
   overflow: hidden;
   max-height: 95%;
@@ -7,6 +8,18 @@
   max-width: 90%;
   width: 100%;
   margin: 2% 5%;
+  .modal-close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: $secondary-color;
+  }
+}
+
+.edit-modal{
+  background-color: $dark-background;
+  padding: 20px 0;
   .modal-close{
     position: absolute;
     top: 10px;

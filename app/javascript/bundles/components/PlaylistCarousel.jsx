@@ -14,7 +14,7 @@ class PlaylistCarousel extends Component {
           return(
             <div key={playlist.id} className="carousel-item">
               <a  className="modal-trigger" href={`#${status}_playlist_modal_${playlist.id}`}>
-                <PlaylistCard name={playlist.name} ownerName={playlist.owner_name} />
+                <PlaylistCard name={playlist.name} ownerName={playlist.owner_name} picture={null} />
               </a>
             </div>
           )

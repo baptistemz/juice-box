@@ -4,12 +4,25 @@
     margin-left: 0;
     height: calc(100vh - 60px);
   }
-  .my-music-side{
-    width: 100%;
-    position: relative;
-  }
   .my-music-content-container{
-    height: calc( 100vh - 280px)
+    height: calc( 100vh - 298px);
+    &.tabs-hidden{
+      height: calc( 100vh - 250px);
+    }
+    .playlist-modal-list{
+      height: calc(100vh - 352px);
+      margin-bottom: 10px;
+    }
+  }
+  .my-music-nav{
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+  .my-music-player{
+    bottom: 74px;
+    width: calc(100% - 22px);
+    margin: auto -8px;
   }
   .bottomnav{
     display: flex;
@@ -36,7 +49,7 @@
     right: 2%
   }
   .room-music-list{
-    height: calc(100vh - 250px);
+    height: calc(100vh - 260px);
   }
   .playlist-modal-list{
     height: calc(100vh - 148px);
@@ -60,7 +73,7 @@
   }
   .my-music-content-container{
     margin-left: 140px;
-    height: calc( 100vh - 74px)
+    height: calc( 100vh - 68px);
   }
   .bottomnav{
     display: none;
@@ -74,7 +87,7 @@
     }
   }
   .room-music-list {
-    height: calc(100vh - 195px);
+    height: calc(100vh - 205px);
   }
   .playlist-modal-list{
     height: calc(100vh - 182px);
@@ -101,7 +114,7 @@
   }
   .my-music-content-container{
     margin-left: 140px;
-    height: calc( 100vh - 82px)
+    height: calc( 100vh - 78px);
   }
   .bottomnav{
     display: none;
@@ -115,7 +128,7 @@
     }
   }
   .room-music-list {
-    height: calc(100vh - 205px);
+    height: calc(100vh - 215px);
   }
   .playlist-modal-list{
     height: calc(100vh - 200px);

@@ -22,7 +22,7 @@ class SearchBoard extends Component {
   }
   render(){
     return(
-      <div className=" full-screen-container">
+      <div className="col s12 full-screen-container">
         <form onSubmit={this.onInputSubmit.bind(this)}>
           <div className="input-field">
             <input id="search" type="search" name="search_term" value={this.state.term} onChange={(e)=> this.setState({ term: e.target.value })} />
@@ -36,7 +36,13 @@ class SearchBoard extends Component {
           :
             <p/>
         }
-        <MusicSearchResults roomId={this.props.roomId} musics={this.props.youtube_videos} />
+        <MusicSearchResults
+          roomId={this.props.roomId}
+          libraryId={this.props.libraryId}
+          musics={this.props.youtube_videos}
+          inModal={this.props.inModal}
+          inLibrary={this.props.inLibrary}
+          libraryMusics={this.props.libraryMusics} />
       </div>
     )
   }

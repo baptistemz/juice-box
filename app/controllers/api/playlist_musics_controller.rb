@@ -4,14 +4,18 @@ module Api
   class PlaylistMusicsController < BaseController
     def create
       @playlist = Playlist.find(params[:playlist_id])
+      Rails.logger.debug("params[:artist].class : #{params[:artist].class}")
+      artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist].id
+      Rails.logger.debug("artist_id : #{artist_id}")
       @music = Music.where(
-        artist: params[:artist],
-        song: params[:song],
-        whole_name: params[:whole_name],
         provider: params[:provider],
         music_key: params[:music_key]
-      ).first_or_create!
-      @playlist_music = @playlist.playlist_musics.build(music_id: @music.id, waiting_list_position: @playlist.playlist_musics.length)
+      ).first_or_create!(
+        artist_id: artist_id,
+        song: params[:song],
+        whole_name: params[:whole_name]
+      )
+      @playlist_music = @playlist.playlist_musics.build(music_id: @music.id)
       if @playlist_music.save
         Rails.logger.debug("@playlist_music:#{@playlist_music.to_json}")
         render partial: "api/playlist_musics/playlist_music.json.jbuilder", locals: {playlist_music: @playlist_music}
@@ -21,7 +25,8 @@ module Api
     end
 
     def index
-      @playlist_musics = Playlist.find(params[:playlist_id]).playlist_musics
+      @playlist = Playlist.find(params[:playlist_id])
+      @playlist_musics = @playlist.playlist_musics
     end
 
     def update

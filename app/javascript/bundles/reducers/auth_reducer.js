@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   email: '',
   username: '',
   profile_picture: {thumb: {url: null}, micro: {url: null}},
+  libraryId: null
 };
 
 export default function (state = INITIAL_STATE, action) {
@@ -21,8 +22,8 @@ export default function (state = INITIAL_STATE, action) {
     case LOGOUT_SUCCESS:
       return INITIAL_STATE
     case LOGIN_SUCCESS:{
-      const { email, username, profile_picture, is_mecano, id } = action.user;
-      return { ...state, email, username, profile_picture, is_mecano, id, isAuthenticated: true, errors: {} }
+      const { email, username, profile_picture, is_mecano, id, library } = action.user;
+      return { ...state, email, username, profile_picture, is_mecano, id, isAuthenticated: true, errors: {}, libraryId: library.id }
     }
     case PROFILE_UPDATED:{
       const { email, username, profile_picture, is_mecano, id } = action.user;

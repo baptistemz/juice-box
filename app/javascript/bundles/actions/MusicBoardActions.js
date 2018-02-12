@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
-import { toastr } from 'react-redux-toastr';
 import { gotRoom } from './index'
 import { errorHandling } from '../utils/errorHandling';
 import {
@@ -23,7 +22,7 @@ export function addMusicToRoom(room_id, params){
   };
 };
 
-export function updateMusic(room_id, room_music_id, params){
+export function updateRoomMusic(room_id, room_music_id, params){
   return dispatch => {
     axios.put(`/api/rooms/${room_id}/room_musics/${room_music_id}`, params).then((response) =>{
       setNextHeaders(response.headers)

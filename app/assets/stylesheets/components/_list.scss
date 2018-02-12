@@ -13,7 +13,7 @@
   }
   & p{
     margin: 0;
-    color: #5b576b;
+    color: white;
   }
   & .avatar{
     width: 35px !important;
@@ -25,7 +25,46 @@
     line-height: 1.2rem;
   }
 }
+
+.library-collection{
+  border-top-width: 0;
+  padding-bottom: 112px;
+  border-bottom: none;
+  .collection-item-overlay{
+    position: relative;
+    i.secondary-text{
+      z-index: 100;
+      position: absolute;
+      right: 0px;
+      top: 0;
+      height: 50px;
+      width: 50px;
+      text-align: center;
+      line-height: 50px;
+      &:focus{
+        color: white
+      }
+    }
+    .collection-item{
+      color: white;
+      p{color: white}
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+      justify-content: space-between;
+      display: flex;
+      cursor: pointer;
+      &:hover, &:focus, &:focus-within{
+        background-color: $soft-background;
+      }
+    }
+  }
+}
+
+.collection .collection-item:last-child{
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .primary-content{
+  width: calc(100% - 26px);
   display: flex;
   justify-content: flex-start;
 }

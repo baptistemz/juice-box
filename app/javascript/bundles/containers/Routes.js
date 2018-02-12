@@ -12,7 +12,8 @@ import NewPassword from '../components/NewPassword';
 import Signup from '../components/Signup';
 import Login from '../components/Login';
 import Sidenav from '../components/Sidenav';
-import MyMusic from './MyMusic';
+import LibraryPlaylists from '../components/LibraryPlaylists';
+import Library from './Library';
 import RoomList from './RoomList';
 import Account from './Account';
 import Room from './Room';
@@ -22,24 +23,32 @@ import history from '../store/history';
 class Routes extends Component{
   constructor(props){
     super(props)
-    const inMyMusic = props.isAuthenticated && history.location.pathname === ('/')
-    const inSidenavPage = history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account" || location.pathname === "/404"
-    const sideNav =  inMyMusic || inSidenavPage
+    const inLibrary = props.isAuthenticated && history.location.pathname === ('/')
+    const inSidenavPage = history.location.pathname.startsWith("/rooms") ||
+                          history.location.pathname.startsWith("/library") ||
+                          history.location.pathname === "/account" ||
+                          location.pathname === "/404"
+    const sideNav =  inLibrary || inSidenavPage
     this.state = { sideNav };
   }
   render(){
     history.listen((location, action) => {
-      const inMyMusic = this.props.isAuthenticated && location.pathname === ('/');
-      const inSidenavPage = history.location.pathname.startsWith("/rooms") || history.location.pathname === "/account" || location.pathname === "/404"
-      const sideNav =  inMyMusic || inSidenavPage
+      const inLibrary = this.props.isAuthenticated && location.pathname === ('/');
+      const inSidenavPage = history.location.pathname.startsWith("/rooms") ||
+                            history.location.pathname.startsWith("/library") ||
+                            history.location.pathname === "/account" ||
+                            location.pathname === "/404"
+      const sideNav =  inLibrary || inSidenavPage
       this.setState({ sideNav })
     })
     const { isAuthenticated, isMecano, rehydrated, profile_picture, email, username } = this.props;
-    const Home = isAuthenticated ? MyMusic : PreHome;
+    const Home = isAuthenticated ? Library : PreHome;
     return(
       <ConnectedRouter history={history}>
         <div>
-          <Route exact path="/" component={Home}/>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/home" component={PreHome} />
+          <Route path="/library" component={Library}/>
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/new_password" component={NewPassword} />

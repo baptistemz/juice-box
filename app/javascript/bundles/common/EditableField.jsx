@@ -29,7 +29,7 @@ class EditableField extends Component {
 
   renderParagraph() {
     return (
-      <div className='frozen-field direction-row'>
+      <div className='frozen-field direction-row align-items-center'>
         <p>{this.props.value}</p>
         <i className="material-icons" onClick={this.edit.bind(this)}>edit</i>
       </div>
@@ -40,7 +40,7 @@ class EditableField extends Component {
       <div >
         <form
           onSubmit={this.onFormSubmit.bind(this)}
-          className='edit-field justify-center align-items'
+          className='edit-field justify-center align-items-center'
         >
           <input
             type="text" value={this.state.text}
@@ -57,7 +57,7 @@ class EditableField extends Component {
     return (
       <div>
         <label>{this.props.label}
-          <span className="red-text">{error ? error : ''}</span>  
+          <span className="red-text">{error ? error : ''}</span>
         </label>
         {this.state.editMode ? this.renderInput() : this.renderParagraph()}
       </div>

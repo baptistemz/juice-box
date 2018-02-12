@@ -1,6 +1,7 @@
 import {
   GOT_PLAYLISTS,
-  GOT_PLAYLIST_MUSICS
+  GOT_PLAYLIST_MUSICS,
+  MUSIC_ADDED_TO_PLAYLIST
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -18,9 +19,16 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, ownerPlaylists: owner_playlists, publicPlaylists: public_playlists}
     }
     case GOT_PLAYLIST_MUSICS:{
-      const selectedPlaylistId = Number(action.id)
-      const selectedPlaylistName = _.find(state.ownerPlaylists.concat(state.publicPlaylists), {id: selectedPlaylistId}).name
-      return { ...state, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics: action.payload }
+      const selectedPlaylistId = action.payload.playlist.id;
+      const selectedPlaylistName = action.payload.playlist.name;
+      return { ...state, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics: action.payload.playlist_musics }
+    }
+    case MUSIC_ADDED_TO_PLAYLIST:{
+      console.log("reducer", action.payload)
+      if(action.payload.playlist.id === state.selectedPlaylistId){
+        return { ...state, selectedPlaylistMusics: [ ...state.selectedPlaylistMusics, action.payload ] }
+      }
+      return state
     }
     default:
       return state;

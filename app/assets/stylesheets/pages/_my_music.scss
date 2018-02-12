@@ -1,8 +1,64 @@
-.my-music-side{
+.my-music-player{
   position: absolute;
+  bottom: 20px;
   width: 140px;
   & hr {
     background-color: $primary-color;
     border-color: $primary-color;
+  }
+}
+.my-music-nav{
+  width: 140px;
+  position: absolute;
+  padding-top: 10px;
+}
+
+.playlist-thumb{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  .playlist-thumb-background{
+    border-radius: 3px;
+    height: 100%;
+    width: calc(170px + 10%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover{
+      background-color: $soft-background;
+    }
+    i{
+      font-size: 60px;
+      color: $secondary-color
+    }
+  }
+}
+
+.my-music-content-container{
+  hr{
+    border: 1px solid $secondary-color;
+    background-color: $secondary-color;
+  }
+}
+
+.my-music-subheader{
+  padding-top: 0.5em;
+  margin: 0.5em 0;
+  h1{
+    padding: 0 !important;
+  }
+  .my-music-back-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    i{
+      color: $secondary-color;
+    }
+    p {
+      font-size: 1.3rem;
+      color: $secondary-color;
+    }
   }
 }

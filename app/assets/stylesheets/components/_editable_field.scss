@@ -1,15 +1,17 @@
 .frozen-field i{
   color: $primary-color;
   cursor: pointer;
-  margin-top: 9px;
 }
 
-.edit-field i{
-  color: #1bba75;
-  cursor: pointer;
-  margin-top: 9px;
+.edit-field {
+  i{
+    color: #1bba75;
+    cursor: pointer;
+  }
+  input[type=text]:not(.browser-default){
+    margin: 0;
+  }
 }
 .edit-field i:last-child{
   color: $secondary-color;
-  margin-top: 9px;
 }

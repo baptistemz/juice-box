@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class MyMusicSettings extends Component {
+class LibrarySettings extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -49,4 +49,4 @@ class MyMusicSettings extends Component {
   }
 }
 
-export default MyMusicSettings;
+export default LibrarySettings;

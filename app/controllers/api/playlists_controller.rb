@@ -4,7 +4,8 @@ module Api
     def create
       @playlist = current_api_user.playlists.create(playlist_params)
       if @playlist.save
-        render :show, status: :created
+        @playlist_musics = @playlist.playlist_musics
+        render 'api/playlist_musics/index', locals: {playlist_musics: @playlist_musics, playlist: @playlist}
       else
         render_error
       end

@@ -2,28 +2,51 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { toastr } from 'react-redux-toastr';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { addMusicToRoom } from '../actions/index';
+import { addMusicToRoom, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
 import YoutubeSnippet from '../components/YoutubeSnippet';
 
 class MusicSearchResults extends Component {
-  addMusicToList(music) {
+  addMusicToLibrary(music) {
+    console.log("addMusicToLibrary", music)
+  }
+  playMusicInLibrary(music) {
+    console.log("playMusicInLibrary", music)
+  }
+  addMusicTo(destination, music, id) {
+    const title = music.snippet.title
     const params = {
       provider: "youtube",
       music_key: music.id.videoId,
-      whole_name: music.snippet.title,
+      whole_name: title,
     }
-    if(music.snippet.title.split('-').length === 2){
-      params['artist'] = music.snippet.title.split('-')[0].trim();
-      params['song'] = music.snippet.title.split('-')[1].trim();
+    if(title.split('-').length === 2){
+      params['artist'] = title.split('-')[0].trim();
+      params['song'] = title.split('-')[1].trim();
+    }else if (title.split('-').length === 1){
+      params['artist'] = title
+      params['song'] = title
+    }else{
+      params['artist'] = title.split('-')[0].trim();
+      params['song'] = title
     }
-    this.props.addMusicToRoom(this.props.roomId, params);
+    switch (destination) {
+      case "room":
+        this.props.addMusicToRoom(this.props.roomId, params);
+        break;
+      case "library":
+        this.props.addMusicToLibrary(this.props.libraryId, params)
+        break;
+      case "playlist":
+        this.props.addMusicToPlaylist(id, params)
+        break;
+      default:
+    }
   }
   render() {
     const musics = this.props.musics;
     return (
-      <div className="overflow-scroll search-scroll">
+      <div className="overflow-scroll search-scroll margin-top-10">
         <div className="row">
           <ReactCSSTransitionGroup
             transitionName="fade"
@@ -33,21 +56,24 @@ class MusicSearchResults extends Component {
             { musics.map((music) => {
               return (
                 <YoutubeSnippet
-                  addVideoToList={this.addMusicToList.bind(this, music)}
+                  addVideo={this.addMusicTo.bind(this)}
+                  playVideoInLibrary={this.playMusicInLibrary.bind(this, music)}
+                  inModal={this.props.inModal}
                   key={music.etag}
                   video={music}
+                  inLibrary={this.props.inLibrary}
+                  libraryMusics={this.props.libraryMusics}
                 />
               );
             })}
           </ReactCSSTransitionGroup>
         </div>
-
       </div>
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addMusicToRoom }, dispatch);
+  return bindActionCreators({ addMusicToRoom, addMusicToLibrary, addMusicToPlaylist }, dispatch);
 }
 export default connect(null, mapDispatchToProps)(MusicSearchResults);

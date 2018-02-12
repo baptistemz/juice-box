@@ -1,5 +1,5 @@
 class Library < ApplicationRecord
   belongs_to :user
   has_many :library_musics, dependent: :destroy
-  validates_inclusion_of :transition_speed, in: 1..30
+  has_many :artists, dependent: :nullify
 end

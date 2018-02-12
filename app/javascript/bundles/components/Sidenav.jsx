@@ -10,12 +10,12 @@ class Sidenav extends Component {
     super(props);
     this.state = {
       authenticated: [
-        { url: "/", name: "My music", icon: "music_note"},
-        { url: "/rooms", name: "Music rooms", icon: "list"},
-        { url: "/account", name: "Account", icon: "settings"}
+        { url: "/library", name: "My Library", icon: "library_music"},
+        { url: "/rooms", name: "Rooms", icon: "playlist_play"},
+        { url: "/account", name: "Account", icon: "account_box"}
       ],
       notAuthenticated: [
-        { url: "/", name: "Home", icon: "home"},
+        { url: "/home", name: "Home", icon: "home"},
         { url: { pathname: '/login', state: { from: props.location.pathname } }, name: "Log in", icon: "lock_outline"},
         { url: { pathname: '/signup', state: { from: props.location.pathname } }, name: "Sign up", icon: "create"}
       ]
@@ -66,7 +66,7 @@ class Sidenav extends Component {
       return this.state.authenticated.map(tab => {
         return(
           <Link key={tab.url} to={tab.url}>
-            <div className={`nav ${location.pathname === tab.url ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
+            <div className={`nav ${location.pathname.startsWith(tab.url) ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
           </Link>
         )
       })
@@ -74,7 +74,7 @@ class Sidenav extends Component {
     return this.state.notAuthenticated.map(tab => {
       return(
         <Link key={tab.icon} to={tab.url}>
-          <div className={`nav ${location.pathname === tab.url ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
+          <div className={`nav ${location.pathname.startsWith(tab.url) ?"active" : ""}`}><div className="description">{tab.name}</div><i className="icon material-icons">{tab.icon}</i></div>
         </Link>
       )
     })
@@ -115,7 +115,7 @@ class Sidenav extends Component {
             </div>
             :
             <Link to={"/about"}>
-              <div className={`nav ${location.pathname === "/about" ?"active" : ""}`}><div className="description">About</div><i className="icon material-icons">info_outline</i></div>
+              <div className={`nav ${location.pathname.startsWith("/about") ?"active" : ""}`}><div className="description">About</div><i className="icon material-icons">info_outline</i></div>
             </Link>
           }
           {this.tabs()}

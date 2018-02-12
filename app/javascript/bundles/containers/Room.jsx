@@ -11,7 +11,7 @@ import { RoomCreation } from '../common/index';
 import RoomSettings from '../components/RoomSettings';
 import RoomUsers from '../components/RoomUsers';
 import PlaylistPreview from '../components/PlaylistPreview'
-import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged } from '../actions/index'
+import { fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addMusicToRoom, addPlaylistToRoom } from '../actions/index'
 
 
 class Room extends Component {
@@ -145,15 +145,15 @@ class Room extends Component {
       <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal modal">
         <div className="modal-close material-icons margin-5 font-30">clear</div>
         <br/>
-        <PlaylistPreview roomId={this.props.id} playlistId={id} added={added}/>
+        <PlaylistPreview
+          ownerPlaylists={this.props.ownerPlaylists}
+          addMusicToRoom={this.props.addMusicToRoom}
+          addPlaylistToRoom={this.props.addPlaylistToRoom}
+          roomId={this.props.id} playlistId={id} added={added} popUp/>
       </div>
     )
   }
   render() {
-    console.log("this.props.connected_stranger_number", this.props.connected_stranger_number)
-    console.log("this.props.connectedUsers", this.props.connectedUsers)
-    console.log("this.props.connectedUsers.length + this.props.connected_stranger_number", this.props.connectedUsers.length + this.props.connected_stranger_number)
-    console.log("THIS.PROPS", this.props.location.pathname)
     const { id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists, connectedUsers, connected_stranger_number } = this.props;
     const noSleep = new NoSleep();
     noSleep.enable();
@@ -237,7 +237,7 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addPlaylistToRoom, addPlaylistToRoom }, dispatch);
 }
 
 function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner, connectedUsers, connected_stranger_number }, playlist:{ ownerPlaylists, publicPlaylists }}) {

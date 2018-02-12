@@ -9,6 +9,7 @@ import RoomReducer from './room_reducer';
 import MusicSearchReducer from './music_search_reducer';
 import MusicBoardReducer from './music_board_reducer';
 import PlaylistReducer from './playlist_reducer';
+import LibraryReducer from './library_reducer';
 
 const config = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = persistCombineReducers( config, {
   music_search: MusicSearchReducer,
   music_board: MusicBoardReducer,
   playlist: PlaylistReducer,
+  library: LibraryReducer,
 });
 
 export default rootReducer;
