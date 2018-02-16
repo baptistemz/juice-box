@@ -4,7 +4,7 @@ import {
   SELECT_ARTIST,
   MUSIC_UPDATED,
   MUSIC_ADDED_TO_LIBRARY,
-  MUSIC_ADDED_TO_PLAYLIST
+  MUSIC_DELETED_FROM_LIBRARY,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -67,10 +67,16 @@ export default function (state = INITIAL_STATE, action) {
       const artists = _.union(state.artists, [action.payload.artist])
       return { ...state, musics:[ ...state.musics, action.payload], artists }
     }
-    case MUSIC_ADDED_TO_PLAYLIST:{
-      console.log("reducer", action.payload)
-      // const artists = _.union(state.artists, [action.payload.artist])
-      return state
+    case MUSIC_DELETED_FROM_LIBRARY:{
+      const index = _.findIndex(state.musics, {id: action.payload.id});
+      const musics = [ ...state.musics.slice(0, index), ...state.musics.slice(index + 1) ];
+      if(_.some(musics, { artist: action.payload.artist })){
+        const artists = state.artists;
+      }else{
+        const artistIndex = _.findIndex(state.artists, {id: action.payload.artist.id});
+        const artists = [ ...state.artists.slice(0, artistIndex), ...state.artists.slice(artistIndex + 1) ];
+      }
+      return { ...state, musics, artists }
     }
 
     default:

@@ -25,7 +25,7 @@ class LibraryPlaylist extends Component {
           <div className="width-100"></div>
         </div>
         <hr/>
-        <PlaylistPreview openSearch={() => this.props.openSearch()} playlistId={selectedPlaylistId} inLibrary/>
+        <PlaylistPreview addMusicTo={this.props.addMusicTo} openSearch={() => this.props.openSearch()} playlistId={selectedPlaylistId} inLibrary/>
       </div>
     )
   }

@@ -5,7 +5,8 @@ module Api
     def create
       @playlist = Playlist.find(params[:playlist_id])
       Rails.logger.debug("params[:artist].class : #{params[:artist].class}")
-      artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist].id
+      Rails.logger.debug("params[:artist] : #{params[:artist]}")
+      artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist][:id]
       Rails.logger.debug("artist_id : #{artist_id}")
       @music = Music.where(
         provider: params[:provider],

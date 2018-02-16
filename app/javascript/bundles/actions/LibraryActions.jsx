@@ -8,7 +8,9 @@ import {
   SELECT_ARTIST,
   MUSIC_UPDATED,
   MUSIC_ADDED_TO_LIBRARY,
-  MUSIC_ADDED_TO_PLAYLIST
+  MUSIC_ADDED_TO_PLAYLIST,
+  MUSIC_DELETED_FROM_LIBRARY,
+  MUSIC_DELETED_FROM_PLAYLIST
 } from './types';
 
 // API CALLS
@@ -89,6 +91,19 @@ export function addMusicToPlaylist(playlistId, music){
   };
 };
 
+export function deleteMusicfromLibrary(libraryMusicId){
+  return dispatch => {
+    axios.delete(`/api/librarys/${libraryId}/library_musics/${libraryMusicId}`)
+      .then(response => {
+        setNextHeaders(response.headers)
+        toastr.success(`${response.data.whole_name} is deleted from your library}`);
+        dispatch(musicdeletedFromLibrary(response.data));
+      }).catch((error)=>{
+        errorHandling(error, (action) => dispatch(action))
+      })
+  };
+};
+
 //action creators
 
 export function selectArtist(id) {
@@ -115,6 +130,20 @@ function musicAddedToLibrary(data) {
 function musicAddedToPlaylist(data) {
   return {
     type: MUSIC_ADDED_TO_PLAYLIST,
+    payload: data
+  };
+}
+
+function musicDeletedFromLibrary(data) {
+  return {
+    type: MUSIC_DELETED_FROM_LIBRARY,
+    payload: data
+  };
+}
+
+function musicDeletedFromPlaylist(data) {
+  return {
+    type: MUSIC_DELETED_FROM_PLAYLIST,
     payload: data
   };
 }

@@ -13,7 +13,7 @@ import LibraryPlaylist from '../components/LibraryPlaylist';
 import LibraryNewPlaylist from '../components/LibraryNewPlaylist';
 import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
-import { fetchLibrary } from '../actions/index';
+import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
 
 class Library extends Component {
   constructor(props){
@@ -81,6 +81,13 @@ class Library extends Component {
   goTo(activeTab, url){
     this.setState({ activeTab });
     this.props.history.push(url);
+  }
+  addMusicTo(destination, music,  playlistId){
+    if(destination === "playlist"){
+      this.props.addMusicToPlaylist(playlistId, music);
+    }else if(destination === "library"){
+      this.props.addMusicToLibrary(this.props.libraryId, music);
+    }
   }
   render() {
     const { handleSubmit, playlists, artists, musics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
@@ -158,10 +165,10 @@ class Library extends Component {
                   <Route exact path="/library/search" render={routeProps => <SearchBoard libraryMusics={musics} libraryId={libraryId} inLibrary />}/>
                   <Route exact path="/library/playlists" render={routeProps => <LibraryPlaylists playlists={playlists}/>} />
                   <Route path="/library/new_playlist" component={LibraryNewPlaylist} />
-                  <Route path="/library/playlists/:id" render={routeProps => <LibraryPlaylist openSearch={() => this.openSearchModal("/library/search")} />} />
+                  <Route path="/library/playlists/:id" render={routeProps => <LibraryPlaylist addMusicTo={this.addMusicTo.bind(this)} openSearch={() => this.openSearchModal("/library/search")} />} />
                   <Route exact path="/library/artists" render={routeProps => <LibraryArtists artists={artists}/>} />
-                  <Route path="/library/artists/:id" render={routeProps => <LibraryArtist selectedArtist={selectedArtist} selectedArtistMusics={selectedArtistMusics} />} />
-                  <Route exact path="/library/musics" render={routeProps => <LibraryMusics musics={musics} addMusicTo={(e, f) => console.log("addMusicTo", e, f)}/>} />
+                  <Route path="/library/artists/:id" render={routeProps => <LibraryArtist selectedArtist={selectedArtist} selectedArtistMusics={selectedArtistMusics} addMusicTo={this.addMusicTo.bind(this)} />} />
+                  <Route exact path="/library/musics" render={routeProps => <LibraryMusics musics={musics} addMusicTo={this.addMusicTo.bind(this)}/>} />
                 </div>
               </div>
             </div>
@@ -173,7 +180,7 @@ class Library extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchLibrary }, dispatch);
+  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist }, dispatch);
 }
 
 function mapStateToProps({auth, library}) {
