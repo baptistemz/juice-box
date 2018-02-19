@@ -64,19 +64,31 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, selectedArtist, selectedArtistMusics }
     }
     case MUSIC_ADDED_TO_LIBRARY:{
-      const artists = _.union(state.artists, [action.payload.artist])
+      let artists = state.artists
+      if(!_.find(state.artists, {id: action.payload.artist.id})){
+        artists = [...state.artists, action.payload.artist];
+      }
       return { ...state, musics:[ ...state.musics, action.payload], artists }
     }
     case MUSIC_DELETED_FROM_LIBRARY:{
       const index = _.findIndex(state.musics, {id: action.payload.id});
       const musics = [ ...state.musics.slice(0, index), ...state.musics.slice(index + 1) ];
-      if(_.some(musics, { artist: action.payload.artist })){
-        const artists = state.artists;
-      }else{
-        const artistIndex = _.findIndex(state.artists, {id: action.payload.artist.id});
-        const artists = [ ...state.artists.slice(0, artistIndex), ...state.artists.slice(artistIndex + 1) ];
+      let selectedArtistMusics = state.selectedArtistMusics;
+      const selectedArtistMusicsIndex = _.findIndex(selectedArtistMusics, {id: action.payload.id});
+      console.log("selectedArtistMusicsIndex", selectedArtistMusicsIndex)
+      if(selectedArtistMusics){
+        selectedArtistMusics = [ ...state.selectedArtistMusics.slice(0, selectedArtistMusicsIndex), ...state.selectedArtistMusics.slice(selectedArtistMusicsIndex + 1) ];
+        console.log("selectedArtistMusics", selectedArtistMusics)
       }
-      return { ...state, musics, artists }
+      console.log("_.some(musics, { artist: action.payload.artist })", _.some(musics, { artist: action.payload.artist }))
+      let artists = state.artists;
+      if(!_.some(musics, { artist: action.payload.artist })){
+        const artistIndex = _.findIndex(state.artists, {id: action.payload.artist.id});
+        console.log("artistIndex", artistIndex)
+        artists = [ ...state.artists.slice(0, artistIndex), ...state.artists.slice(artistIndex + 1) ];
+        console.log("artists", artists)
+      }
+      return { ...state, musics, artists, selectedArtistMusics }
     }
 
     default:

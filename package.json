@@ -19,6 +19,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.1.1",
     "react-loaders": "^3.0.1",
+    "react-materialize": "^1.1.2",
     "react-on-rails": "^10.0.2",
     "react-player": "^0.25.3",
     "react-redux": "^5.0.6",

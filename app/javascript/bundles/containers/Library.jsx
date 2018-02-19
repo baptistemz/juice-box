@@ -13,7 +13,7 @@ import LibraryPlaylist from '../components/LibraryPlaylist';
 import LibraryNewPlaylist from '../components/LibraryNewPlaylist';
 import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
-import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
+import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist } from '../actions/index';
 
 class Library extends Component {
   constructor(props){
@@ -26,10 +26,10 @@ class Library extends Component {
                         props.location.pathname === "/library/playlists"
   let activeTab = ""
   console.log("props.location.pathname", props.location.pathname)
-  activeTab = props.location.pathname.startsWith("/library") ? "Playlists" : activeTab;
   activeTab = props.location.pathname.startsWith("/library/artists") ? "Artists" : activeTab;
   activeTab = props.location.pathname.startsWith("/library/musics") ? "Musics" : activeTab;
   activeTab = props.location.pathname.startsWith("/library/search") ? "Search" : activeTab;
+  activeTab = props.location.pathname.startsWith("/") ? "Playlists" : activeTab;
     this.state = { width: '0', tabsVisible, activeTab }
   }
   componentDidMount(){
@@ -87,6 +87,14 @@ class Library extends Component {
       this.props.addMusicToPlaylist(playlistId, music);
     }else if(destination === "library"){
       this.props.addMusicToLibrary(this.props.libraryId, music);
+    }
+  }
+  deleteMusicFrom(destination, music, playlistId){
+    console.log("in deleteMusicFrom")
+    if(destination === "playlist"){
+      this.props.deleteMusicFromPlaylist(playlistId, music.id);
+    }else if(destination === "library"){
+      this.props.deleteMusicFromLibrary(this.props.libraryId, music.id);
     }
   }
   render() {
@@ -165,10 +173,10 @@ class Library extends Component {
                   <Route exact path="/library/search" render={routeProps => <SearchBoard libraryMusics={musics} libraryId={libraryId} inLibrary />}/>
                   <Route exact path="/library/playlists" render={routeProps => <LibraryPlaylists playlists={playlists}/>} />
                   <Route path="/library/new_playlist" component={LibraryNewPlaylist} />
-                  <Route path="/library/playlists/:id" render={routeProps => <LibraryPlaylist addMusicTo={this.addMusicTo.bind(this)} openSearch={() => this.openSearchModal("/library/search")} />} />
+                  <Route path="/library/playlists/:id" render={routeProps => <LibraryPlaylist addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} openSearch={() => this.openSearchModal("/library/search")} />} />
                   <Route exact path="/library/artists" render={routeProps => <LibraryArtists artists={artists}/>} />
-                  <Route path="/library/artists/:id" render={routeProps => <LibraryArtist selectedArtist={selectedArtist} selectedArtistMusics={selectedArtistMusics} addMusicTo={this.addMusicTo.bind(this)} />} />
-                  <Route exact path="/library/musics" render={routeProps => <LibraryMusics musics={musics} addMusicTo={this.addMusicTo.bind(this)}/>} />
+                  <Route path="/library/artists/:id" render={routeProps => <LibraryArtist selectedArtist={selectedArtist} selectedArtistMusics={selectedArtistMusics} addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} />} />
+                  <Route exact path="/library/musics" render={routeProps => <LibraryMusics musics={musics} addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} /> } />
                 </div>
               </div>
             </div>
@@ -180,7 +188,7 @@ class Library extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist }, dispatch);
+  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist }, dispatch);
 }
 
 function mapStateToProps({auth, library}) {

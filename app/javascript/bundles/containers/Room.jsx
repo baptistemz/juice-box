@@ -237,7 +237,7 @@ class Room extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addPlaylistToRoom, addPlaylistToRoom }, dispatch);
+  return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addMusicToRoom, addPlaylistToRoom }, dispatch);
 }
 
 function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner, connectedUsers, connected_stranger_number }, playlist:{ ownerPlaylists, publicPlaylists }}) {

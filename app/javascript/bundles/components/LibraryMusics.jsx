@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, AddToListWindow } from "../common/index";
+import { Button, AddToListWindow, MusicListElement } from "../common/index";
 import { updateMusic } from '../actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -44,12 +44,13 @@ class LibraryMusics extends Component {
   }
   handleAddClick(e, music){
     e.preventDefault();
-    $(`#${music.music_key}_modal`).modal('open');
+    $(`#library_music_${music.music_key}_modal`).modal('open');
     console.log("add to playlist", music);
   }
   handleDeleteClick(e, music){
     e.preventDefault();
-    console.log("delete", music);
+    console.log(this.props, music)
+    this.props.deleteMusicFrom("library", music)
   }
   addToPlaylists = (lists, video) => {
     let ids = _.keys(_.pickBy(lists))
@@ -76,24 +77,15 @@ class LibraryMusics extends Component {
             {this.props.musics.map((music) => {
               const wholeName = music.song && music.artist && music.artist.name ? music.song + ' - ' + music.artist.name : music.whole_name
               return(
-                <a key={music.music_key}>
-                  <div className="collection-item-overlay">
-                    <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item">
-                      <p className="align-items-center">
-                        <span onClick={(e) => this.editItem(e, music)}><i className="material-icons margin-right-10 primary-text">edit</i></span>
-                        {wholeName}
-                      </p>
-                    </li>
-                    <i data-activates={`dropdown_${music.music_key}`} className="dropdown-button secondary-text material-icons">more_horiz</i>
-                    <ul id={`dropdown_${music.music_key}`} className='dropdown-content'>
-                      <li><span onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to playlist</span></li>
-                      <li><span onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from library</span></li>
-                    </ul>
-                  </div>
-                  <AddToListWindow id={`${music.music_key}_modal`}
-                    musicKey={music.music_key} addToPlaylists={(lists) => this.addToPlaylists(lists, music)}
-                    inLibrary={true} musicName={wholeName} />
-                </a>
+
+                <MusicListElement
+                  key={`library_music_${music.music_key}`}
+                  id={`library_music_${music.music_key}`}
+                  music={music}
+                  handleAddClick={this.handleAddClick}
+                  handleDeleteClick= {this.handleDeleteClick.bind(this)}
+                  addToPlaylists={this.addToPlaylists}
+                  editItem={this.editItem.bind(this)} />
               )
             })}
           </ul>

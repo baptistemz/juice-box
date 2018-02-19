@@ -2,7 +2,7 @@ class PlaylistMusic < ApplicationRecord
   belongs_to :music
   belongs_to :playlist
   extend Enumerize
-  validates_uniqueness_of :music_id, scope: [:playlist_id], :on => [:create], message: "This music is already in the list"
+  validates_uniqueness_of :music_id, scope: [:playlist_id], :on => [:create], message: "This music is already in the playlist"
 
   private
 

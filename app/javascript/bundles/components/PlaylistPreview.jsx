@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Loader, AddToListWindow } from "../common/index";
 // import { addMusicToRoom, addPlaylistToRoom } from "../actions/index";
-
+import { NavItem, Dropdown } from 'react-materialize'
 
 class PlaylistPreview extends Component {
   constructor(){
@@ -60,10 +60,11 @@ class PlaylistPreview extends Component {
   }
   handleDeleteClick(e, music){
     e.preventDefault();
-    console.log("delete", music);
+    this.props.deleteMusicFrom("playlist", music, this.props.selectedPlaylistId)
   }
   render(){
     const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, inLibrary, ownerPlaylists } = this.props;
+    console.log(selectedPlaylistId, playlistId)
     if(selectedPlaylistId === playlistId){
       return(
         <div className="col s12 text-center">
@@ -84,13 +85,13 @@ class PlaylistPreview extends Component {
                           <p className="truncate">{wholeName}</p>
                         </li>
                         {inLibrary ?
-                          <div>
-                            <i data-activates={`dropdown_playlist_music_${music.music_key}`} className="dropdown-button secondary-text material-icons">more_horiz</i>
-                            <ul id={`dropdown_playlist_music_${music.music_key}`} className='dropdown-content'>
-                              <li><span onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to my library</span></li>
-                              <li><span onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from playlist</span></li>
-                            </ul>
-                          </div>
+                            <Dropdown
+                              trigger={<i className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
+                              options={{ alignment: 'right', constrainWidth: false }}
+                              >
+                              <NavItem onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to library</NavItem>
+                              <NavItem onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from playlist</NavItem>
+                            </Dropdown>
                           :
                           <a className="secondary-content" onClick={() => this.addMusic(music)}><i className="material-icons">playlist_add</i></a>
                         }
@@ -122,10 +123,6 @@ class PlaylistPreview extends Component {
     )
   }
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ addMusicToRoom, addPlaylistToRoom }, dispatch);
-// }
 
 function mapStateToProps({ playlist: { selectedPlaylistId, selectedPlaylistMusics, selectedPlaylistName } }) {
   return {

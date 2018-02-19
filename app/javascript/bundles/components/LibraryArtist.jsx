@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, AddToListWindow } from '../common/index';
+import { Button, MusicListElement } from '../common/index';
 import { selectArtist, updateMusic } from '../actions/index';
 
 class LibraryArtist extends Component {
@@ -15,16 +15,6 @@ class LibraryArtist extends Component {
     $('.modal').modal({
        endingTop: "0%"
     });
-    $('.dropdown-button').dropdown({
-        inDuration: 300,
-        outDuration: 225,
-        constrainWidth: false, // Does not change width of dropdown to that of the activator
-        // gutter: 0, // Spacing from edge
-        belowOrigin: true, // Displays dropdown below the button
-        alignment: 'right', // Displays dropdown with edge aligned to the left of button
-        stopPropagation: false // Stops event propagation
-      }
-    );
   }
   updateTitleField(value){
     this.setState({ titleField: value });
@@ -42,12 +32,12 @@ class LibraryArtist extends Component {
   }
   handleAddClick(e, music){
     e.preventDefault();
-    $(`#${music.music_key}_artist_music_modal`).modal('open');
+    $(`#artist_music_${music.music_key}_modal`).modal('open');
     console.log("add to playlist", music);
   }
   handleDeleteClick(e, music){
     e.preventDefault();
-    console.log("delete", music);
+    this.props.deleteMusicFrom("library", music);
   }
   addToPlaylists = (lists, video) => {
     let ids = _.keys(_.pickBy(lists))
@@ -86,24 +76,14 @@ class LibraryArtist extends Component {
             <ul className="collection library-collection">
               {selectedArtistMusics.map((music) => {
                 return(
-                  <a key={music.music_key}>
-                    <div className="collection-item-overlay">
-                      <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item">
-                        <p className="align-items-center">
-                          <span onClick={(e) => this.editItem(e, music)}><i className="material-icons margin-right-10 primary-text">edit</i></span>
-                          {music.song}
-                        </p>
-                      </li>
-                      <i data-activates={`artist_music_dropdown_${music.music_key}`} className="dropdown-button secondary-text material-icons">more_horiz</i>
-                      <ul id={`artist_music_dropdown_${music.music_key}`} className='dropdown-content'>
-                        <li><span onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to playlist</span></li>
-                        <li><span onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from library</span></li>
-                      </ul>
-                    </div>
-                    <AddToListWindow id={`${music.music_key}_artist_music_modal`}
-                      musicKey={music.music_key} addToPlaylists={(lists) => this.addToPlaylists(lists, music)}
-                      inLibrary={true} musicName={music.song} />
-                  </a>
+                  <MusicListElement
+                    key={`artist_music_${music.music_key}`}
+                    id={`artist_music_${music.music_key}`}
+                    music={music}
+                    handleAddClick={this.handleAddClick}
+                    handleDeleteClick= {this.handleDeleteClick.bind(this)}
+                    addToPlaylists={this.addToPlaylists}
+                    editItem={this.editItem.bind(this)} />
                 )
               })}
             </ul>

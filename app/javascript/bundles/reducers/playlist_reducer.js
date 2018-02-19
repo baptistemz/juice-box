@@ -1,7 +1,8 @@
 import {
   GOT_PLAYLISTS,
   GOT_PLAYLIST_MUSICS,
-  MUSIC_ADDED_TO_PLAYLIST
+  MUSIC_ADDED_TO_PLAYLIST,
+  MUSIC_DELETED_FROM_PLAYLIST
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -29,6 +30,11 @@ export default function (state = INITIAL_STATE, action) {
         return { ...state, selectedPlaylistMusics: [ ...state.selectedPlaylistMusics, action.payload ] }
       }
       return state
+    }
+    case MUSIC_DELETED_FROM_PLAYLIST:{
+      const index = _.findIndex(state.selectedPlaylistMusics, {id: action.payload.id});
+      const selectedPlaylistMusics = [ ...state.selectedPlaylistMusics.slice(0, index), ...state.selectedPlaylistMusics.slice(index + 1) ];
+      return { ...state, selectedPlaylistMusics };
     }
     default:
       return state;

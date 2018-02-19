@@ -52,7 +52,7 @@ class AddToListWindow extends Component {
                 <h5 className="secondary-text text-left">To a playlist:</h5>
                 <br/>
                 {playlists.map((playlist) => {
-                  return <Checkbox clickEvent={(v) => this.onCheck(playlist.id, v)} label={"To " + playlist.name} id={`${playlist.id}_${this.props.id}`} checked={this.state[playlist.id]}/>
+                  return <Checkbox key={playlist.id} clickEvent={(v) => this.onCheck(playlist.id, v)} label={"To " + playlist.name} id={`${playlist.id}_${this.props.id}`} checked={this.state[playlist.id]}/>
                 })}
               </div>
               :

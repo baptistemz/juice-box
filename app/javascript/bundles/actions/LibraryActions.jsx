@@ -91,13 +91,28 @@ export function addMusicToPlaylist(playlistId, music){
   };
 };
 
-export function deleteMusicfromLibrary(libraryMusicId){
+export function deleteMusicFromLibrary(libraryId, musicId){
+  console.log("deleteMusicFromLibrary", libraryId, musicId)
   return dispatch => {
-    axios.delete(`/api/librarys/${libraryId}/library_musics/${libraryMusicId}`)
+    axios.delete(`/api/libraries/${libraryId}/library_musics/${musicId}`)
+      .then((response) =>{
+        toastr.success(`${response.data.whole_name} deleted from your library`);
+        dispatch(musicDeletedFromLibrary(response.data));
+        setNextHeaders(response.headers)
+      }).catch((error)=>{
+        errorHandling(error)
+      })
+  };
+};
+
+export function deleteMusicFromPlaylist(playlistId, musicId){
+  console.log("deleteMusicFromPlaylist", playlistId, musicId)
+  return dispatch => {
+    axios.delete(`/api/playlists/${playlistId}/playlist_musics/${musicId}`)
       .then(response => {
         setNextHeaders(response.headers)
-        toastr.success(`${response.data.whole_name} is deleted from your library}`);
-        dispatch(musicdeletedFromLibrary(response.data));
+        toastr.success(`${response.data.whole_name} deleted from ${response.data.playlist.name}`);
+        dispatch(musicDeletedFromPlaylist(response.data));
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))
       })
@@ -130,6 +145,20 @@ function musicAddedToLibrary(data) {
 function musicAddedToPlaylist(data) {
   return {
     type: MUSIC_ADDED_TO_PLAYLIST,
+    payload: data
+  };
+}
+
+function musicDeletedFromLibrary(data) {
+  return {
+    type: MUSIC_DELETED_FROM_LIBRARY,
+    payload: data
+  };
+}
+
+function musicDeletedFromPlaylist(data) {
+  return {
+    type: MUSIC_DELETED_FROM_PLAYLIST,
     payload: data
   };
 }

@@ -13,7 +13,7 @@ const Checkbox = ({ label, id, checked, clickEvent }) => {
   return(
     <div className="col s6 m4">
       <p>
-        <Field id={id} checked={checked} label={label} clickEvent={clickEvent} component={MaterializeCheckbox} />
+        <Field id={id} name={label} checked={checked} label={label} clickEvent={clickEvent} component={MaterializeCheckbox} />
       </p>
     </div>
   )

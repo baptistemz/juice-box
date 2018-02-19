@@ -41,10 +41,10 @@ class LibraryArtists extends Component {
                     <div className="collection-item-overlay">
                       <li className="collection-item">
                         <p className="align-items-center">
-                          <span onClick={(e) => this.editItem(e, artist)}><i className="material-icons margin-right-10 primary-text">edit</i></span>
                           {artist.name}
                         </p>
-                        <i className="secondary-text material-icons">keyboard_arrow_right</i>
+                        <span onClick={(e) => this.editItem(e, artist)}><i className="left-icon material-icons margin-right-10 primary-text">edit</i></span>
+                        <i className="secondary-text material-icons right-icon">keyboard_arrow_right</i>
                       </li>
                     </div>
                   </Link>
