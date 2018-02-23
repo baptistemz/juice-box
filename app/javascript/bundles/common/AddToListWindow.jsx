@@ -44,7 +44,7 @@ class AddToListWindow extends Component {
             <h1 className="secondary-text" style={{ paddingLeft: "0" }}>Add "{musicName}"</h1>
             <br/>
             <div className="row margin-top-20">
-              <Checkbox key={`library${libraryId}`} clickEvent={(e) => this.onCheck("library", e)} label="To My Library" id={`${libraryId}_${this.props.id}`} checked={this.state["library"]}/>
+              <Checkbox id={`library${libraryId}`} clickEvent={(e) => this.onCheck("library", e)} label="To My Library" id={`${libraryId}_${this.props.id}`} checked={this.state["library"]}/>
             </div>
             <br/>
             {playlists.length > 0 ?
@@ -52,7 +52,7 @@ class AddToListWindow extends Component {
                 <h5 className="secondary-text text-left">To a playlist:</h5>
                 <br/>
                 {playlists.map((playlist) => {
-                  return <Checkbox key={playlist.id} clickEvent={(v) => this.onCheck(playlist.id, v)} label={"To " + playlist.name} id={`${playlist.id}_${this.props.id}`} checked={this.state[playlist.id]}/>
+                  return <Checkbox key={playlist.id} id={playlist.id} clickEvent={(v) => this.onCheck(playlist.id, v)} label={"To " + playlist.name} id={`${playlist.id}_${this.props.id}`} checked={this.state[playlist.id]}/>
                 })}
               </div>
               :
