@@ -32,7 +32,7 @@ gem 'active_model_serializers', '~> 0.10.6'
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'devise_token_auth', '~> 0.1.43.beta1'
+gem 'devise_token_auth', '0.1.42'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'jquery-rails'

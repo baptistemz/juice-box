@@ -23,6 +23,10 @@ class NewPassword extends Component{
       <div className="auth-background">
         <div className="center-page-content">
           <div className="container">
+            <br/>
+            <div className="text-center">
+              <h2>Set a new password</h2>
+            </div>
             <br />
             <div className="row">
               <div className="col s12 m8 l6 offset-m2 offset-l3">
