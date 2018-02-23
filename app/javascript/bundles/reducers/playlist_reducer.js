@@ -2,7 +2,8 @@ import {
   GOT_PLAYLISTS,
   GOT_PLAYLIST_MUSICS,
   MUSIC_ADDED_TO_PLAYLIST,
-  MUSIC_DELETED_FROM_PLAYLIST
+  MUSIC_DELETED_FROM_PLAYLIST,
+  PLAYLIST_CREATED,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -18,6 +19,12 @@ export default function (state = INITIAL_STATE, action) {
     case GOT_PLAYLISTS:{
       const { owner_playlists, public_playlists } = action.payload;
       return { ...state, ownerPlaylists: owner_playlists, publicPlaylists: public_playlists}
+    }
+    case PLAYLIST_CREATED:{
+      const { playlist } = action.payload;
+      console.log("state.ownerPlaylists", state.ownerPlaylists)
+      console.log("[ ...state.ownerPlaylists, playlist ]", [ ...state.ownerPlaylists, playlist ])
+      return { ...state, ownerPlaylists: [ ...state.ownerPlaylists, playlist ] }
     }
     case GOT_PLAYLIST_MUSICS:{
       const selectedPlaylistId = action.payload.playlist.id;

@@ -4,10 +4,6 @@ import { Button, RoomCreation } from '../common/index';
 
 
 class PreHome extends Component {
-  componentDidMount(){
-    var viewportHeight = $('.home-background').innerHeight();
-    $('.home-background').css({ height: viewportHeight });
-  }
   render() {
     return (
       <div className="home-background">

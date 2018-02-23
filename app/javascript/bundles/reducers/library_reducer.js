@@ -5,6 +5,7 @@ import {
   MUSIC_UPDATED,
   MUSIC_ADDED_TO_LIBRARY,
   MUSIC_DELETED_FROM_LIBRARY,
+  PLAYLIST_CREATED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -21,6 +22,10 @@ export default function (state = INITIAL_STATE, action) {
     case GOT_LIBRARY:{
       const { id, playlists, musics, artists } = action.payload;
       return {...state, id, playlists, musics, artists }
+    }
+    case PLAYLIST_CREATED:{
+      const { playlist } = action.payload;
+      return { ...state, playlists: [ ...state.playlists, playlist ] }
     }
     case ARTIST_UPDATED:{
       const {  deleted_artist, new_artist, updated_musics } = action.payload;
