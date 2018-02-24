@@ -3,12 +3,12 @@ import { AddToListWindow } from './index'
 import { NavItem, Dropdown, Button } from 'react-materialize'
 
 
-const MusicListElement = ({ id, music, handleAddClick, handleDeleteClick, addToPlaylists, editItem }) => {
+const MusicListElement = ({ id, music, handleAddClick, handleDeleteClick, addToPlaylists, editItem, name }) => {
   return(
     <a>
       <div className="collection-item-overlay">
         <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item">
-          {music.song}
+          {name || music.song}
         </li>
         <span onClick={(e) => editItem(e, music)}><i className="material-icons margin-right-10 primary-text left-icon">edit</i></span>
         <Dropdown

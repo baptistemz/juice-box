@@ -48,9 +48,9 @@ export default function (state = INITIAL_STATE, action) {
     }
     case MUSIC_UPDATED:{
       const music = action.payload;
-      console.log("some", _.some(state.artists, music.artist));
+      console.log("action", action)
       let artists = _.some(state.artists, music.artist) ? state.artists : [...state.artists, music.artist];
-      if(action.formerArtistId && _.filter(state.musics, (m) =>{return m.artist.id === parseInt(action.formerArtistId)}).length < 2){
+      if(action.formerArtistId && action.formerArtistId !== music.artist.id && _.filter(state.musics, (m) =>{return m.artist.id === parseInt(action.formerArtistId)}).length < 2){
         const toDeleteIndex = _.findIndex(artists, {id: action.formerArtistId});
         artists = [ ...artists.slice(0, toDeleteIndex), ...artists.slice(toDeleteIndex + 1) ];
       }

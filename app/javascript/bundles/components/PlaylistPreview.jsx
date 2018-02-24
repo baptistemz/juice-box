@@ -64,7 +64,6 @@ class PlaylistPreview extends Component {
   }
   render(){
     const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, inLibrary, ownerPlaylists } = this.props;
-    console.log(selectedPlaylistId, playlistId)
     if(selectedPlaylistId === playlistId){
       return(
         <div className="col s12 text-center">
@@ -77,11 +76,11 @@ class PlaylistPreview extends Component {
             {selectedPlaylistMusics.length > 0 ?
               <ul className="collection library-collection">
                 {selectedPlaylistMusics.map((music) => {
-                  const wholeName = music.artist && music.artist.name && music.name ? `${music.artist.name} - ${music.name}`: music.whole_name
+                  const wholeName = music.artist && music.artist.name && music.song ? `${music.artist.name} - ${music.song}`: music.whole_name
                   return(
                     <a key={music.music_key}>
                       <div className="collection-item-overlay">
-                        <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item">
+                        <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item" style={{ paddingLeft: "10px" }}>
                           <p className="truncate">{wholeName}</p>
                         </li>
                         {inLibrary ?

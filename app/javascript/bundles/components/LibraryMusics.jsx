@@ -75,13 +75,13 @@ class LibraryMusics extends Component {
         <div className="my-music-records-list overflow-scroll">
           <ul style={{ overflow: "visible" }} className="collection library-collection">
             {this.props.musics.map((music) => {
-              const wholeName = music.song && music.artist && music.artist.name ? music.song + ' - ' + music.artist.name : music.whole_name
+              const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
               return(
-
                 <MusicListElement
                   key={`library_music_${music.music_key}`}
                   id={`library_music_${music.music_key}`}
                   music={music}
+                  name={wholeName}
                   handleAddClick={this.handleAddClick}
                   handleDeleteClick= {this.handleDeleteClick.bind(this)}
                   addToPlaylists={this.addToPlaylists}
