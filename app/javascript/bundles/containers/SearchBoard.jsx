@@ -39,6 +39,7 @@ class SearchBoard extends Component {
         <MusicSearchResults
           roomId={this.props.roomId}
           libraryId={this.props.libraryId}
+          playlists={this.props.playlists}
           musics={this.props.youtube_videos}
           inModal={this.props.inModal}
           inLibrary={this.props.inLibrary}

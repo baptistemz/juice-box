@@ -5,7 +5,7 @@
     height: calc(100vh - 60px);
   }
   .my-music-content-container{
-    height: calc( 100vh - 298px);
+    height: calc( 100vh - 282px);
     &.tabs-hidden{
       height: calc( 100vh - 250px);
     }
@@ -20,7 +20,7 @@
     width: 100%;
   }
   .my-music-player{
-    bottom: 74px;
+    bottom: 70px;
     width: calc(100% - 22px);
     margin: auto -8px;
   }

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
-import { RoomCreation } from '../common/index';
+import RoomCreation from '../components/RoomCreation';
 import RoomSettings from '../components/RoomSettings';
 import RoomUsers from '../components/RoomUsers';
 import PlaylistPreview from '../components/PlaylistPreview'

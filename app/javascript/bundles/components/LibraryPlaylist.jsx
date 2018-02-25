@@ -6,33 +6,36 @@ import { connect } from 'react-redux';
 import {fetchPlaylistMusics} from "../actions/index";
 import PlaylistPreview from './PlaylistPreview';
 
-class LibraryPlaylist extends Component {
-  componentDidMount(){
-    this.props.fetchPlaylistMusics(this.props.match.params.id)
-  }
-  render(){
-    const { selectedPlaylistId, selectedPlaylistName } = this.props;
-    return(
-      <div className="col s12">
-        <div className="my-music-subheader space-between align-items-center">
-          <div className="width-100">
-            <Link className="my-music-back-btn" to="/library/playlists">
-              <i className="material-icons">arrow_back</i>
-              <p className="no-margin">Playlists</p>
-            </Link>
-          </div>
-          <h1 className="text-center">{selectedPlaylistName}</h1>
-          <div className="width-100"></div>
+const LibraryPlaylist = ({
+  selectedPlaylistId,
+  selectedPlaylistName,
+  fetchPlaylistMusics,
+  addMusicTo,
+  deleteMusicFrom,
+  openSearch,
+  match
+}) => {
+  fetchPlaylistMusics(match.params.id)
+  return(
+    <div className="col s12">
+      <div className="my-music-subheader space-between align-items-center">
+        <div className="width-100">
+          <Link className="my-music-back-btn" to="/library/playlists">
+            <i className="material-icons">arrow_back</i>
+            <p className="no-margin">Playlists</p>
+          </Link>
         </div>
-        <hr/>
-        <PlaylistPreview
-          addMusicTo={this.props.addMusicTo}
-          deleteMusicFrom={this.props.deleteMusicFrom}
-          openSearch={() => this.props.openSearch()}
-          playlistId={selectedPlaylistId} inLibrary/>
+        <h1 className="text-center">{selectedPlaylistName}</h1>
+        <div className="width-100"></div>
       </div>
-    )
-  }
+      <hr/>
+      <PlaylistPreview
+        addMusicTo={addMusicTo}
+        deleteMusicFrom={deleteMusicFrom}
+        openSearch={() => openSearch()}
+        playlistId={selectedPlaylistId} inLibrary/>
+    </div>
+  )
 }
 
 function mapDispatchToProps(dispatch) {
@@ -46,4 +49,6 @@ function mapStateToProps({ playlist }) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LibraryPlaylist));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(LibraryPlaylist)
+);

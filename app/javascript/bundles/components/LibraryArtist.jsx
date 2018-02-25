@@ -54,7 +54,7 @@ class LibraryArtist extends Component {
     })
   }
   render(){
-    const { selectedArtist, selectedArtistMusics } = this.props;
+    const { selectedArtist, selectedArtistMusics, libraryId, playlists } = this.props;
     if(!selectedArtist){
       return <div>Loading</div>
     }
@@ -77,6 +77,8 @@ class LibraryArtist extends Component {
               {selectedArtistMusics.map((music) => {
                 return(
                   <MusicListElement
+                    libraryId={libraryId}
+                    playlists={playlists}
                     key={`artist_music_${music.music_key}`}
                     id={`artist_music_${music.music_key}`}
                     music={music}

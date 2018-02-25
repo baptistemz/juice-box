@@ -3,7 +3,17 @@ import { AddToListWindow } from './index'
 import { NavItem, Dropdown, Button } from 'react-materialize'
 
 
-const MusicListElement = ({ id, music, handleAddClick, handleDeleteClick, addToPlaylists, editItem, name }) => {
+const MusicListElement = ({
+  id,
+  music,
+  handleAddClick,
+  handleDeleteClick,
+  addToPlaylists,
+  editItem,
+  name,
+  libraryId,
+  playlists
+}) => {
   return(
     <a>
       <div className="collection-item-overlay">
@@ -21,6 +31,7 @@ const MusicListElement = ({ id, music, handleAddClick, handleDeleteClick, addToP
       </div>
       <AddToListWindow id={`${id}_modal`}
         musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
+        libraryId={libraryId} playlists={playlists}
         inLibrary={true} musicName={music.song} />
     </a>
   )

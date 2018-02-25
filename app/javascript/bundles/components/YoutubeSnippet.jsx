@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { AddToListWindow } from '../common/index'
 
-const YoutubeSnippet = ({ video, addVideoToList, inLibrary, addVideo, playVideoInLibrary, ownerPlaylists, libraryMusics }) => {
+const YoutubeSnippet = ({ video,
+  addVideoToList,
+  inLibrary,
+  addVideo,
+  playVideoInLibrary,
+  ownerPlaylists,
+  libraryMusics,
+  playlists,
+  libraryId
+}) => {
   const imgUrl = video.snippet.thumbnails.medium.url;
   const style = { backgroundImage: `url(${imgUrl})`, packgroundPostion: "center", backgroundSize: "cover" };
   const addToPlaylists = (lists, video) => {
@@ -20,6 +29,7 @@ const YoutubeSnippet = ({ video, addVideoToList, inLibrary, addVideo, playVideoI
       }
     })
   }
+  $('.modal').modal({ endingTop: "0%" });
   return (
       <li className={`col s12 m6 ${inLibrary ? "l4" : "l6"}`}>
         <div className='card'>
@@ -40,6 +50,8 @@ const YoutubeSnippet = ({ video, addVideoToList, inLibrary, addVideo, playVideoI
                 <i className="material-icons">play_arrow</i>play
               </a>
               <AddToListWindow id={`${video.id.videoId}_modal`}
+                libraryId={libraryId}
+                playlists={playlists}
                 musicKey={video.id.videoId} addToPlaylists={(lists) => addToPlaylists(lists, video)}
                 inLibrary={_.find(libraryMusics, { music_key: video.id.videoId }) ? true : false}
                 musicName={video.snippet.title}><i className="material-icons secondary-text">playlist_add</i>Add</AddToListWindow>

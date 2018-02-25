@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
 import { createRoom } from '../actions/index';
-import { Input, Button } from './index';
+import { Input, Button } from '../common/index';
 
 class RoomCreation extends Component{
   submit(value){
@@ -40,4 +40,4 @@ RoomCreation = reduxForm({
   form: 'room_creation'
 })(connect(mapStateToProps, mapDispatchToProps)(RoomCreation));
 
-export { RoomCreation };
+export default RoomCreation;

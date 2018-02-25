@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, RoomCreation } from '../common/index';
+import RoomCreation from './RoomCreation'
+import { Button } from '../common/index';
 
 
 class PreHome extends Component {

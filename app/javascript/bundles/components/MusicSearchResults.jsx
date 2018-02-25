@@ -44,7 +44,7 @@ class MusicSearchResults extends Component {
     }
   }
   render() {
-    const musics = this.props.musics;
+    const { musics, playlists, inModal, libraryId, inLibrary, libraryMusics } = this.props;
     return (
       <div className="overflow-scroll search-scroll margin-top-10">
         <div className="row">
@@ -58,11 +58,13 @@ class MusicSearchResults extends Component {
                 <YoutubeSnippet
                   addVideo={this.addMusicTo.bind(this)}
                   playVideoInLibrary={this.playMusicInLibrary.bind(this, music)}
-                  inModal={this.props.inModal}
+                  inModal={inModal}
                   key={music.etag}
                   video={music}
-                  inLibrary={this.props.inLibrary}
-                  libraryMusics={this.props.libraryMusics}
+                  libraryId={libraryId}
+                  playlists={playlists}
+                  inLibrary={inLibrary}
+                  libraryMusics={libraryMusics}
                 />
               );
             })}

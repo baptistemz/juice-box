@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { RoomCreation, RoomCard } from '../common/index';
+import RoomCreation from '../components/RoomCreation';
+import { RoomCard } from '../common/index';
 import { fetchRooms } from '../actions/index'
 
 class RoomList extends Component {
