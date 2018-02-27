@@ -1,6 +1,6 @@
 module Api
   class LibrariesController < BaseController
-    before_action :authenticate_api_user!, only: [:create, :index, :delete]
+    before_action :authenticate_api_user!, only: [:update, :show]
 
     def update
       @library = Library.find(params[:id])
@@ -14,6 +14,7 @@ module Api
     def show
       @library = Library.find(params[:id])
       @musics = @library.library_musics
+      @player_musics = @library.library_player_musics
       @artists = []
       @musics.each do |music|
         @artists << music.music.artist if music.music.artist && !@artists.include?(music.music.artist)

@@ -13,7 +13,7 @@ import LibraryPlaylist from '../components/LibraryPlaylist';
 import LibraryNewPlaylist from '../components/LibraryNewPlaylist';
 import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
-import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist } from '../actions/index';
+import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary } from '../actions/index';
 
 class Library extends Component {
   constructor(props){
@@ -31,6 +31,11 @@ class Library extends Component {
   activeTab = props.location.pathname.startsWith("/library/search") ? "Search" : activeTab;
   activeTab = props.location.pathname.startsWith("/") ? "Playlists" : activeTab;
     this.state = { width: '0', tabsVisible, activeTab }
+  }
+  componentDidUpdate(lastProps){
+    if (lastProps.libraryId !== this.props.libraryId){
+      this.props.fetchLibrary(this.props.libraryId)
+    }
   }
   componentDidMount(){
     const alertOnce = () => {
@@ -54,7 +59,6 @@ class Library extends Component {
      }
    );
    $('#search_modal').modal({ endingTop: "0%" });
-   this.props.fetchLibrary(this.props.libraryId)
    this.setState({ width: window.innerWidth});
    window.addEventListener('resize', () => this.setState({ width: window.innerWidth}));
   }
@@ -67,7 +71,7 @@ class Library extends Component {
                           this.props.location.pathname === "/library/search" ||
                           this.props.location.pathname === "/library/playlists"
       this.setState({ tabsVisible });
-      $('#search_modal').modal({ endingTop: "0%" });
+      $('#search_modal').modal({ endingTop: "0%"  });
     }
   }
   openSearchModal(activeTab, url){
@@ -97,8 +101,11 @@ class Library extends Component {
       this.props.deleteMusicFromLibrary(this.props.libraryId, music.id);
     }
   }
+  playMusicInLibrary(music){
+    this.props.playMusicInLibrary(this.props.libraryId, music)
+  }
   render() {
-    const { handleSubmit, playlists, artists, musics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
+    const { handleSubmit, playlists, artists, musics, playerMusics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
     return (
       <div className="app-background">
         <div className="space-between align-items-end">
@@ -126,7 +133,7 @@ class Library extends Component {
             <div className="row no-margin dark-background">
               <div className="col s12">
                 <div className={`my-music-player ${this.state.tabsVisible ? "" : "tabs-hidden"}`}>
-                  <LibraryPlayer width={this.state.width}/>
+                  <LibraryPlayer playerMusics={playerMusics} width={this.state.width}/>
                 </div>
                 <div className="my-music-nav">
                   <div className="tabs-vertical">
@@ -152,18 +159,45 @@ class Library extends Component {
                       <div className="modal-close material-icons">clear</div>
                       <br/>
                       <br/>
-                      <SearchBoard libraryMusics={musics} inModal />
+                      <SearchBoard libraryMusics={musics} inModal libraryId={libraryId} playlists={playlists} inLibrary />
                     </div>
                   </div>
                   <Route exact path="/" render={routeProps => <LibraryPlaylists playlists={playlists}/>}/>
                   <Route exact path="/library" render={routeProps => <LibraryPlaylists playlists={playlists}/>}/>
-                  <Route exact path="/library/search" render={routeProps => <SearchBoard libraryMusics={musics} libraryId={libraryId} playlists={playlists} inLibrary />}/>
                   <Route exact path="/library/playlists" render={routeProps => <LibraryPlaylists playlists={playlists}/>} />
+                  <Route exact path="/library/search" render={routeProps =>
+                      <SearchBoard
+                        libraryMusics={musics}
+                        libraryId={libraryId}
+                        playlists={playlists}
+                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                        inLibrary
+                        inModal={false} />}/>
                   <Route path="/library/new_playlist" component={LibraryNewPlaylist} />
-                  <Route path="/library/playlists/:id" render={routeProps => <LibraryPlaylist addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} openSearch={() => this.openSearchModal("/library/search")} />} />
+                  <Route path="/library/playlists/:id" render={routeProps =>
+                      <LibraryPlaylist
+                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                        addMusicTo={this.addMusicTo.bind(this)}
+                        deleteMusicFrom={this.deleteMusicFrom.bind(this)}
+                        openSearch={() => this.openSearchModal("/library/search")} />} />
                   <Route exact path="/library/artists" render={routeProps => <LibraryArtists artists={artists}/>} />
-                  <Route path="/library/artists/:id" render={routeProps => <LibraryArtist libraryId={libraryId} playlists={playlists}  selectedArtist={selectedArtist} selectedArtistMusics={selectedArtistMusics} addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} />} />
-                  <Route exact path="/library/musics" render={routeProps => <LibraryMusics libraryId={libraryId} playlists={playlists} musics={musics} addMusicTo={this.addMusicTo.bind(this)} deleteMusicFrom={this.deleteMusicFrom.bind(this)} /> } />
+                  <Route path="/library/artists/:id" render={routeProps =>
+                      <LibraryArtist
+                        libraryId={libraryId}
+                        playlists={playlists}
+                        selectedArtist={selectedArtist}
+                        selectedArtistMusics={selectedArtistMusics}
+                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                        addMusicTo={this.addMusicTo.bind(this)}
+                        deleteMusicFrom={this.deleteMusicFrom.bind(this)} />} />
+                  <Route exact path="/library/musics" render={routeProps =>
+                      <LibraryMusics
+                        libraryId={libraryId}
+                        playlists={playlists}
+                        musics={musics}
+                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                        addMusicTo={this.addMusicTo.bind(this)}
+                        deleteMusicFrom={this.deleteMusicFrom.bind(this)} /> } />
                 </div>
               </div>
             </div>
@@ -175,13 +209,14 @@ class Library extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist }, dispatch);
+  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary }, dispatch);
 }
 
 function mapStateToProps({auth, library}) {
   return {
     libraryId: auth.libraryId,
     musics: library.musics,
+    playerMusics: library.playerMusics,
     artists: library.artists,
     playlists: library.playlists,
     selectedArtist: library.selectedArtist,

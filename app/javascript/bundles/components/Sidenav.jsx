@@ -16,8 +16,8 @@ class Sidenav extends Component {
       ],
       notAuthenticated: [
         { url: "/home", name: "Home", icon: "home"},
-        { url: { pathname: '/login', state: { from: props.location.pathname } }, name: "Log in", icon: "lock_outline"},
-        { url: { pathname: '/signup', state: { from: props.location.pathname } }, name: "Sign up", icon: "create"}
+        { url: { pathname: '/login', state: { from: props.location.pathname === '/rooms' ? '/' : props.location.pathname } }, name: "Log in", icon: "lock_outline"},
+        { url: { pathname: '/signup', state: { from: props.location.pathname === '/rooms' ? '/' : props.location.pathname } }, name: "Sign up", icon: "create"}
       ]
     }
   }

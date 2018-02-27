@@ -8,7 +8,7 @@ class YoutubePlayer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      playing: false,
+      playing: props.musicPlaying,
       volume: props.volumeShare,
       duration: 10000000
     }
@@ -20,7 +20,7 @@ class YoutubePlayer extends Component {
     if(this.props.video.state === "playing" && previousProps.video.state === "waiting"){
       this.setState({ playing: true })
     }
-    if(previousProps.roomPlaying === null && this.props.roomPlaying === true && !this.state.playing){
+    if(previousProps.musicPlaying === null && this.props.musicPlaying === true && !this.state.playing){
       // we are in the hidden player and the room is starting playing for the first time since last refresh
       this.setState({playing: true})
     }
@@ -53,9 +53,10 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
+    console.log("name", name)
     return(
       <div>
-        {video ?
+        {video && video.music_key ?
           <div>
             <div id="player_group" className={`dark-background ${inSideMenu ? "side-player" : ""} ${hidden ? "hidden" : ""}`}>
               <ReactPlayer
@@ -72,21 +73,34 @@ class YoutubePlayer extends Component {
                 volume={this.state.volume}
                 config={{ youtube: { playerVars: { showinfo: 1, controls: 1, playbackRate:1 }  } }}
                 />
-
+              <br/>
               <div className="player-content">
                 <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "hidden" : ""}`}>{this.props.name}</p>
                 <a className={`player-controlls ${this.props.inTransition ? "disabled" : ""}`} onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
                   <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
                 </a>
               </div>
+              <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "" : "hidden"}`}>{this.props.name}</p>
             </div>
             <a className={`player-controlls next-btn ${this.props.inTransition ? "disabled" : ""} ${hidden ? "" : "hidden"}`} onClick={() => this.nextVideo()}>
               <i className="material-icons">skip_next</i>
             </a>
-            <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "" : "hidden"}`}>{this.props.name}</p>
           </div>
         :
-          <div/>
+        <div>
+          <div id="player_group" className={`dark-background ${inSideMenu ? "side-player" : ""} ${hidden ? "hidden" : ""}`}>
+            <div className="empty-player">
+              <i className='material-icons'>play_circle_filled</i>
+            </div>
+            <div className="player-content">
+              <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "hidden" : ""}`}>____________ - ____________</p>
+              <a className="player-controlls disabled" onClick={this.state.playing ? () => this.onPause() : () => this.onPlay() }>
+                <i className="material-icons">{this.state.playing ? "pause" : "play_arrow"}</i>
+              </a>
+            </div>
+          </div>
+          <p className={`no-margin two-lines-p ${hidden ? "hidden" : ""} ${inSideMenu ? "" : "hidden"}`}>_________ - _________</p>
+        </div>
         }
       </div>
     )

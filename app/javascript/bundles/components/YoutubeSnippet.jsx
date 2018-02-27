@@ -7,10 +7,11 @@ const YoutubeSnippet = ({ video,
   addVideoToList,
   inLibrary,
   addVideo,
-  playVideoInLibrary,
+  playMusicInLibrary,
   ownerPlaylists,
   libraryMusics,
   playlists,
+  inModal,
   libraryId
 }) => {
   const imgUrl = video.snippet.thumbnails.medium.url;
@@ -29,8 +30,10 @@ const YoutubeSnippet = ({ video,
       }
     })
   }
-  $('.modal').modal({ endingTop: "0%" });
+  // console.log("mounting YoutubeSnippet", video.id.videoId, inModal, `#${video.id.videoId}_${inModal ? 'modal' : 'window'}_modal`)
+  // $(`#${video.id.videoId}_${inModal ? 'modal' : 'window'}_modal`).modal({ endingTop: "0%" })
   return (
+    <div>
       <li className={`col s12 m6 ${inLibrary ? "l4" : "l6"}`}>
         <div className='card'>
           <div className="card-image">
@@ -41,24 +44,35 @@ const YoutubeSnippet = ({ video,
           {!inLibrary ?
             <div className="card-action">
               <a rel="no-refresh" onClick={() => addVideo("room", video)}>
-                <i className="material-icons">playlist_add</i>add to list
-              </a>
-            </div>
-          :
-            <div className="card-action">
-              <a rel="no-refresh" onClick={playVideoInLibrary}>
-                <i className="material-icons">play_arrow</i>play
-              </a>
-              <AddToListWindow id={`${video.id.videoId}_modal`}
-                libraryId={libraryId}
-                playlists={playlists}
-                musicKey={video.id.videoId} addToPlaylists={(lists) => addToPlaylists(lists, video)}
-                inLibrary={_.find(libraryMusics, { music_key: video.id.videoId }) ? true : false}
-                musicName={video.snippet.title}><i className="material-icons secondary-text">playlist_add</i>Add</AddToListWindow>
-            </div>
-          }
-        </div>
-      </li>
+                <i className="material-icons">playlist_add</i>add to room
+                </a>
+              </div>
+              :
+              <div className="card-action">
+                <a rel="no-refresh" onClick={() => playMusicInLibrary(video)}>
+                  <i className="material-icons">play_arrow</i>play
+                </a>
+                <a onClick={() => {
+                    $(`#${video.id.videoId}_${inModal ? 'modal' : 'window'}_modal`).modal({ endingTop: "0%" })
+                    $(`#${video.id.videoId}_${inModal ? 'modal' : 'window'}_modal`).modal('open')
+                  }}>
+                  <i className="material-icons secondary-text">playlist_add</i>Add
+                </a>
+              </div>
+            }
+          </div>
+        </li>
+        {inLibrary ?
+          <AddToListWindow id={`${video.id.videoId}_${inModal ? 'modal' : 'window'}_modal`}
+            libraryId={libraryId}
+            playlists={playlists}
+            musicKey={video.id.videoId} addToPlaylists={(lists) => addToPlaylists(lists, video)}
+            inLibrary={_.find(libraryMusics, { music_key: video.id.videoId }) ? true : false}
+            musicName={video.snippet.title} />
+        :
+          <div/>
+        }
+    </div>
   );
 };
 

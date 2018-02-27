@@ -32,8 +32,8 @@ class LibraryArtist extends Component {
   }
   handleAddClick(e, music){
     e.preventDefault();
+    $(`#artist_music_${music.music_key}_modal`).modal({endingTop: "O%"});
     $(`#artist_music_${music.music_key}_modal`).modal('open');
-    console.log("add to playlist", music);
   }
   handleDeleteClick(e, music){
     e.preventDefault();
@@ -54,7 +54,7 @@ class LibraryArtist extends Component {
     })
   }
   render(){
-    const { selectedArtist, selectedArtistMusics, libraryId, playlists } = this.props;
+    const { selectedArtist, selectedArtistMusics, libraryId, playlists, playMusicInLibrary } = this.props;
     if(!selectedArtist){
       return <div>Loading</div>
     }
@@ -82,6 +82,7 @@ class LibraryArtist extends Component {
                     key={`artist_music_${music.music_key}`}
                     id={`artist_music_${music.music_key}`}
                     music={music}
+                    playMusicInLibrary={playMusicInLibrary}
                     handleAddClick={this.handleAddClick}
                     handleDeleteClick= {this.handleDeleteClick.bind(this)}
                     addToPlaylists={this.addToPlaylists}

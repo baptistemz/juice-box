@@ -5,12 +5,15 @@ import {
   MUSIC_UPDATED,
   MUSIC_ADDED_TO_LIBRARY,
   MUSIC_DELETED_FROM_LIBRARY,
-  PLAYLIST_CREATED
+  PLAYLIST_CREATED,
+  MUSIC_ADDED_TO_LIBRARY_PLAYER,
+  EMPTY_LIBRARY_PLAYER
 } from '../actions/types';
 
 const INITIAL_STATE = {
     id: null,
     musics: [],
+    playerMusics: [],
     artists: [],
     playlists: [],
     selectedArtist: null,
@@ -20,8 +23,8 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_LIBRARY:{
-      const { id, playlists, musics, artists } = action.payload;
-      return {...state, id, playlists, musics, artists }
+      const { id, playlists, musics, artists, player_musics } = action.payload;
+      return {...state, id, playlists, musics, artists, playerMusics: player_musics }
     }
     case PLAYLIST_CREATED:{
       const { playlist } = action.payload;
@@ -62,7 +65,7 @@ export default function (state = INITIAL_STATE, action) {
     }
     case SELECT_ARTIST:{
       const selectedArtist = _.find(state.artists, {id: parseInt(action.payload)})
-      const selectedArtistMusics = _.filter(state.musics, (m) =>{return m.artist.id === parseInt(action.payload)})
+      const selectedArtistMusics = _.filter(state.musics, (m) =>{return m.artist && m.artist.id === parseInt(action.payload)})
       console.log("selectedArtist", selectedArtist)
       console.log("state.musics", state.musics)
       console.log("selectedArtistMusics", selectedArtistMusics)
@@ -94,6 +97,12 @@ export default function (state = INITIAL_STATE, action) {
         console.log("artists", artists)
       }
       return { ...state, musics, artists, selectedArtistMusics }
+    }
+    case EMPTY_LIBRARY_PLAYER:{
+      return { ...state, playerMusics: [{}] }
+    }
+    case MUSIC_ADDED_TO_LIBRARY_PLAYER:{
+      return { ...state, playerMusics: [ action.payload ] }
     }
 
     default:

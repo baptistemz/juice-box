@@ -11,12 +11,27 @@
     background-position: center;
     background-size: 60px;
     background-repeat: no-repeat;
-    background-color: #DEDEDE;
     border-radius: 3px;
     & .equalizer {
       margin-bottom: 24px;
       margin-left: 11px;
     }
+  }
+}
+
+.empty-player{
+  display: flex;
+  flex-direction: row;
+  padding: 12px 38px;
+  background-size: 60px;
+  border: 1px solid rgba(222, 222, 222, 2);
+  // background-image: url("/transparent_disc.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 3px;
+  & i{
+    font-size:50px;
+    color: $primary-color
   }
 }
 

@@ -35,11 +35,12 @@ export function createRoom(values){
 };
 
 export function fetchRooms(values){
-  // console.log("before fetchrooms", axios.defaults.headers.common)
+  console.log("before fetchrooms", axios.defaults.headers.common)
   return dispatch => {
     axios.get('/api/rooms')
       .then(response => {
         // console.log(" fetchrooms response headers", response.headers)
+        console.log("fetchRooms response headers", response.headers)
         setNextHeaders(response.headers)
         // console.log(" fetchrooms after response axios", axios.defaults.headers.common)
         dispatch(gotRooms(response.data));

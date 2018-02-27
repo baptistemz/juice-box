@@ -17,7 +17,7 @@ class RoomCreation extends Component{
           id="room_name_form"
           className={`padding-auto justify-center align-items-center ${background} ${topRightCorner ? "top-right-corner" : ""}`}
           onSubmit={handleSubmit(value => this.submit(value))}>
-          <p>CREATE A PLAYLIST</p>
+          <p>CREATE A ROOM</p>
           <Input name="name" label="room name" type="text" error={ errors ? errors.name || errors.slug : null }/>
           <Button>Create</Button>
         </form>

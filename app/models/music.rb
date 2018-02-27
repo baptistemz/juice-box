@@ -1,6 +1,7 @@
 class Music < ApplicationRecord
   has_many :room_musics, dependent: :destroy
   has_many :library_musics, dependent: :destroy
+  has_many :library_player_musics, dependent: :destroy
   has_many :playlist_musics, dependent: :destroy
   belongs_to :artist
   extend Enumerize

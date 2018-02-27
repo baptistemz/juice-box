@@ -1,6 +1,6 @@
 import { push } from "react-router-redux";
 import { toastr } from 'react-redux-toastr';
-import { logoutUser } from '../actions/index'
+import { errorLogout } from '../actions/index'
 import { setNextHeaders } from './tokenManagement';
 
 export function errorHandling(error, dispatchAction){
@@ -17,7 +17,8 @@ export function errorHandling(error, dispatchAction){
       }
       case 401:{
         console.log("401 !!!", error.response)
-        dispatchAction(logoutUser());
+        dispatchAction(push("/"));
+        dispatchAction(errorLogout());
       }
       default:
         const full_messages = error.response.data.errors.full_messages
@@ -25,11 +26,11 @@ export function errorHandling(error, dispatchAction){
         const message_keys = Object.keys(messages)
         if(full_messages){
           for (var i = 0; i < message_keys.length; i++) {
-            toastr.error(full_messages[i][0]);
+            toastr.error(full_messages[i]);
           }
         }else{
           for (var i = 0; i < message_keys.length; i++) {
-            toastr.error(messages[message_keys[i]][0]);
+            toastr.error(messages[message_keys[i]]);
           }
         }
     }

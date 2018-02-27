@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     end
     resources :libraries, only: [ :show, :update] do
       resources :library_musics, only: [:create, :destroy]
+      resources :library_player_musics, only: [:create, :destroy]
     end
     resources :artists, only: [ :update ]
     resources :musics, only: [ :update ]

@@ -6,3 +6,15 @@
     }
   }
 }
+
+[type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after{
+  border: 2px solid white;
+}
+
+[type="checkbox"] + label{
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+}

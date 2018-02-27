@@ -5,15 +5,25 @@ import { browserHistory } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { addMusicToRoom, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
 import YoutubeSnippet from '../components/YoutubeSnippet';
+import { AddToListWindow } from '../common/index'
 
 class MusicSearchResults extends Component {
-  addMusicToLibrary(music) {
-    console.log("addMusicToLibrary", music)
-  }
-  playMusicInLibrary(music) {
-    console.log("playMusicInLibrary", music)
-  }
   addMusicTo(destination, music, id) {
+    const params = this.getMusicParams(music);
+    switch (destination) {
+      case "room":
+        this.props.addMusicToRoom(this.props.roomId, params);
+        break;
+      case "library":
+        this.props.addMusicToLibrary(this.props.libraryId, params);
+        break;
+      case "playlist":
+        this.props.addMusicToPlaylist(id, params);
+        break;
+      default:
+    }
+  }
+  getMusicParams(music){
     const title = music.snippet.title
     const params = {
       provider: "youtube",
@@ -30,21 +40,14 @@ class MusicSearchResults extends Component {
       params['artist'] = title.split('-')[0].trim();
       params['song'] = title
     }
-    switch (destination) {
-      case "room":
-        this.props.addMusicToRoom(this.props.roomId, params);
-        break;
-      case "library":
-        this.props.addMusicToLibrary(this.props.libraryId, params)
-        break;
-      case "playlist":
-        this.props.addMusicToPlaylist(id, params)
-        break;
-      default:
-    }
+    return params
+  }
+  playMusicInLibrary(music){
+    const params = this.getMusicParams(music);
+    this.props.playMusicInLibrary(params);
   }
   render() {
-    const { musics, playlists, inModal, libraryId, inLibrary, libraryMusics } = this.props;
+    const { musics, playlists, inModal, libraryId, inLibrary, libraryMusics, playMusicInLibrary } = this.props;
     return (
       <div className="overflow-scroll search-scroll margin-top-10">
         <div className="row">
@@ -57,7 +60,7 @@ class MusicSearchResults extends Component {
               return (
                 <YoutubeSnippet
                   addVideo={this.addMusicTo.bind(this)}
-                  playVideoInLibrary={this.playMusicInLibrary.bind(this, music)}
+                  playMusicInLibrary={this.playMusicInLibrary.bind(this)}
                   inModal={inModal}
                   key={music.etag}
                   video={music}
@@ -65,7 +68,7 @@ class MusicSearchResults extends Component {
                   playlists={playlists}
                   inLibrary={inLibrary}
                   libraryMusics={libraryMusics}
-                />
+                  />
               );
             })}
           </ReactCSSTransitionGroup>

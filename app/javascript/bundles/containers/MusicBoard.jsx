@@ -56,36 +56,38 @@ class MusicBoard extends Component {
     this.setState({ playing: false })
   }
   musicPlayer(music, music_number){
-    console.log("music", music)
+
     const { hidden_player, transitionSpeed, volume_balance, music_0, music_1 } = this.props;
-    if(!music){
-      return(
-        <div/>
-      )
-    }
+    let video = music || {}
+    // if(!music){
+    //   return(
+    //     <div/>
+    //   )
+    // }
     if(this.props.isOwner){
       return <YoutubePlayer
         hidden={music_number === hidden_player}
-        video={music}
+        video={video}
         inTransition={this.state.inTransition}
         transitionSpeed={transitionSpeed}
-        name={ music.whole_name ? music.whole_name : `${music.artist} - ${music.song}` }
+        name={ video.whole_name ? video.whole_name : `${video.artist} - ${video.song}` }
         volumeShare={music_number === 0 ? 1 - volume_balance : volume_balance}
         nextVideoButton={this.transition.bind(this, music_number)}
         nextVideoAuto={this.transition.bind(this, music_number === 1 ? 0 : 1)}
         onPlay={this.onPlay.bind(this)}
         onPause={this.onPause.bind(this)}
-        roomPlaying={this.state.playing}
+        musicPlaying={this.state.playing}
         />
     }
     return <SimulatedPlayer
-      name={ music.whole_name ? music.whole_name : `${music.artist} - ${music.song}` }
+      name={ video.whole_name ? video.whole_name : `${video.artist} - ${video.song}` }
       hidden={music_number === this.props.hidden_player}
       buttonsDisabled={true} />
   }
   render(){
+    console.log("this.props.isOwner", this.props.isOwner)
     const { deleteMusicFromRoom, roomId, isOwner, music_0, music_1 } = this.props;
-    if(!this.state.items.length && !music_0 && !music_1){ return(<div/>)}
+    // if(!this.state.items.length && !music_0 && !music_1){ return(<div/>)}
     return(
       <div className="dark-background padding-20">
         {this.musicPlayer(music_0, 0)}

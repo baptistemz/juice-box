@@ -1,5 +1,3 @@
-require 'json'
-
 module Api
   class LibraryMusicsController < BaseController
     def create

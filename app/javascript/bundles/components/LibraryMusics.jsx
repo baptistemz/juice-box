@@ -19,6 +19,7 @@ class LibraryMusics extends Component {
   editItem(e, music){
     e.preventDefault();
     this.setState({ editing: music, titleField: music.song || music.whole_name, artistField: music.artist && music.artist.name || music.whole_name  });
+    $('#music_and_artist_edit_modal').modal({endingTop: "O%"})
     $('#music_and_artist_edit_modal').modal('open')
   }
   submit(e){
@@ -28,6 +29,7 @@ class LibraryMusics extends Component {
   }
   handleAddClick(e, music){
     e.preventDefault();
+    $(`#library_music_${music.music_key}_modal`).modal({endingTop: "O%"});
     $(`#library_music_${music.music_key}_modal`).modal('open');
   }
   handleDeleteClick(e, music){
@@ -50,7 +52,7 @@ class LibraryMusics extends Component {
     if(this.props.musics.length === 0){
       return <div>There are no musics in your library search and add some ;)</div>
     }
-    const { libraryId, playlists, musics } = this.props;
+    const { libraryId, playlists, musics, playMusicInLibrary } = this.props;
     return(
       <div className="col s12 margin-top-10">
         <div className="my-music-records-list overflow-scroll">
@@ -65,6 +67,7 @@ class LibraryMusics extends Component {
                   playlists={playlists}
                   music={music}
                   name={wholeName}
+                  playMusicInLibrary={playMusicInLibrary}
                   handleAddClick={this.handleAddClick}
                   handleDeleteClick= {this.handleDeleteClick.bind(this)}
                   addToPlaylists={this.addToPlaylists}

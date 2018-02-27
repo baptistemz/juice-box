@@ -45,6 +45,7 @@ export function loginUser(data, next_path) {
       .then(response => {
         console.log(response)
         //STORE TOKEN IN LOCAL STORAGE AND IN AXIOS HEADERS FOR NEXT REQUEST
+        console.log("loginUser headers", response.headers)
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
@@ -71,6 +72,7 @@ export function signupUser(data, next_path) {
         toastr.success('Logged in', 'authentification success');
         //REDIRECT USER
         dispatch(push(next_path ? next_path : '/'));
+
       }).catch((error) => {
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
@@ -112,6 +114,15 @@ export function logoutUser() {
       })
   };
 }
+
+export function errorLogout() {
+  return dispatch => {
+    localStorage.clear();
+    toastr.success('Log out', 'see you soon');
+    dispatch(receiveLogout());
+  };
+}
+
 
 export function updatePassword(data, params = null) {
   return dispatch => {

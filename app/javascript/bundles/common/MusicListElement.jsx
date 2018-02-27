@@ -11,13 +11,14 @@ const MusicListElement = ({
   addToPlaylists,
   editItem,
   name,
+  playMusicInLibrary,
   libraryId,
   playlists
 }) => {
   return(
     <a>
       <div className="collection-item-overlay">
-        <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item">
+        <li onClick={(e) => {playMusicInLibrary(music)}} className="collection-item">
           {name || music.song}
         </li>
         <span onClick={(e) => editItem(e, music)}><i className="material-icons margin-right-10 primary-text left-icon">edit</i></span>
@@ -30,9 +31,9 @@ const MusicListElement = ({
         </Dropdown>
       </div>
       <AddToListWindow id={`${id}_modal`}
-        musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
-        libraryId={libraryId} playlists={playlists}
-        inLibrary={true} musicName={music.song} />
+      musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
+      libraryId={libraryId} playlists={playlists}
+      inLibrary={true} musicName={music.song} />
     </a>
   )
 }
