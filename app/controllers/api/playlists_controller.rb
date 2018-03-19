@@ -1,6 +1,6 @@
 module Api
   class PlaylistsController < BaseController
-    before_action :authenticate_api_user!, only: [:create, :index, :delete]
+    before_action :authenticate_api_user!, only: [:create, :delete]
     def create
       @playlist = current_api_user.playlists.create(playlist_params)
       if @playlist.save
@@ -13,7 +13,7 @@ module Api
 
     def index
       @public_playlists = Playlist.where(public: true)
-      @owner_playlists = current_api_user.playlists
+      @owner_playlists = current_api_user ? current_api_user.playlists : []
       render :index
     end
 

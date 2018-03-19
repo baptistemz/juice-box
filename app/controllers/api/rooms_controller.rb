@@ -53,13 +53,14 @@ module Api
       @room = Room.find(params[:room_id])
       @playlist = Playlist.find(params[:playlist_id])
       @playlist_musics = @playlist.playlist_musics.shuffle
+      @user_id = current_api_user ? current_api_user.id : nil
       if @room.room_musics.length == 0
         first_music = @playlist_musics.shift
-        @room.room_musics.create(state: "playing", music_id: first_music.music_id, user_id: current_api_user.id, waiting_list_position: 0)
+        @room.room_musics.create(state: "playing", music_id: first_music.music_id, user_id: @user_id, waiting_list_position: 0)
       end
       RoomMusic.skip_callback(:create, :after, :broadcast_added_music)
       @playlist_musics.each do |playlist_music|
-        @room.room_musics.create(state: "waiting", music_id: playlist_music.music_id, user_id: current_api_user.id, waiting_list_position: @room.room_musics.length)
+        @room.room_musics.create(state: "waiting", music_id: playlist_music.music_id, user_id: @user_id, waiting_list_position: @room.room_musics.length)
       end
       RoomMusic.set_callback(:create, :after, :broadcast_added_music)
       @room.broadcast_added_playlist(@room.room_musics.where(state: "waiting"), @playlist, current_api_user)

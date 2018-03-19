@@ -28,25 +28,25 @@ class PlaylistPreview extends Component {
       this.setState({ addingListToRoom: !this.props.added });
     }
   }
-  addMusic(music){
-    const params={
-      artist: music.artist,
-      song: music.song,
-      whole_name: music.whole_name,
-      provider: music.provider,
-      music_key: music.music_key
-    }
-    this.props.addMusicToRoom(this.props.roomId, params)
-  }
+  // addMusic(music){
+  //   const params={
+  //     artist: music.artist,
+  //     song: music.song,
+  //     whole_name: music.whole_name,
+  //     provider: music.provider,
+  //     music_key: music.music_key
+  //   }
+  //   this.props.addMusicToRoom(this.props.roomId, params)
+  // }
   addList(){
     this.setState({ addingListToRoom: true })
-    this.props.addPlaylistToRoom(this.props.roomId, this.props.playlistId)
+    this.props.addPlaylistToRoom(this.props.playlistId)
   }
   noMusic(){
     return(
       <div>
         <big>There are no musics in this playlist for the moment. <br/> Please search and add some ;)</big>
-        {!this.props.inLibrary ?
+        {this.props.inRoom ?
           <div/>
         :
           <Button clickTrigger={() => this.props.openSearch()} icon="search">Search</Button>
@@ -63,15 +63,10 @@ class PlaylistPreview extends Component {
     this.props.deleteMusicFrom("playlist", music, this.props.selectedPlaylistId)
   }
   render(){
-    const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, inLibrary, ownerPlaylists } = this.props;
+    const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, ownerPlaylists, inRoom, addMusicToRoom } = this.props;
     if(selectedPlaylistId === playlistId){
       return(
         <div className="col s12 text-center">
-          {!inLibrary ?
-            <h3>{selectedPlaylistName}</h3>
-          :
-            <div/>
-          }
           <div className="playlist-modal-list overflow-scroll">
             {selectedPlaylistMusics.length > 0 ?
               <ul className="collection library-collection">
@@ -83,16 +78,16 @@ class PlaylistPreview extends Component {
                         <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item" style={{ paddingLeft: "10px" }}>
                           <p className="truncate">{wholeName}</p>
                         </li>
-                        {inLibrary ?
-                            <Dropdown
-                              trigger={<i className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
-                              options={{ alignment: 'right', constrainWidth: false }}
-                              >
-                              <NavItem onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to library</NavItem>
-                              <NavItem onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from playlist</NavItem>
-                            </Dropdown>
-                          :
-                          <a className="secondary-content" onClick={() => this.addMusic(music)}><i className="material-icons">playlist_add</i></a>
+                        {!inRoom ?
+                          <Dropdown
+                            trigger={<i className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
+                            options={{ alignment: 'right', constrainWidth: false }}
+                            >
+                            <NavItem onClick={(e) => this.handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to library</NavItem>
+                            <NavItem onClick={(e) => this.handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from playlist</NavItem>
+                          </Dropdown>
+                        :
+                          <a className="secondary-content" onClick={() => addMusicToRoom(music)}><i className="material-icons">playlist_add</i></a>
                         }
                       </div>
                     </a>

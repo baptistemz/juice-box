@@ -11,3 +11,9 @@
     background-color: #BB566C;
   }
 }
+
+@media only screen and (min-width: 0px) and (max-width: 600px){
+  .fixed-action-btn{
+    bottom: 84px;
+  }
+}

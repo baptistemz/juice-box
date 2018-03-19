@@ -32,6 +32,13 @@ class Routes extends Component{
     this.state = { sideNav };
   }
   render(){
+    // let lastLocation = '';
+    // history.listen(location => {
+    //   if (lastLocation !== location.pathname) {
+    //     lastLocation = location.pathname;
+    //     this.props.store.dispatch(location.pathname);
+    //   }
+    // });
     history.listen((location, action) => {
       const inLibrary = this.props.isAuthenticated && location.pathname === ('/');
       const inSidenavPage = history.location.pathname.startsWith("/rooms") ||
@@ -43,6 +50,7 @@ class Routes extends Component{
     })
     const { isAuthenticated, isMecano, rehydrated, profile_picture, email, username } = this.props;
     const Home = isAuthenticated ? Library : PreHome;
+    console.log("Routes", this.props)
     return(
       <ConnectedRouter history={history}>
         <div>

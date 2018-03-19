@@ -1,5 +1,7 @@
 module Api
   class LibraryPlayerMusicsController < BaseController
+    before_action :authenticate_api_user!
+    
     def create
       @library = Library.find(params[:library_id])
       @playing_library_player_musics = @library.library_player_musics.where(status: "playing")

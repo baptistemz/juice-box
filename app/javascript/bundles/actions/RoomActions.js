@@ -40,7 +40,7 @@ export function fetchRooms(values){
     axios.get('/api/rooms')
       .then(response => {
         // console.log(" fetchrooms response headers", response.headers)
-        console.log("fetchRooms response headers", response.headers)
+        console.log("fetchRooms response ", response)
         setNextHeaders(response.headers)
         // console.log(" fetchrooms after response axios", axios.defaults.headers.common)
         dispatch(gotRooms(response.data));
@@ -52,8 +52,10 @@ export function fetchRooms(values){
 
 export function fetchRoom(slug){
   return dispatch => {
-    axios.get(`/api${slug}`)
+    const splittedSlug = slug.split("/");
+    axios.get(`/api/${splittedSlug[1]}/${splittedSlug[2]}`)
       .then(response => {
+        console.log("fetchRoom response ", response)
         setNextHeaders(response.headers)
         dispatch(gotRoom(response.data));
       }).catch((error)=>{
@@ -72,19 +74,6 @@ export function updateRoom(room_id, params){
     })
   };
 };
-
-// export function reinitializeRoom(room_id){
-//   return dispatch => {
-//     console.log("IN REINITIALIZE")
-//     axios.get(`/api/rooms/${room_id}/fix_music_states`).then((response) =>{
-//       console.log("IN REINITIALIZE RESPONSE")
-//       setNextHeaders(response.headers)
-//       dispatch({ type: REINITIALIZE_ROOM });
-//     }).catch((error)=>{
-//       errorHandling(error)
-//     })
-//   }
-// }
 
 
 //action creators

@@ -38,7 +38,7 @@ class Account extends Component {
               <div className="row">
                 <div className="col s6 m4 margin-bottom-20">
                   <EditableField
-                    label="prénom"
+                    label="username"
                     type="username"
                     onSubmit={this.changeProfileField.bind(this)}
                     value={username}

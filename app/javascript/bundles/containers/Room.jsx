@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import MusicBoard from "./MusicBoard";
 import SearchBoard from "./SearchBoard";
+import SearchNavigator from "./SearchNavigator";
 import RoomCreation from '../components/RoomCreation';
 import RoomSettings from '../components/RoomSettings';
 import RoomUsers from '../components/RoomUsers';
@@ -79,6 +80,7 @@ class Room extends Component {
     }
   }
   connectChannel(){
+    console.log("this.props.id", this.props.id)
     if (typeof App !== 'undefined' && this.props.id) {
       console.log("connecting to", this.props.id)
       App.room = App.cable.subscriptions.create(
@@ -91,13 +93,13 @@ class Room extends Component {
     }
   }
   disconnectChannel(){
-    if (typeof App !== 'undefined') {
+    if (typeof App !== 'undefined' && this.props.id) {
       console.log("disconnecting from", this.props.id)
       App.cable.subscriptions.remove(App.room);
     }
   }
   componentWillMount(){
-    this.connectChannel()
+    if(this.props.id){this.connectChannel()}
   }
   componentWillUnmount(){
     this.disconnectChannel()
@@ -108,7 +110,8 @@ class Room extends Component {
     }
   }
   componentDidMount(){
-    if(this.props.isAuthenticated){this.props.fetchPlaylists()}
+    const url = this.props.location.pathname
+    this.props.fetchRoom(url);
     const alertOnce = () => {
       if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
         toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 0})
@@ -122,15 +125,6 @@ class Room extends Component {
     $(window).blur(function() {
       interval_id = 0;
     });
-    const url = this.props.location.pathname
-    this.props.fetchRoom(url);
-    $('.modal').modal({
-      endingTop: "0%",
-      ready: (modal, trigger) => {if(_.includes(modal[0].id, "playlist") && this.props.isAuthenticated){
-        const id = modal[0].id.split("_")["3"]
-        this.props.fetchPlaylistMusics(id)
-      }}
-    });
     $('.button-collapse').sideNav({
        menuWidth: 300, // Default is 300
        edge: 'right', // Choose the horizontal origin
@@ -139,23 +133,11 @@ class Room extends Component {
      }
    );
   }
-  renderPlaylistModal(status, id){
-    const added = !_.isUndefined(_.find(this.state.addedPlaylists, ['id', id]))
-    return(
-      <div key={id} id={`${status}_playlist_modal_${id}`} className="room-modal modal">
-        <div className="modal-close material-icons margin-5 font-30">clear</div>
-        <br/>
-        <PlaylistPreview
-          ownerPlaylists={this.props.ownerPlaylists}
-          addMusicToRoom={this.props.addMusicToRoom}
-          addPlaylistToRoom={this.props.addPlaylistToRoom}
-          roomId={this.props.id} playlistId={id} added={added} popUp/>
-      </div>
-    )
-  }
   render() {
-    const { id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists, connectedUsers, connected_stranger_number } = this.props;
+    const { id, slug, name, owner_name, transition_speed, contributors_number, isAuthenticated, musics, is_owner, ownerPlaylists, publicPlaylists, connectedUsers, connected_stranger_number, libraryMusics, libraryArtists, libraryPlaylists, addMusicToRoom, selectedArtist, selectedArtistMusics, addPlaylistToRoom } = this.props;
     const noSleep = new NoSleep();
+    const playlistAdded = !_.isUndefined(_.find(this.state.addedPlaylists, ['id', id]))
+    console.log("Room, id", id)
     noSleep.enable();
     return (
       <div>
@@ -173,7 +155,7 @@ class Room extends Component {
             <div className="room-nav">
               <div>
                 <a href="#" data-activates="slide-out-users" className="button-collapse">
-                  <div className="contributors-icon secondary-text"><i className="material-icons">person</i>{connectedUsers.length + connected_stranger_number}</div>
+                  <div className="contributors-icon secondary-text"><i className="material-icons">person</i>{connectedUsers && connectedUsers.length + connected_stranger_number}</div>
                 </a>
                 <div id="slide-out-users" className="primary-background side-nav">
                   <div onClick={() => $('.button-collapse').sideNav('hide')} className="pointer material-icons margin-5 font-30">clear</div>
@@ -187,7 +169,7 @@ class Room extends Component {
               </div>
               {is_owner && isAuthenticated ?
                 <div>
-                  <a href="#" data-activates="slide-out-settings" className="button-collapse">
+                  <a data-activates="slide-out-settings" className="button-collapse">
                     <i className="secondary-text material-icons">
                       settings
                     </i>
@@ -213,22 +195,40 @@ class Room extends Component {
             <div className="col s12 l6">
               <MusicBoard transitionSpeed={transition_speed} roomId={id} isOwner={is_owner && isAuthenticated}/>
             </div>
-            <div className="col s12 l6 hide-on-med-and-down">
-              <SearchBoard roomId={id}/>
+            <div className="col s12 l6">
+              <SearchNavigator
+                libraryMusics={libraryMusics}
+                libraryArtists={libraryArtists}
+                selectedArtist={selectedArtist}
+                selectedArtistMusics={selectedArtistMusics}
+                libraryPlaylists={libraryPlaylists}
+                addPlaylistToRoom={(playlistId) => addPlaylistToRoom(id, playlistId)}
+                roomId={id}
+                playlistAdded={playlistAdded}
+                addMusicToRoom={addMusicToRoom}
+              />
             </div>
-            <a className="hide-on-large-only btn-floating btn-large waves-effect waves-light modal-trigger search-modal-btn" href="#search_modal">
-              <i className="material-icons">search</i>
-            </a>
             <div id="search_modal" className="room-modal modal">
               <div className="col s12">
                 <div className="modal-close material-icons">clear</div>
                 <br/>
                 <br/>
-                <SearchBoard roomId={id}/>
+                {isAuthenticated ?
+                  <SearchNavigator
+                    libraryMusics={libraryMusics}
+                    libraryArtists={libraryArtists}
+                    selectedArtist={selectedArtist}
+                    selectedArtistMusics={selectedArtistMusics}
+                    libraryPlaylists={libraryPlaylists}
+                    addPlaylistToRoom={(playlistId) => addPlaylistToRoom(id, playlistId)}
+                    roomId={id}
+                    playlistAdded={playlistAdded}
+                    addMusicToRoom={addMusicToRoom}/>
+                  :
+                  <SearchBoard roomId={id} />
+                }
               </div>
             </div>
-            {ownerPlaylists.map((playlist) => {return this.renderPlaylistModal("owner", playlist.id)})}
-            {publicPlaylists.map((playlist) => {return this.renderPlaylistModal("public", playlist.id)})}
           </div>
         </div>
       </div>
@@ -240,7 +240,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchRoom, musicEnded, musicAdded, musicStarted, updateRoom, waitingListOrderChanged, musicDeleted, fetchPlaylists, fetchPlaylistMusics, connectUserToRoom, disconnectUserFromRoom, connectedStrangerNumberChanged, addMusicToRoom, addPlaylistToRoom }, dispatch);
 }
 
-function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner, connectedUsers, connected_stranger_number }, playlist:{ ownerPlaylists, publicPlaylists }}) {
+function mapStateToProps({ library, auth, room: { id, user_id, slug, name, transition_speed, owner_name, contributors_number, is_owner, connectedUsers, connected_stranger_number }, playlist:{ ownerPlaylists, publicPlaylists }}) {
   return {
     id,
     user_id: auth.id,
@@ -254,7 +254,12 @@ function mapStateToProps({ auth, room: { id, user_id, slug, name, transition_spe
     ownerPlaylists,
     publicPlaylists,
     connectedUsers,
-    connected_stranger_number
+    connected_stranger_number,
+    libraryMusics: library.musics,
+    libraryArtists: library.artists,
+    libraryPlaylists: library.playlists,
+    selectedArtist: library.selectedArtist,
+    selectedArtistMusics: library.selectedArtistMusics
   }
 }
 

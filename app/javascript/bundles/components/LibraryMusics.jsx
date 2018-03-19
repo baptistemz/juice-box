@@ -49,13 +49,14 @@ class LibraryMusics extends Component {
     })
   }
   render(){
+    console.log('LibraryMusics', this.props)
     if(this.props.musics.length === 0){
       return <div>There are no musics in your library search and add some ;)</div>
     }
-    const { libraryId, playlists, musics, playMusicInLibrary } = this.props;
+    const { libraryId, playlists, musics, playMusicInLibrary, inRoom, addMusicToRoom } = this.props;
     return(
       <div className="col s12 margin-top-10">
-        <div className="my-music-records-list overflow-scroll">
+        <div className="my-music-records-list">
           <ul style={{ overflow: "visible" }} className="collection library-collection">
             {musics.map((music) => {
               const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
@@ -71,7 +72,9 @@ class LibraryMusics extends Component {
                   handleAddClick={this.handleAddClick}
                   handleDeleteClick= {this.handleDeleteClick.bind(this)}
                   addToPlaylists={this.addToPlaylists}
-                  editItem={this.editItem.bind(this)} />
+                  editItem={this.editItem.bind(this)}
+                  addMusicToRoom={addMusicToRoom}
+                  inRoom={inRoom} />
               )
             })}
           </ul>

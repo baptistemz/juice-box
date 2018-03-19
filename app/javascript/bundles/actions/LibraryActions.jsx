@@ -122,10 +122,10 @@ export function deleteMusicFromPlaylist(playlistId, musicId){
 };
 
 export function playMusicInLibrary(libraryId, music){
-  console.log("playMusicInLibrary", libraryId, music)
   return dispatch => {
     axios.post(`/api/libraries/${libraryId}/library_player_musics`, music)
       .then(response => {
+        console.log("playMusicInLibraryr response headers", response.headers)
         setNextHeaders(response.headers)
         dispatch(emptyLibraryPlayer(response.data));
         dispatch(musicAddedToPlayer(response.data));

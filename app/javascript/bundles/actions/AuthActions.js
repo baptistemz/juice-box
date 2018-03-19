@@ -3,7 +3,7 @@ import axios from 'axios';
 import { reset } from 'redux-form';
 import { push } from 'react-router-redux';
 import { getHeadersObject, setNextHeaders } from '../utils/tokenManagement';
-import { fetchRooms } from "./index";
+import { fetchLibrary } from "./index";
 import { errorHandling } from '../utils/errorHandling';
 import {
   LOGOUT_SUCCESS,
@@ -49,8 +49,9 @@ export function loginUser(data, next_path) {
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
+        dispatch(fetchLibrary(response.data.data.library.id))
         //REDIRECT USER
-        dispatch(push(next_path ? next_path : '/'));
+        dispatch(push(next_path ? next_path : '/library/playlists'));
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
       }).catch((error) => {
@@ -68,10 +69,11 @@ export function signupUser(data, next_path) {
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
+        dispatch(fetchLibrary(response.data.data.library.id))
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
         //REDIRECT USER
-        dispatch(push(next_path ? next_path : '/'));
+        dispatch(push(next_path ? next_path : '/library/playlists'));
 
       }).catch((error) => {
         dispatch(authError(error.response.data.errors));
@@ -118,7 +120,7 @@ export function logoutUser() {
 export function errorLogout() {
   return dispatch => {
     localStorage.clear();
-    toastr.success('Log out', 'see you soon');
+    // toastr.success('Log out', 'see you soon');
     dispatch(receiveLogout());
   };
 }

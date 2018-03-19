@@ -7,6 +7,7 @@ import { fetchRooms } from '../actions/index'
 
 class RoomList extends Component {
   componentDidMount(){
+    console.log("RoomLiST DID mOuNt ")
     this.props.fetchRooms();
   }
   contributorRooms(){

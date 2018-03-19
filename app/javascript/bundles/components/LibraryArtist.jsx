@@ -12,8 +12,8 @@ class LibraryArtist extends Component {
   }
   componentDidMount(){
     this.props.selectArtist(this.props.match.params.id);
-    $('.modal').modal({
-       endingTop: "0%"
+    $('#music_edit_modal').modal({
+      endingTop: "0%"
     });
   }
   updateTitleField(value){
@@ -54,7 +54,7 @@ class LibraryArtist extends Component {
     })
   }
   render(){
-    const { selectedArtist, selectedArtistMusics, libraryId, playlists, playMusicInLibrary } = this.props;
+    const { selectedArtist, selectedArtistMusics, libraryId, playlists, playMusicInLibrary, inRoom, match, addMusicToRoom } = this.props;
     if(!selectedArtist){
       return <div>Loading</div>
     }
@@ -62,7 +62,7 @@ class LibraryArtist extends Component {
       <div className="col s12">
         <div className="my-music-subheader space-between align-items-center">
           <div className="width-100">
-            <Link className="my-music-back-btn" to="/library/artists">
+            <Link className="my-music-back-btn" to={match.path.slice(0, -4)}>
               <i className="material-icons">arrow_back</i>
               <p className="no-margin">Artists</p>
             </Link>
@@ -72,7 +72,7 @@ class LibraryArtist extends Component {
         </div>
         <hr/>
         {selectedArtistMusics.length > 0 ?
-          <div className="my-music-records-list overflow-scroll">
+          <div className="my-music-records-list">
             <ul className="collection library-collection">
               {selectedArtistMusics.map((music) => {
                 return(
@@ -84,6 +84,8 @@ class LibraryArtist extends Component {
                     music={music}
                     playMusicInLibrary={playMusicInLibrary}
                     handleAddClick={this.handleAddClick}
+                    inRoom={inRoom}
+                    addMusicToRoom={addMusicToRoom}
                     handleDeleteClick= {this.handleDeleteClick.bind(this)}
                     addToPlaylists={this.addToPlaylists}
                     editItem={this.editItem.bind(this)} />

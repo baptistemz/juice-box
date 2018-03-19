@@ -53,7 +53,7 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
-    console.log("name", name)
+    console.log("video", video)
     return(
       <div>
         {video && video.music_key ?

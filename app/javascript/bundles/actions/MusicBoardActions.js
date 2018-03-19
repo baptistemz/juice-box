@@ -12,6 +12,7 @@ import {
 } from './types';
 
 export function addMusicToRoom(room_id, params){
+  console.log("addMusicToRoom: room_id, params", room_id, params)
   return dispatch => {
     axios.post(`/api/rooms/${room_id}/room_musics`, params)
       .then((response) =>{
@@ -55,6 +56,7 @@ export function deleteMusicFromRoom(room_id, music_id){
 };
 
 export function addPlaylistToRoom(room_id, playlist_id){
+  console.log("addPlaylistToRoom(room_id, playlist_id)", room_id, playlist_id)
   return dispatch => {
     axios.post(`/api/rooms/${room_id}/add_playlist`, { playlist_id }).then((response) =>{
       setNextHeaders(response.headers)

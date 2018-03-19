@@ -15,8 +15,8 @@ const RoomUsers = ({ connectedUsers, connectedStrangerNumber, roomUrl }) => {
       <p>Connected users :</p>
       <div className="user-list">
         <ul className="collection">
-          {connectedUsers.map(user=> {
-            return <li key={user.id} className="collection-item">{user.username}</li>
+          {connectedUsers && connectedUsers.map((user, index)=> {
+            return <li key={index} className="collection-item">{user.username}</li>
           })}
         </ul>
       </div>

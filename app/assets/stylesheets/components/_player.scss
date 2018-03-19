@@ -58,6 +58,7 @@
   &:not(.side-player):not(.hidden){
     display: flex;
     border-bottom: 1px solid $primary-color;
+    border-radius: 3px;
     .two-lines-p{
       padding-right: 45px;
     }

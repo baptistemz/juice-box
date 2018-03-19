@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link, Route } from 'react-router-dom';
 import LibraryPlayer from './LibraryPlayer';
@@ -15,28 +16,36 @@ import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
 import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary } from '../actions/index';
 
+const ACTIVE_TABS_PATH = [
+  "/library/artists",
+  "/library/artists/",
+  "/library/musics",
+  "/library/musics/",
+  "/library",
+  "/library/",
+  "/library/search",
+  "/library/search/",
+  "/library/playlists",
+  "/library/playlists/",
+  "/"
+]
+
 class Library extends Component {
   constructor(props){
     super(props);
-    const tabsVisible = props.location.pathname === "/library/artists" ||
-                        props.location.pathname === "/library/musics" ||
-                        props.location.pathname === "/" ||
-                        props.location.pathname === "/library" ||
-                        props.location.pathname === "/library/search" ||
-                        props.location.pathname === "/library/playlists"
-  let activeTab = ""
-  console.log("props.location.pathname", props.location.pathname)
-  activeTab = props.location.pathname.startsWith("/library/artists") ? "Artists" : activeTab;
-  activeTab = props.location.pathname.startsWith("/library/musics") ? "Musics" : activeTab;
-  activeTab = props.location.pathname.startsWith("/library/search") ? "Search" : activeTab;
-  activeTab = props.location.pathname.startsWith("/") ? "Playlists" : activeTab;
+    const tabsVisible = _.includes(ACTIVE_TABS_PATH, props.location.pathname)
+    let activeTab = ""
+    activeTab = props.location.pathname.startsWith("/library/artists") ? "Artists" : activeTab;
+    activeTab = props.location.pathname.startsWith("/library/musics") ? "Musics" : activeTab;
+    activeTab = props.location.pathname.startsWith("/library/search") ? "Search" : activeTab;
+    activeTab = props.location.pathname.startsWith("/") ? "Playlists" : activeTab;
     this.state = { width: '0', tabsVisible, activeTab }
   }
-  componentDidUpdate(lastProps){
-    if (lastProps.libraryId !== this.props.libraryId){
-      this.props.fetchLibrary(this.props.libraryId)
-    }
-  }
+  // componentDidUpdate(lastProps){
+  //   if (lastProps.libraryId !== this.props.libraryId){
+  //     this.props.fetchLibrary(this.props.libraryId)
+  //   }
+  // }
   componentDidMount(){
     const alertOnce = () => {
       if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
@@ -106,6 +115,7 @@ class Library extends Component {
   }
   render() {
     const { handleSubmit, playlists, artists, musics, playerMusics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
+    console.log("this.state.tabsVisible", this.state.tabsVisible)
     return (
       <div className="app-background">
         <div className="space-between align-items-end">
@@ -130,7 +140,7 @@ class Library extends Component {
         <hr/>
         <div className="row no-margin">
           <div className="col s12">
-            <div className="row no-margin dark-background">
+            <div className="row no-margin dark-background padding-10">
               <div className="col s12">
                 <div className={`my-music-player ${this.state.tabsVisible ? "" : "tabs-hidden"}`}>
                   <LibraryPlayer playerMusics={playerMusics} width={this.state.width}/>
@@ -162,9 +172,9 @@ class Library extends Component {
                       <SearchBoard libraryMusics={musics} inModal libraryId={libraryId} playlists={playlists} inLibrary />
                     </div>
                   </div>
-                  <Route exact path="/" render={routeProps => <LibraryPlaylists playlists={playlists}/>}/>
-                  <Route exact path="/library" render={routeProps => <LibraryPlaylists playlists={playlists}/>}/>
-                  <Route exact path="/library/playlists" render={routeProps => <LibraryPlaylists playlists={playlists}/>} />
+                  <Route exact path="/" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>}/>
+                  <Route exact path="/library" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>}/>
+                  <Route exact path="/library/playlists" render={({ match }) => <LibraryPlaylists match={match} playlists={playlists}/>} />
                   <Route exact path="/library/search" render={routeProps =>
                       <SearchBoard
                         libraryMusics={musics}

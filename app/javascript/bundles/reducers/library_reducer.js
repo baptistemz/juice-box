@@ -23,6 +23,7 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_LIBRARY:{
+      console.log(" GOT_LIBRARY action.payload", action.payload)
       const { id, playlists, musics, artists, player_musics } = action.payload;
       return {...state, id, playlists, musics, artists, playerMusics: player_musics }
     }

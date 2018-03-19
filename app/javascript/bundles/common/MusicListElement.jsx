@@ -13,27 +13,38 @@ const MusicListElement = ({
   name,
   playMusicInLibrary,
   libraryId,
-  playlists
+  addMusicToRoom,
+  playlists,
+  inRoom
 }) => {
   return(
     <a>
-      <div className="collection-item-overlay">
-        <li onClick={(e) => {playMusicInLibrary(music)}} className="collection-item">
-          {name || music.song}
-        </li>
-        <span onClick={(e) => editItem(e, music)}><i className="material-icons margin-right-10 primary-text left-icon">edit</i></span>
-        <Dropdown
-          trigger={<i data-activates={id} className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
-          options={{ alignment: 'right', constrainWidth: false }}
-          >
-          <NavItem onClick={(e) => handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to playlist</NavItem>
-          <NavItem onClick={(e) => handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from library</NavItem>
-        </Dropdown>
-      </div>
-      <AddToListWindow id={`${id}_modal`}
-      musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
-      libraryId={libraryId} playlists={playlists}
-      inLibrary={true} musicName={music.song} />
+        { inRoom ?
+          <div className="collection-item-overlay">
+            <li className="collection-item">
+              <p className="truncate">{name || music.song}</p>
+            </li>
+            <a className="secondary-content" onClick={() => addMusicToRoom(music)}><i className="material-icons">playlist_add</i></a>
+          </div>
+        :
+          <div className="collection-item-overlay">
+            <li onClick={(e) => {playMusicInLibrary(music)}} className="collection-item">
+              <p className="truncate">{name || music.song}</p>
+            </li>
+            <span onClick={(e) => editItem(e, music)}><i className="material-icons margin-right-10 primary-text left-icon">edit</i></span>
+            <Dropdown
+              trigger={<i data-activates={id} className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
+              options={{ alignment: 'right', constrainWidth: false }}
+              >
+              <NavItem onClick={(e) => handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to playlist</NavItem>
+              <NavItem onClick={(e) => handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from library</NavItem>
+            </Dropdown>
+            <AddToListWindow id={`${id}_modal`}
+              musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
+              libraryId={libraryId} playlists={playlists}
+              inLibrary={true} musicName={music.song} />
+          </div>
+        }
     </a>
   )
 }

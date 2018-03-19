@@ -11,16 +11,20 @@ const LibraryPlaylist = ({
   selectedPlaylistName,
   fetchPlaylistMusics,
   addMusicTo,
+  addMusicToRoom,
+  addPlaylistToRoom,
   deleteMusicFrom,
   openSearch,
-  match
+  inRoom,
+  match,
+  playlistAdded
 }) => {
   fetchPlaylistMusics(match.params.id)
   return(
     <div className="col s12">
       <div className="my-music-subheader space-between align-items-center">
         <div className="width-100">
-          <Link className="my-music-back-btn" to="/library/playlists">
+          <Link className="my-music-back-btn" to={match.path.slice(0, -4)}>
             <i className="material-icons">arrow_back</i>
             <p className="no-margin">Playlists</p>
           </Link>
@@ -30,7 +34,11 @@ const LibraryPlaylist = ({
       </div>
       <hr/>
       <PlaylistPreview
+        inRoom={inRoom}
         addMusicTo={addMusicTo}
+        added={playlistAdded}
+        addPlaylistToRoom={addPlaylistToRoom}
+        addMusicToRoom={addMusicToRoom}
         deleteMusicFrom={deleteMusicFrom}
         openSearch={() => openSearch()}
         playlistId={selectedPlaylistId} inLibrary/>
