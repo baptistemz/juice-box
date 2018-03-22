@@ -42,14 +42,14 @@ export function validateToken(){
 export function loginUser(data, next_path) {
   return dispatch => {
     return axios.post('/api/auth/sign_in', data)
-      .then(response => {
+      .then((response) => {
         console.log(response)
         //STORE TOKEN IN LOCAL STORAGE AND IN AXIOS HEADERS FOR NEXT REQUEST
         console.log("loginUser headers", response.headers)
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
-        dispatch(fetchLibrary(response.data.data.library.id))
+        // dispatch(fetchLibrary(response.data.data.library.id))
         //REDIRECT USER
         dispatch(push(next_path ? next_path : '/library/playlists'));
         //Send a flash message
