@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from 'react-materialize';
 import MusicSearchResults from '../components/MusicSearchResults'
 import { fetchYoutubeVideos } from '../actions/index';
 
@@ -44,7 +45,8 @@ class SearchBoard extends Component {
           musics={this.props.youtube_videos}
           inModal={this.props.inModal}
           inLibrary={this.props.inLibrary}
-          libraryMusics={this.props.libraryMusics} />
+          libraryMusics={this.props.libraryMusics}
+        />
       </div>
     )
   }

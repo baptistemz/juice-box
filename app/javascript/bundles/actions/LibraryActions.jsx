@@ -121,14 +121,27 @@ export function deleteMusicFromPlaylist(playlistId, musicId){
   };
 };
 
-export function playMusicInLibrary(libraryId, music){
+export function playMusicInLibrary(libraryId, music, fromPlaylist = false){
   return dispatch => {
-    axios.post(`/api/libraries/${libraryId}/library_player_musics`, music)
+    axios.post(`/api/libraries/${libraryId}/library_player_musics`, { ...music, from: fromPlaylist ? "playlist" : "library" })
       .then(response => {
         console.log("playMusicInLibraryr response headers", response.headers)
         setNextHeaders(response.headers)
-        dispatch(emptyLibraryPlayer(response.data));
+        dispatch(emptyLibraryPlayer());
         dispatch(musicAddedToPlayer(response.data));
+      }).catch((error)=>{
+        errorHandling(error, (action) => dispatch(action))
+      })
+  };
+};
+
+
+export function emptyLibraryPlayer(libraryId){
+  return dispatch => {
+    axios.delete(`/api/libraries/${libraryId}/library_player_musics`, music)
+      .then(response => {
+        setNextHeaders(response.headers)
+        dispatch(emptyLibraryPlayer());
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))
       })

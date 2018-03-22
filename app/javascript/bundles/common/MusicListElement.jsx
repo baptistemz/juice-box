@@ -17,6 +17,9 @@ const MusicListElement = ({
   playlists,
   inRoom
 }) => {
+  if(music.playing){
+    console.log("YESSSSSSSS", music)
+  }
   return(
     <a>
         { inRoom ?
@@ -29,9 +32,11 @@ const MusicListElement = ({
         :
           <div className="collection-item-overlay">
             <li onClick={(e) => {playMusicInLibrary(music)}} className="collection-item">
-              <p className="truncate">{name || music.song}</p>
+              <p className={`truncate ${music.playing ? "secondary-text" : ""}`}>{name || music.song}</p>
             </li>
-            <span onClick={(e) => editItem(e, music)}><i className="material-icons margin-right-10 primary-text left-icon">edit</i></span>
+            <span onClick={(e) => editItem(e, music)}>
+              <i className={`material-icons margin-right-10 ${music.playing ? "secondary-text" : "primary-text"} left-icon`}>edit</i>
+            </span>
             <Dropdown
               trigger={<i data-activates={id} className="dropdown-button secondary-text material-icons right-icon">more_horiz</i>}
               options={{ alignment: 'right', constrainWidth: false }}

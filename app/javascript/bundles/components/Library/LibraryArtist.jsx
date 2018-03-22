@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, MusicListElement } from '../common/index';
-import { selectArtist, updateMusic } from '../actions/index';
+import { Button, MusicListElement } from '../../common/index';
+import { selectArtist, updateMusic } from '../../actions/index';
 
 class LibraryArtist extends Component {
   constructor(){

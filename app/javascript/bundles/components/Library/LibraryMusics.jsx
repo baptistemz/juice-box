@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, AddToListWindow, MusicListElement } from "../common/index";
-import { updateMusic } from '../actions/index';
+import { Button, AddToListWindow, MusicListElement } from "../../common/index";
+import { updateMusic } from '../../actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -49,15 +49,15 @@ class LibraryMusics extends Component {
     })
   }
   render(){
-    console.log('LibraryMusics', this.props)
     if(this.props.musics.length === 0){
       return <div>There are no musics in your library search and add some ;)</div>
     }
     const { libraryId, playlists, musics, playMusicInLibrary, inRoom, addMusicToRoom } = this.props;
     return(
-      <div className="col s12 margin-top-10">
+      <div className="col s12">
         <div className="my-music-records-list">
           <ul style={{ overflow: "visible" }} className="collection library-collection">
+            <h5>Library Musics</h5>
             {musics.map((music) => {
               const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
               return(

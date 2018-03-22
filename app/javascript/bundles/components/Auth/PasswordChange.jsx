@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { Input, Button } from '../common/index';
+import { Input, Button } from '../../common/index';
 import { toastr } from 'react-redux-toastr';
-import { updatePassword } from '../actions/index'
+import { updatePassword } from '../../actions/index'
 
 class PasswordChange extends Component {
   submit(values){

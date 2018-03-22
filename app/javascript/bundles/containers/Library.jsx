@@ -5,16 +5,16 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link, Route } from 'react-router-dom';
 import LibraryPlayer from './LibraryPlayer';
-import LibrarySettings from '../components/LibrarySettings';
-import LibraryArtists from '../components/LibraryArtists';
-import LibraryArtist from '../components/LibraryArtist';
-import LibraryMusics from '../components/LibraryMusics';
-import LibraryPlaylists from '../components/LibraryPlaylists';
-import LibraryPlaylist from '../components/LibraryPlaylist';
-import LibraryNewPlaylist from '../components/LibraryNewPlaylist';
+import LibrarySettings from '../components/Library/LibrarySettings';
+import LibraryArtists from '../components/Library/LibraryArtists';
+import LibraryArtist from '../components/Library/LibraryArtist';
+import LibraryMusics from '../components/Library/LibraryMusics';
+import LibraryPlaylists from '../components/Library/LibraryPlaylists';
+import LibraryPlaylist from '../components/Library/LibraryPlaylist';
+import LibraryNewPlaylist from '../components/Library/LibraryNewPlaylist';
 import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
-import { fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary } from '../actions/index';
+import { addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer } from '../actions/index';
 
 const ACTIVE_TABS_PATH = [
   "/library/artists",
@@ -43,7 +43,7 @@ class Library extends Component {
   }
   // componentDidUpdate(lastProps){
   //   if (lastProps.libraryId !== this.props.libraryId){
-  //     this.props.fetchLibrary(this.props.libraryId)
+  //     this.propsthis.props.libraryId)
   //   }
   // }
   componentDidMount(){
@@ -83,6 +83,9 @@ class Library extends Component {
       $('#search_modal').modal({ endingTop: "0%"  });
     }
   }
+  componentWillUnmount(){
+    this.props.emptyLibraryPlayer(this.props.libraryId)
+  }
   openSearchModal(activeTab, url){
     if($(window).width() > 600){
       this.setState({ activeTab });
@@ -110,12 +113,12 @@ class Library extends Component {
       this.props.deleteMusicFromLibrary(this.props.libraryId, music.id);
     }
   }
-  playMusicInLibrary(music){
-    this.props.playMusicInLibrary(this.props.libraryId, music)
+  playMusicInLibrary(music, fromPlaylist = false){
+    this.props.playMusicInLibrary(this.props.libraryId, music, fromPlaylist)
   }
   render() {
     const { handleSubmit, playlists, artists, musics, playerMusics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
-    console.log("this.state.tabsVisible", this.state.tabsVisible)
+    console.log("Library musics", musics)
     return (
       <div className="app-background">
         <div className="space-between align-items-end">
@@ -186,7 +189,7 @@ class Library extends Component {
                   <Route path="/library/new_playlist" component={LibraryNewPlaylist} />
                   <Route path="/library/playlists/:id" render={routeProps =>
                       <LibraryPlaylist
-                        playMusicInLibrary={this.playMusicInLibrary.bind(this)}
+                        playMusicInLibrary={(music) => this.playMusicInLibrary(music, true)}
                         addMusicTo={this.addMusicTo.bind(this)}
                         deleteMusicFrom={this.deleteMusicFrom.bind(this)}
                         openSearch={() => this.openSearchModal("/library/search")} />} />
@@ -219,7 +222,7 @@ class Library extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchLibrary, addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary }, dispatch);
+  return bindActionCreators({ addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer }, dispatch);
 }
 
 function mapStateToProps({auth, library}) {

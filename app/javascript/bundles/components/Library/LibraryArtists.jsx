@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, ArtistListElement } from "../common/index";
-import { updateArtist } from '../actions/index';
+import { Button, ArtistListElement } from "../../common/index";
+import { updateArtist } from '../../actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -32,9 +32,10 @@ class LibraryArtists extends Component {
       return <div>There are no musics in your library search and add some ;)</div>
     }
     return(
-      <div className="col s12 margin-top-20">
+      <div className="col s12">
         <div className="my-music-records-list">
           <ul className="collection library-collection">
+            <h5>Library Artists</h5>
             {
               this.props.artists && this.props.artists.map(artist => {
                 return <ArtistListElement

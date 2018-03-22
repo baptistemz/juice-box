@@ -33,11 +33,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .primary-text{
-  color: $primary-color;
+  color: $primary-color !important;
 }
 
 .secondary-text{
-  color: $secondary-color;
+  color: $secondary-color !important;
 }
 
 .two-lines-p{

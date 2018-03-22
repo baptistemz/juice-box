@@ -4,6 +4,8 @@ import {
   MUSIC_ADDED_TO_PLAYLIST,
   MUSIC_DELETED_FROM_PLAYLIST,
   PLAYLIST_CREATED,
+  EMPTY_LIBRARY_PLAYER,
+  MUSIC_ADDED_TO_LIBRARY_PLAYER
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -42,6 +44,22 @@ export default function (state = INITIAL_STATE, action) {
       const index = _.findIndex(state.selectedPlaylistMusics, {id: action.payload.id});
       const selectedPlaylistMusics = [ ...state.selectedPlaylistMusics.slice(0, index), ...state.selectedPlaylistMusics.slice(index + 1) ];
       return { ...state, selectedPlaylistMusics };
+    }
+    case EMPTY_LIBRARY_PLAYER:{
+      const selectedPlaylistMusics = []
+      state.selectedPlaylistMusics.map(music => {
+        music.playing ? selectedPlaylistMusics.push({ ...music, playing: null }) : selectedPlaylistMusics.push(music)
+      })
+      return { ...state, selectedPlaylistMusics }
+    }
+    case MUSIC_ADDED_TO_LIBRARY_PLAYER:{
+      const playlistMusicId = action.payload.playlist_music_id
+      let selectedPlaylistMusics = state.selectedPlaylistMusics
+      if(playlistMusicId){
+        const selectedPlaylistMusicIndex = _.findIndex(state.selectedPlaylistMusics, {id: playlistMusicId});
+        selectedPlaylistMusics = [ ...state.selectedPlaylistMusics.slice(0, selectedPlaylistMusicIndex), { ...state.selectedPlaylistMusics[selectedPlaylistMusicIndex], playing: true }, ...state.selectedPlaylistMusics.slice(selectedPlaylistMusicIndex + 1) ];
+      }
+      return { ...state, selectedPlaylistMusics }
     }
     default:
       return state;

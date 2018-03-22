@@ -1,12 +1,19 @@
 module Api
   class LibraryPlayerMusicsController < BaseController
     before_action :authenticate_api_user!
-    
+
     def create
       @library = Library.find(params[:library_id])
       @playing_library_player_musics = @library.library_player_musics.where(status: "playing")
       @playing_library_player_musics.first.destroy if @playing_library_player_musics.any?
-      artist_id = params[:artist].class == String ? Artist.where(name: params[:artist]).first_or_create!.id : params[:artist][:id]
+      Rails.logger.debug("params: #{params.to_json}")
+      if params[:artist].class == String
+        artist_id = Artist.where(name: params[:artist]).first_or_create!.id
+      elsif params[:artist].class == Hash
+        artist_id = params[:artist][:id]
+      else
+        artist_id = Artist.where(name: params[:whole_name].split("-").first).first_or_create!.id
+      end
       @music = Music.where(
         provider: params[:provider],
         music_key: params[:music_key]
@@ -15,9 +22,13 @@ module Api
         song: params[:song],
         whole_name: params[:whole_name]
       )
-      @library_player_music = @library.library_player_musics.build(music_id: @music.id, status: "playing")
+      @library_player_music = @library.library_player_musics.build(
+        music_id: @music.id,
+        status: "playing",
+        library_music_id: params[:from] === "library" ? params[:id] : nil,
+        playlist_music_id: params[:from] === "playlist" ? params[:id] : nil
+      )
       if @library_player_music.save
-        Rails.logger.debug("@library_player_music:#{@library_player_music.to_json}")
         render partial: "api/library_player_musics/library_player_music.json.jbuilder", locals: {library_player_music: @library_player_music}
       else
         render_error
@@ -30,6 +41,14 @@ module Api
       @library_player_music.destroy
       render partial: "api/library_player_musics/library_player_music.json.jbuilder", locals: {library_player_music: @library_player_music}
     end
+
+    def delete_all
+      @library = Library.find(params[:library_id])
+      @library_player_musics = @library.library_player_musics
+      @library_player_musics.destroy_all
+      render
+    end
+
 
     private
 

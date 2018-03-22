@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
-import { loginUser, authError } from '../actions/index';
-import { Input, Button } from '../common/index';
+import { loginUser, authError } from '../../actions/index';
+import { Input, Button } from '../../common/index';
 
 const sanitize = (field) => {
   // REMOVES USELESS SPACES
@@ -37,12 +37,13 @@ class Login extends Component{
           </a>
           <div className="container">
             <div className="row">
-              <div className="col s12 m10 l8 offset-m1 offset-l2">
+              <div className="text-center padded-20">
+                <h2>Log in</h2>
+                <br/>
+              </div>
+              <div className="col s10 m8 l6 offset-s1 offset-m2 offset-l3">
                 <div className="box-shadow padded-50-except-top">
                   <form onSubmit={handleSubmit(values => this.submit(values, next_path))}>
-                    <div className="text-center padded-20">
-                      <h1>Log in</h1>
-                    </div>
                     <Input icon="email" name="email" label="email" type="email" autoFocus />
                     <Input icon="lock_outline" name="password" label="password" type="password" />
                     <p className="red-text">{errorMessages.main ? errorMessages.main : ''}</p>

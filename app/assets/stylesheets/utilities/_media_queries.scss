@@ -8,12 +8,12 @@
     display: none !important;
   }
   .my-music-content-container{
-    height: calc( 100vh - 308px);
+    height: calc( 100vh - 300px);
     &.tabs-hidden{
-      height: calc( 100vh - 240px);
+      height: calc( 100vh - 250px);
     }
     .playlist-modal-list{
-      height: calc(100vh - 352px);
+      height: calc(100vh - 358px);
       margin-bottom: 10px;
     }
   }
@@ -76,7 +76,7 @@
   }
   .my-music-content-container{
     margin-left: 140px;
-    height: calc( 100vh - 98px);
+    height: calc( 100vh - 96px);
   }
   .search-scroll{
     height: calc(100vh - 205px);
@@ -103,7 +103,7 @@
     height: calc(100vh - 205px);
   }
   .playlist-modal-list{
-    height: calc(100vh - 182px);
+    height: calc(100vh - 204px);
     margin-bottom: 10px;
   }
   .login-btn-group{
@@ -144,7 +144,7 @@
     height: calc(100vh - 215px);
   }
   .playlist-modal-list{
-    height: calc(100vh - 200px);
+    height: calc(100vh - 224px);
     margin-bottom: 10px;
   }
   .login-btn-group{

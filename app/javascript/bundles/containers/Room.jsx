@@ -197,6 +197,7 @@ class Room extends Component {
             </div>
             <div className="col s12 l6">
               <SearchNavigator
+                isAuthenticated={isAuthenticated}
                 libraryMusics={libraryMusics}
                 libraryArtists={libraryArtists}
                 selectedArtist={selectedArtist}
@@ -206,28 +207,7 @@ class Room extends Component {
                 roomId={id}
                 playlistAdded={playlistAdded}
                 addMusicToRoom={addMusicToRoom}
-              />
-            </div>
-            <div id="search_modal" className="room-modal modal">
-              <div className="col s12">
-                <div className="modal-close material-icons">clear</div>
-                <br/>
-                <br/>
-                {isAuthenticated ?
-                  <SearchNavigator
-                    libraryMusics={libraryMusics}
-                    libraryArtists={libraryArtists}
-                    selectedArtist={selectedArtist}
-                    selectedArtistMusics={selectedArtistMusics}
-                    libraryPlaylists={libraryPlaylists}
-                    addPlaylistToRoom={(playlistId) => addPlaylistToRoom(id, playlistId)}
-                    roomId={id}
-                    playlistAdded={playlistAdded}
-                    addMusicToRoom={addMusicToRoom}/>
-                  :
-                  <SearchBoard roomId={id} />
-                }
-              </div>
+                />
             </div>
           </div>
         </div>

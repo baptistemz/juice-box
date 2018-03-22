@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {PlaylistCard} from '../common/index';
+import {PlaylistCard} from '../../common/index';
 import { Link } from 'react-router-dom';
 
 const LibraryPlaylists = ({ playlists, inRoom, match }) => {
@@ -7,7 +7,8 @@ const LibraryPlaylists = ({ playlists, inRoom, match }) => {
     return <div />
   }
   return(
-      <div className="row margin-top-20">
+      <div className="row">
+        <div className="col s12"><h5>Library Playlists</h5></div>
         {playlists.map((playlist) => (
             <Link key={playlist.name} to={inRoom ? `${match.url}/${playlist.id}` : `/library/playlists/${playlist.id}`}>
               <div className={`playlist-thumb col s6 m4 l${inRoom ? "6" : "3"}`}>

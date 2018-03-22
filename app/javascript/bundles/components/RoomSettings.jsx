@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PlaylistCarousel from './PlaylistCarousel'
 
 class RoomSettings extends Component {
   constructor(props){
@@ -47,19 +46,6 @@ class RoomSettings extends Component {
             <span>{transitionSpeed} seconds</span>
           </p>
         </form>
-        <br/>
-        <br/>
-        <h5>Load a music playlist</h5>
-        <div className="row">
-          <div className="col s12">
-            <ul className="tabs">
-              <li className="tab col s6"><a href="#my_playlists">My playlists</a></li>
-              <li className="tab col s6"><a className="active" href="#public_playlists">Public playlists</a></li>
-            </ul>
-          </div>
-          <div id="my_playlists"><PlaylistCarousel playlists={this.props.ownerPlaylists} status="owner" /></div>
-          <div id="public_playlists"><PlaylistCarousel playlists={this.props.publicPlaylists} status="public" /></div>
-        </div>
       </div>
     )
   }

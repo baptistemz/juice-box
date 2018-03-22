@@ -63,7 +63,7 @@ class PlaylistPreview extends Component {
     this.props.deleteMusicFrom("playlist", music, this.props.selectedPlaylistId)
   }
   render(){
-    const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, ownerPlaylists, inRoom, addMusicToRoom } = this.props;
+    const { playlistId, selectedPlaylistId, selectedPlaylistName, selectedPlaylistMusics, ownerPlaylists, inRoom, addMusicToRoom, playMusicInLibrary } = this.props;
     if(selectedPlaylistId === playlistId){
       return(
         <div className="col s12 text-center">
@@ -75,8 +75,8 @@ class PlaylistPreview extends Component {
                   return(
                     <a key={music.music_key}>
                       <div className="collection-item-overlay">
-                        <li onClick={(e) => {console.log("let's play this song", e)}} className="collection-item" style={{ paddingLeft: "10px" }}>
-                          <p className="truncate">{wholeName}</p>
+                        <li onClick={(e) => {if(!inRoom){playMusicInLibrary(music)}}} className="collection-item" style={{ paddingLeft: "10px" }}>
+                          <p className={`truncate ${music.playing ? "secondary-text" : ""}`}>{wholeName}</p>
                         </li>
                         {!inRoom ?
                           <Dropdown

@@ -35,13 +35,17 @@ class MusicBoard extends Component {
     const { transitionSpeed, updateRoomMusic, roomId, waiting_list, changeWaitingListOrder, changeVolumeBalance } = this.props;
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
-    updateRoomMusic(roomId, newMusic.id, {state: "playing"})
+    if(newMusic){
+      updateRoomMusic(roomId, newMusic.id, {state: "playing"})
+    }
     let counter = 0;
     const volumeTransition = function () {
       if (counter < transitionSpeed) {
         changeVolumeBalance(music_number, 1/transitionSpeed)
         counter += 1;
+        console.log("TRANSITION", counter, transitionSpeed)
       } else {
+        console.log("updateRoomMusic")
         updateRoomMusic(roomId, endingMusic.id , {state: "archived"})
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
@@ -59,11 +63,6 @@ class MusicBoard extends Component {
 
     const { hidden_player, transitionSpeed, volume_balance, music_0, music_1 } = this.props;
     let video = music || {}
-    // if(!music){
-    //   return(
-    //     <div/>
-    //   )
-    // }
     if(this.props.isOwner){
       return <YoutubePlayer
         hidden={music_number === hidden_player}

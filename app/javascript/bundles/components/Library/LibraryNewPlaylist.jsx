@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
-import { Input, Button } from '../common/index';
-import { createPlaylist } from '../actions/index';
+import { Input, Button } from '../../common/index';
+import { createPlaylist } from '../../actions/index';
 
 let LibraryNewPlaylist = ({ createPlaylist, handleSubmit }) => {
   return(

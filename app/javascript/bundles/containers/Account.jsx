@@ -3,12 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PictureUpdate from '../components/PictureUpdate';
 import { EditableField, Button, Loader } from '../common/index';
-import PasswordChange from '../components/PasswordChange';
+import PasswordChange from '../components/Auth/PasswordChange';
 import { updateProfile, authError, logoutUser } from '../actions/index';
 
 class Account extends Component {
   constructor(props){
     super(props);
+    console.log("Account constructor", props)
     this.state = { loading: !props.email };
   }
   componentWillMount(){

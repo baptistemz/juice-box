@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
-import { signupUser, authError } from '../actions/index';
-import { Input, Button } from '../common/index';
+import { signupUser, authError } from '../../actions/index';
+import { Input, Button } from '../../common/index';
 
 const sanitize = (field) => {
   const sanitized_field = field ? field.trim() : '';
@@ -31,12 +31,13 @@ class Signup extends Component{
         </a>
         <div className="container">
           <div className="row">
-            <div className="col s12 m10 l8 offset-m1 offset-l2">
+            <div className="text-center padded-20">
+              <h2>Create an account</h2>
+              <br/>
+            </div>
+            <div className="col s10 m8 l6 offset-s1 offset-m2 offset-l3">
               <div className="box-shadow padded-50-except-top">
                 <form onSubmit={handleSubmit(values => this.submit(values, next_path))}>
-                  <div className="text-center padded-20">
-                    <h1>Create an account</h1>
-                  </div>
                   <Input icon="perm_identity" name="username" label="username" type="text" error={errorMessages["username"]} autoFocus />
                   <Input icon="email" name="email" label="email" type="email" error={errorMessages["email"]} />
                   <Input icon="lock_outline" name="password" label="password"  type="password" error={errorMessages["password"]} />

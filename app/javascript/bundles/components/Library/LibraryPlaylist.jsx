@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import {PlaylistCard} from '../common/index';
+import {PlaylistCard} from '../../common/index';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import { lifecycle } from 'recompose';
 import { connect } from 'react-redux';
-import {fetchPlaylistMusics} from "../actions/index";
-import PlaylistPreview from './PlaylistPreview';
+import {fetchPlaylistMusics} from "../../actions/index";
+import PlaylistPreview from '../PlaylistPreview';
 
-const LibraryPlaylist = ({
+let LibraryPlaylist = ({
   selectedPlaylistId,
   selectedPlaylistName,
   fetchPlaylistMusics,
@@ -17,9 +18,9 @@ const LibraryPlaylist = ({
   openSearch,
   inRoom,
   match,
-  playlistAdded
+  playlistAdded,
+  playMusicInLibrary
 }) => {
-  fetchPlaylistMusics(match.params.id)
   return(
     <div className="col s12">
       <div className="my-music-subheader space-between align-items-center">
@@ -37,6 +38,7 @@ const LibraryPlaylist = ({
         inRoom={inRoom}
         addMusicTo={addMusicTo}
         added={playlistAdded}
+        playMusicInLibrary={playMusicInLibrary}
         addPlaylistToRoom={addPlaylistToRoom}
         addMusicToRoom={addMusicToRoom}
         deleteMusicFrom={deleteMusicFrom}
@@ -56,7 +58,12 @@ function mapStateToProps({ playlist }) {
     selectedPlaylistName: playlist.selectedPlaylistName,
   }
 }
+LibraryPlaylist = lifecycle({
+  componentDidMount() {
+    this.props.fetchPlaylistMusics(this.props.match.params.id)
+  }
+})(LibraryPlaylist);
 
-export default withRouter(
+ export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(LibraryPlaylist)
 );

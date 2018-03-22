@@ -67,9 +67,6 @@ export default function (state = INITIAL_STATE, action) {
     case SELECT_ARTIST:{
       const selectedArtist = _.find(state.artists, {id: parseInt(action.payload)})
       const selectedArtistMusics = _.filter(state.musics, (m) =>{return m.artist && m.artist.id === parseInt(action.payload)})
-      console.log("selectedArtist", selectedArtist)
-      console.log("state.musics", state.musics)
-      console.log("selectedArtistMusics", selectedArtistMusics)
       return { ...state, selectedArtist, selectedArtistMusics }
     }
     case MUSIC_ADDED_TO_LIBRARY:{
@@ -100,10 +97,27 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, musics, artists, selectedArtistMusics }
     }
     case EMPTY_LIBRARY_PLAYER:{
-      return { ...state, playerMusics: [{}] }
+      const musics = []
+      state.musics.map(music => {
+        music.playing ? musics.push({ ...music, playing: null }) : musics.push(music)
+      })
+      const selectedArtistMusics = []
+      state.selectedArtistMusics.map(music => {
+        music.playing ? selectedArtistMusics.push({ ...music, playing: null }) : selectedArtistMusics.push(music)
+      })
+      return { ...state, playerMusics: [{}], musics, selectedArtistMusics }
     }
     case MUSIC_ADDED_TO_LIBRARY_PLAYER:{
-      return { ...state, playerMusics: [ action.payload ] }
+      const libraryMusicId = action.payload.library_music_id
+      let musics = state.musics
+      let selectedArtistMusics = state.selectedArtistMusics
+      if(libraryMusicId){
+        const musicIndex = _.findIndex(state.musics, {id: libraryMusicId});
+        const selectedArtistMusicIndex = _.findIndex(state.selectedArtistMusics, {id: libraryMusicId});
+        selectedArtistMusics = [ ...state.selectedArtistMusics.slice(0, selectedArtistMusicIndex), { ...state.selectedArtistMusics[selectedArtistMusicIndex], playing: true }, ...state.selectedArtistMusics.slice(selectedArtistMusicIndex + 1) ];
+        musics = [ ...state.musics.slice(0, musicIndex), { ...state.musics[musicIndex], playing: true }, ...state.musics.slice(musicIndex + 1) ];
+      }
+      return { ...state, playerMusics: [ action.payload ], musics, selectedArtistMusics }
     }
 
     default:
