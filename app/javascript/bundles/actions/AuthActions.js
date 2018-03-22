@@ -49,6 +49,7 @@ export function loginUser(data, next_path) {
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
+        // Maybe the cause of a bug
         // dispatch(fetchLibrary(response.data.data.library.id))
         //REDIRECT USER
         dispatch(push(next_path ? next_path : '/library/playlists'));
