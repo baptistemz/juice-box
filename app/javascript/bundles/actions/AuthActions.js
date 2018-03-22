@@ -46,6 +46,7 @@ export function loginUser(data, next_path) {
         console.log(response)
         //STORE TOKEN IN LOCAL STORAGE AND IN AXIOS HEADERS FOR NEXT REQUEST
         console.log("loginUser headers", response.headers)
+        console.log("loginUser data", response.data)
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
