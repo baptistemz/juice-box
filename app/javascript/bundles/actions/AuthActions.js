@@ -56,6 +56,7 @@ export function loginUser(data, next_path) {
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
       }).catch((error) => {
+        console.log(error)
         dispatch(authError(error.response.data.errors));
         errorHandling(error);
       })
