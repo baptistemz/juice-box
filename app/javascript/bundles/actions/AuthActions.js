@@ -72,7 +72,7 @@ export function signupUser(data, next_path) {
         setNextHeaders(response.headers)
         //SEND AN ACTION TO AUTH REDUCER TO REGISTER USER IN STORE
         dispatch(receiveUser(response.data.data))
-        dispatch(fetchLibrary(response.data.data.library.id))
+        // dispatch(fetchLibrary(response.data.data.library.id))
         //Send a flash message
         toastr.success('Logged in', 'authentification success');
         //REDIRECT USER

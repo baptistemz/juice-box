@@ -1,5 +1,4 @@
 import React from 'react';
-import { AddToListWindow } from './index'
 import { NavItem, Dropdown, Button } from 'react-materialize'
 
 
@@ -8,13 +7,10 @@ const MusicListElement = ({
   music,
   handleAddClick,
   handleDeleteClick,
-  addToPlaylists,
   editItem,
   name,
   playMusicInLibrary,
-  libraryId,
   addMusicToRoom,
-  playlists,
   inRoom
 }) => {
   if(music.playing){
@@ -44,10 +40,7 @@ const MusicListElement = ({
               <NavItem onClick={(e) => handleAddClick(e, music)}><i className="material-icons">playlist_add</i>Add to playlist</NavItem>
               <NavItem onClick={(e) => handleDeleteClick(e, music)}><i className="material-icons">delete</i>Delete from library</NavItem>
             </Dropdown>
-            <AddToListWindow id={`${id}_modal`}
-              musicKey={music.music_key} addToPlaylists={(lists) => addToPlaylists(lists, music)}
-              libraryId={libraryId} playlists={playlists}
-              inLibrary={true} musicName={music.song} />
+
           </div>
         }
     </a>

@@ -1,105 +1,145 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withState, withHandlers, compose, pure } from 'recompose';
 import { Link } from 'react-router-dom';
 import { Button, AddToListWindow, MusicListElement } from "../../common/index";
 import { updateMusic } from '../../actions/index';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-class LibraryMusics extends Component {
-  constructor(){
-    super();
-    this.state = { editing: {}, titleField: "", artistField: "" };
-  }
-  updateTitleField(value){
-    this.setState({ titleField: value });
-  }
-  updateArtistField(value){
-    this.setState({ artistField: value });
-  }
-  editItem(e, music){
+const adding = withState('adding', "setAdding", null)
+
+const editing = withState('editing', 'setEditing', {})
+
+const titleField = withState('titleField', 'setTitleField', "")
+
+const artistField = withState('artistField', 'setArtistField', "")
+
+const handlers = withHandlers({
+  editItem: ({ setEditing, setTitleField, setArtistField }) => (e, music) => {
     e.preventDefault();
-    this.setState({ editing: music, titleField: music.song || music.whole_name, artistField: music.artist && music.artist.name || music.whole_name  });
+    setEditing(music)
+    setTitleField(music.song || music.whole_name)
+    setArtistField(music.artist && music.artist.name || music.whole_name)
     $('#music_and_artist_edit_modal').modal({endingTop: "O%"})
     $('#music_and_artist_edit_modal').modal('open')
-  }
-  submit(e){
+  },
+  submit: ({ updateMusic, editing, titleField, artistField }) => (e) => {
     e.preventDefault();
-    this.props.updateMusic(this.state.editing.id, this.state.titleField, this.state.artistField, this.state.editing.artist.id);
+    updateMusic(editing.id, titleField, artistField, editing.artist.id);
     $('#music_and_artist_edit_modal').modal('close')
-  }
-  handleAddClick(e, music){
+  },
+  handleAddClick: ({ setAdding }) => (e, music) => {
+    console.log("handleAddClick")
+    setAdding(music)
+  },
+  handleDeleteClick: ({ deleteMusicFrom }) => (e, music) => {
     e.preventDefault();
-    $(`#library_music_${music.music_key}_modal`).modal({endingTop: "O%"});
-    $(`#library_music_${music.music_key}_modal`).modal('open');
-  }
-  handleDeleteClick(e, music){
-    e.preventDefault();
-    this.props.deleteMusicFrom("library", music)
-  }
-  addToPlaylists = (lists, video) => {
+    deleteMusicFrom("library", music)
+  },
+  addToPlaylists: ({ addMusicTo, adding }) => (lists, video) => {
     let ids = _.keys(_.pickBy(lists))
-    if(lists.library && !lists.already_in_library){
-      this.props.addMusicTo("library", video);
-      _.pull(ids, "library");
+    if(lists[`${adding.music_key}_library`] && !lists[`${adding.music_key}_already_in_library`]){
+      console.log("ADDMUSIC TO LIBRARAY")
+      addMusicTo("library", video);
+      _.pull(ids, `${adding.music_key}_library`);
     }
     ids.map(id =>{
-      if(!id.startsWith("already") && lists[id] && !lists[`already_in_${id}`]){
-        this.props.addMusicTo("playlist", video, id)
+      const splittedId = id.split("_")
+      if( splittedId[1] !== "already" && splittedId[1] !== "library" && !lists[`${splittedId[0]}_already_in_${splittedId[1]}`]){
+        console.log("ADDMUSIC TO PLAYLIST")
+        addMusicTo("playlist", video, splittedId[1])
       }
     })
   }
-  render(){
-    if(this.props.musics.length === 0){
-      return <div>There are no musics in your library search and add some ;)</div>
-    }
-    const { libraryId, playlists, musics, playMusicInLibrary, inRoom, addMusicToRoom } = this.props;
-    return(
-      <div className="col s12">
-        <div className="my-music-records-list">
-          <ul style={{ overflow: "visible" }} className="collection library-collection">
-            <h5>Library Musics</h5>
-            {musics.map((music) => {
-              const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
-              return(
-                <MusicListElement
-                  key={`library_music_${music.music_key}`}
-                  id={`library_music_${music.music_key}`}
-                  libraryId={libraryId}
-                  playlists={playlists}
-                  music={music}
-                  name={wholeName}
-                  playMusicInLibrary={playMusicInLibrary}
-                  handleAddClick={this.handleAddClick}
-                  handleDeleteClick= {this.handleDeleteClick.bind(this)}
-                  addToPlaylists={this.addToPlaylists}
-                  editItem={this.editItem.bind(this)}
-                  addMusicToRoom={addMusicToRoom}
-                  inRoom={inRoom} />
-              )
-            })}
-          </ul>
-          <div id="music_and_artist_edit_modal" className="edit-modal modal">
-            <div className="modal-close material-icons">clear</div>
-            <div className="col s12 margin-top-20">
-              <h3 className="text-center">Edit "{this.state.editing.song && this.state.editing.artist && this.state.editing.artist.name ? this.state.editing.song + ' - ' + this.state.editing.artist.name : this.state.editing.whole_name}"</h3>
-              <form onSubmit={this.submit.bind(this)}>
-                <label className="capitalize" htmlFor="artist_name_input">Artist name</label>
-                <input id="artist_name_input" type="text" value={this.state.artistField} onChange={(e) => this.updateArtistField(e.target.value)}/>
-                <br/>
-                <label className="capitalize" htmlFor="music_name_input">Music name</label>
-                <input id="music_name_input" type="text" value={this.state.titleField} onChange={(e) => this.updateTitleField(e.target.value)}/>
-                <br/>
-                <div className="justify-end">
-                  <Button action="submit" icon="edit">Update</Button>
-                </div>
-              </form>
-            </div>
+})
+
+let LibraryMusics = ({
+  libraryId,
+  playlists,
+  musics,
+  playMusicInLibrary,
+  inRoom,
+  addMusicToRoom,
+  handleAddClick,
+  handleDeleteClick,
+  addToPlaylists,
+  editItem,
+  submit,
+  adding,
+  editing,
+  artistField,
+  titleField,
+  setArtistField,
+  setTitleField,
+  setAdding
+}) => {
+  if(musics.length === 0){
+    return <div>There are no musics in your library search and add some ;)</div>
+  }
+  if(!inRoom && adding){
+    console.log("adding", adding)
+    $("#add_to_list_modal").modal({endingTop: "O%", complete: () => setAdding(null)});
+    $("#add_to_list_modal").modal('open');
+  }
+  return(
+    <div className="col s12">
+      <div className="my-music-records-list">
+        <ul style={{ overflow: "visible" }} className="collection library-collection">
+          <h5>Library Musics</h5>
+          {musics.map((music) => {
+            const wholeName = music.song && music.artist && music.artist.name ? music.artist.name + ' - ' + music.song : music.whole_name
+            return(
+              <MusicListElement
+                key={`library_music_${music.music_key}`}
+                id={`library_music_${music.music_key}`}
+                music={music}
+                name={wholeName}
+                playMusicInLibrary={playMusicInLibrary}
+                handleAddClick={(e, music) => {
+                  e.preventDefault();
+                  handleAddClick(e, music);
+                }}
+                handleDeleteClick= {handleDeleteClick}
+                editItem={editItem}
+                addMusicToRoom={addMusicToRoom}
+                inRoom={inRoom} />
+            )
+          })}
+        </ul>
+        <div id="music_and_artist_edit_modal" className="edit-modal modal">
+          <div className="modal-close material-icons">clear</div>
+          <div className="col s12 margin-top-20">
+            <h3 className="text-center">Edit "{editing.song && editing.artist && editing.artist.name ? editing.song + ' - ' + editing.artist.name : editing.whole_name}"</h3>
+            <form onSubmit={submit}>
+              <label className="capitalize" htmlFor="artist_name_input">Artist name</label>
+              <input id="artist_name_input" type="text" value={artistField} onChange={(e) => setArtistField(e.target.value)}/>
+              <br/>
+              <label className="capitalize" htmlFor="music_name_input">Music name</label>
+              <input id="music_name_input" type="text" value={titleField} onChange={(e) => setTitleField(e.target.value)}/>
+              <br/>
+              <div className="justify-end">
+                <Button action="submit" icon="edit">Update</Button>
+              </div>
+            </form>
           </div>
         </div>
+        <AddToListWindow id="add_to_list_modal"
+          musicKey={adding && adding.music_key} addToPlaylists={(lists) => addToPlaylists(lists, adding)}
+          libraryId={libraryId} playlists={playlists}
+          inLibrary={true} musicName={adding && adding.song} />
       </div>
-    )
-  }
+    </div>
+  )
 }
+
+LibraryMusics = compose(
+  adding,
+  editing,
+  titleField,
+  artistField,
+  handlers,
+  pure
+)(LibraryMusics);
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ updateMusic }, dispatch);

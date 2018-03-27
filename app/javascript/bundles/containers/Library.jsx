@@ -14,7 +14,7 @@ import LibraryPlaylist from '../components/Library/LibraryPlaylist';
 import LibraryNewPlaylist from '../components/Library/LibraryNewPlaylist';
 import {Loader} from '../common/index';
 import SearchBoard from './SearchBoard';
-import { addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer } from '../actions/index';
+import { addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer, fetchLibrary } from '../actions/index';
 
 const ACTIVE_TABS_PATH = [
   "/library/artists",
@@ -47,6 +47,7 @@ class Library extends Component {
   //   }
   // }
   componentDidMount(){
+    this.props.fetchLibrary(this.props.libraryId)
     const alertOnce = () => {
       if(!this.state.alerted && !( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))){
         toastr.warning("If juicebox plays in an inactive browser tab, music transitions won't trigger well. We recommend to open juicebox in an independent browser window", {timeOut: 0})
@@ -222,7 +223,7 @@ class Library extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer }, dispatch);
+  return bindActionCreators({ addMusicToLibrary, addMusicToPlaylist, deleteMusicFromLibrary, deleteMusicFromPlaylist, playMusicInLibrary, emptyLibraryPlayer, fetchLibrary }, dispatch);
 }
 
 function mapStateToProps({auth, library}) {
