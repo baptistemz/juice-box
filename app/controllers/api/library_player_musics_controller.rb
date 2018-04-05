@@ -5,7 +5,7 @@ module Api
     def create
       @library = Library.find(params[:library_id])
       @playing_library_player_musics = @library.library_player_musics.where(status: "playing")
-      @playing_library_player_musics.first.destroy if @playing_library_player_musics.any?
+      @playing_library_player_musics.destroy_all if @playing_library_player_musics.any?
       Rails.logger.debug("params: #{params.to_json}")
       if params[:artist].class == String
         artist_id = Artist.where(name: params[:artist]).first_or_create!.id

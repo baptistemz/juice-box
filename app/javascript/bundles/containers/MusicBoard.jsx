@@ -36,7 +36,7 @@ class MusicBoard extends Component {
     const newMusic = this.props[`music_${music_number}`]
     const endingMusic = this.props[music_number === 1 ? "music_0" : "music_1"];
     if(newMusic){
-      updateRoomMusic(roomId, newMusic.id, {state: "playing"})
+      updateRoomMusic(roomId, newMusic.id, {status: "playing"})
     }
     let counter = 0;
     const volumeTransition = function () {
@@ -46,7 +46,7 @@ class MusicBoard extends Component {
         console.log("TRANSITION", counter, transitionSpeed)
       } else {
         console.log("updateRoomMusic")
-        updateRoomMusic(roomId, endingMusic.id , {state: "archived"})
+        updateRoomMusic(roomId, endingMusic.id , {status: "archived"})
         this.setState({ inTransition: false });
         clearInterval(volumeTransitionInterval);
       }
@@ -84,7 +84,6 @@ class MusicBoard extends Component {
       buttonsDisabled={true} />
   }
   render(){
-    console.log("this.props.isOwner", this.props.isOwner)
     const { deleteMusicFromRoom, roomId, isOwner, music_0, music_1 } = this.props;
     // if(!this.state.items.length && !music_0 && !music_1){ return(<div/>)}
     return(

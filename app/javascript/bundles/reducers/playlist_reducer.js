@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   GOT_PLAYLISTS,
   GOT_PLAYLIST_MUSICS,
@@ -5,7 +6,8 @@ import {
   MUSIC_DELETED_FROM_PLAYLIST,
   PLAYLIST_CREATED,
   EMPTY_LIBRARY_PLAYER,
-  MUSIC_ADDED_TO_LIBRARY_PLAYER
+  MUSIC_ADDED_TO_LIBRARY_PLAYER,
+  UPDATED_LIBRARY_PLAYER_MUSIC
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -60,6 +62,17 @@ export default function (state = INITIAL_STATE, action) {
         selectedPlaylistMusics = [ ...state.selectedPlaylistMusics.slice(0, selectedPlaylistMusicIndex), { ...state.selectedPlaylistMusics[selectedPlaylistMusicIndex], playing: true }, ...state.selectedPlaylistMusics.slice(selectedPlaylistMusicIndex + 1) ];
       }
       return { ...state, selectedPlaylistMusics }
+    }
+    case UPDATED_LIBRARY_PLAYER_MUSIC:{
+      console.log("ACTION POINT PAYLOAD", action.payload)
+      if(action.payload.status === "playing"){
+        const endingMusicIndex = _.findIndex(state.selectedPlaylistMusics, { playing: true });
+        let selectedPlaylistMusics = endingMusicIndex > -1 ? [ ...state.selectedPlaylistMusics.slice(0, endingMusicIndex), { ...state.selectedPlaylistMusics[endingMusicIndex], playing: false }, ...state.selectedPlaylistMusics.slice(endingMusicIndex + 1) ] : state.selectedPlaylistMusics;
+        const startingMusicIndex = _.findIndex(state.selectedPlaylistMusics, { music_key: action.payload.music_key });
+        selectedPlaylistMusics = startingMusicIndex > -1 ? [ ...selectedPlaylistMusics.slice(0, startingMusicIndex), { ...selectedPlaylistMusics[startingMusicIndex], playing: true }, ...selectedPlaylistMusics.slice(startingMusicIndex + 1) ] : selectedPlaylistMusics;
+        return { ...state, selectedPlaylistMusics }
+      }
+      return state;
     }
     default:
       return state;

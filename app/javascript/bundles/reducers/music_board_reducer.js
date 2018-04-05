@@ -20,8 +20,8 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_ROOM:{
-      const playing = _.filter(action.payload.musics, {state: "playing"})
-      const waiting_list = _.filter(action.payload.musics, {state: "waiting"})
+      const playing = _.filter(action.payload.musics, {status: "playing"})
+      const waiting_list = _.filter(action.payload.musics, {status: "waiting"})
       const next_music = _.size(waiting_list) === 0 ? playing[1] : waiting_list[0];
       if( playing.length > 1){waiting_list.unshift(playing[1])}
       console.log("MUSIC_STARTED in condition")

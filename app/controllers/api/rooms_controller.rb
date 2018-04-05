@@ -39,13 +39,13 @@ module Api
 
     def change_order
       @room = Room.find(params[:room_id])
-      start_position = @room.room_musics.where(state: "archived").length
+      start_position = @room.room_musics.where(status: "archived").length
       RoomMusic.skip_callback(:update, :after, :broadcast_updated_music)
       params[:room_music_ids].each_with_index do |id, index|
         @room.room_musics.find(id).update(waiting_list_position: index + start_position)
       end
       RoomMusic.set_callback(:update, :after, :broadcast_updated_music)
-      @room.broadcast_sorted_list(@room.room_musics.where(state: "waiting"))
+      @room.broadcast_sorted_list(@room.room_musics.where(status: "waiting"))
       render :show
     end
 
@@ -56,14 +56,14 @@ module Api
       @user_id = current_api_user ? current_api_user.id : nil
       if @room.room_musics.length == 0
         first_music = @playlist_musics.shift
-        @room.room_musics.create(state: "playing", music_id: first_music.music_id, user_id: @user_id, waiting_list_position: 0)
+        @room.room_musics.create(status: "playing", music_id: first_music.music_id, user_id: @user_id, waiting_list_position: 0)
       end
       RoomMusic.skip_callback(:create, :after, :broadcast_added_music)
       @playlist_musics.each do |playlist_music|
-        @room.room_musics.create(state: "waiting", music_id: playlist_music.music_id, user_id: @user_id, waiting_list_position: @room.room_musics.length)
+        @room.room_musics.create(status: "waiting", music_id: playlist_music.music_id, user_id: @user_id, waiting_list_position: @room.room_musics.length)
       end
       RoomMusic.set_callback(:create, :after, :broadcast_added_music)
-      @room.broadcast_added_playlist(@room.room_musics.where(state: "waiting"), @playlist, current_api_user)
+      @room.broadcast_added_playlist(@room.room_musics.where(status: "waiting"), @playlist, current_api_user)
       render :show
     end
 

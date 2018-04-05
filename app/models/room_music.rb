@@ -6,10 +6,10 @@ class RoomMusic < ApplicationRecord
   after_create :broadcast_added_music
   after_update :broadcast_updated_music
   after_destroy :broadcast_deleted_music
-  validates_uniqueness_of :music_id, scope: [:room_id], conditions: -> { where.not(state: ['ending', 'archived']) }, :on => [:create], message: "This music is already in the list"
+  validates_uniqueness_of :music_id, scope: [:room_id], conditions: -> { where.not(status: ['ending', 'archived']) }, :on => [:create], message: "This music is already in the list"
   # validate :only_one_music_playing
   # validate :only_one_music_ending
-  enumerize :state, in: ["waiting", "playing", "ending", "archived"]
+  enumerize :status, in: ["waiting", "playing", "ending", "archived"]
 
 
   def broadcast_added_music
@@ -27,11 +27,11 @@ class RoomMusic < ApplicationRecord
   private
 
   def only_one_music_playing
-    errors.add(:password, "two songs are playing in the same time") if state == "playing" && Room.find(room_id).room_musics.where(state: "playing").any?
+    errors.add(:password, "two songs are playing in the same time") if status == "playing" && Room.find(room_id).room_musics.where(status: "playing").any?
   end
 
   def only_one_music_ending
-    errors.add(:password, "two songs are ending in the same time") if state == "ending" && Room.find(room_id).room_musics.where(state: "ending").any?
+    errors.add(:password, "two songs are ending in the same time") if status == "ending" && Room.find(room_id).room_musics.where(status: "ending").any?
   end
 
   def render_music(room_music)

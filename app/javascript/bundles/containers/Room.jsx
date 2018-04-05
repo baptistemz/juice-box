@@ -34,10 +34,10 @@ class Room extends Component {
       break;
       case 'updated': {
         console.log('UPDATED RECEIVED', data.music);
-        if(data.music.state === "archived"){
+        if(data.music.status === "archived"){
           this.props.musicEnded(data.music);
         }
-        if(data.music.state === "playing"){
+        if(data.music.status === "playing"){
           this.props.musicStarted(data.music);
         }
       }

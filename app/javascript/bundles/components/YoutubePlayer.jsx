@@ -7,25 +7,38 @@ class YoutubePlayer extends Component {
     this.state = {
       playing: props.musicPlaying,
       volume: props.volumeShare,
-      duration: 10000000
+      duration: 10000000,
+      ending: false
     }
   }
   componentDidUpdate(previousProps){
     if(this.props.volumeShare !== previousProps.volumeShare){
       this.setState({ volume: this.props.volumeShare })
     }
-    if(this.props.video.state === "playing" && previousProps.video.state === "waiting"){
-      this.setState({ playing: true })
+    if(this.props.video.status === "playing" && previousProps.video.status === "waiting"){
+      this.setState({ playing: true });
     }
     if(previousProps.musicPlaying === null && this.props.musicPlaying === true && !this.state.playing){
       // we are in the hidden player and the room is starting playing for the first time since last refresh
-      this.setState({playing: true})
+      this.setState({playing: true});
+    }
+    if(previousProps.video.music_key !== this.props.video.music_key){
+      this.setState({ ending: false });
     }
   }
+  autoTransition(){
+    console.log("START AUTO TRANSITION 2")
+    this.props.nextVideoAuto()
+    this.setState({ ending: true })
+  }
   onProgress(status){
-    const timeForTransition = this.state.duration - (this.props.transitionSpeed + 5);
-    if (status.playedSeconds >= timeForTransition && !this.props.inTransition) {
-      this.props.nextVideoAuto()
+    const timeForTransition = this.state.duration - (this.props.transitionSpeed + 5)
+    if(status.playedSeconds >= timeForTransition){
+      console.log("this.props.inTransition, this.state.ending, this.props.video", this.props.inTransition, this.state.ending, this.props.video)
+    }
+    if (status.playedSeconds >= timeForTransition && !this.props.inTransition && !this.state.ending) {
+      console.log("START AUTO TRANSITION, timeForTransition, status.playedSeconds", timeForTransition, status.playedSeconds)
+      this.autoTransition()
     }
     if(status.playedSeconds > 3 && !this.props.inTransition && this.props.hidden){
       //This player has started to work around an autoplay block by youtube, it should now stop
@@ -50,7 +63,6 @@ class YoutubePlayer extends Component {
   }
   render(){
     const { video, name, hidden, inSideMenu } = this.props;
-    // console.log("video", video)
     return(
       <div>
         {video && video.music_key ?

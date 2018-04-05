@@ -151,17 +151,16 @@ export default function (state = INITIAL_STATE, action) {
       if(action.payload.status === "playing"){
         const playerMusics = state.playerMusics;
         playerMusics.shift()
-        const musicIndex = _.findIndex(state.musics, { playing: true });
-        console.log("MUSIC_STARTED in condition /  musicIndex", musicIndex)
-        const musics = musicIndex > -1 ? [ ...state.musics.slice(0, musicIndex), { ...state.musics[musicIndex], playing: false }, { ...state.musics[musicIndex + 1], playing: true }, ...state.musics.slice(musicIndex + 2) ] : state.musics;
+        const endingMusicIndex = _.findIndex(state.musics, { playing: true });
+        console.log("MUSIC_STARTED in condition /  endingMusicIndex", endingMusicIndex)
+        let musics = endingMusicIndex > -1 ? [ ...state.musics.slice(0, endingMusicIndex), { ...state.musics[endingMusicIndex], playing: false }, ...state.musics.slice(endingMusicIndex + 1) ] : state.musics;
+        const startingMusicIndex = _.findIndex(state.musics, { music_key: action.payload.music_key });
+        console.log("MUSIC_STARTED in condition /  startingMusicIndex", startingMusicIndex)
+        musics = startingMusicIndex > -1 ? [ ...musics.slice(0, startingMusicIndex), { ...musics[startingMusicIndex], playing: true }, ...musics.slice(startingMusicIndex + 1) ] : musics;
         console.log("MUSIC_STARTED in condition /  musics", musics)
         return { ...state, playerMusics, musics, hidden_player: state.hidden_player === 1 ? 0 : 1, [`music_${state.hidden_player}`]: action.payload }
       }
       if(action.payload.status === "archived"){
-        const new_music = _.size(state.playerMusics) === 0 ? state[`music_${state.hidden_player === 1 ? 0 : 1}`] : state.playerMusics[0];
-        console.log("MUSIC_ENDED new_music", new_music)
-        console.log("MUSIC_ENDED state.playerMusics", state.playerMusics)
-        console.log("MUSIC_ENDED music playing", state[`music_${state.hidden_player === 1 ? 0 : 1}`])
         return { ...state, [`music_${state.hidden_player}`]: state.playerMusics[0], volume_balance: state.hidden_player === 1 ? 0 : 1 }
       }
       return state;
