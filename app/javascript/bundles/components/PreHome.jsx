@@ -19,7 +19,7 @@ const PreHome = () => {
           </Link>
         </div>
       </div>
-      <h1 id="home_title">Party collaborative music playlists</h1>
+      <h1 id="home_title">Collaborative music playlists</h1>
       <br/>
       <div className="text-center">
         <Button icon="play_circle_outline" color="primary">Demo</Button>
