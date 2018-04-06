@@ -31,7 +31,9 @@ class YoutubePlayer extends Component {
     document.addEventListener("keydown", (event) => {
       switch (event.keyCode) {
         case 32:
-          event.preventDefault()
+          if("focus", document.activeElement.id !== "search"){
+            event.preventDefault()
+          }
           if(!this.props.hidden && !this.props.inTransition){
             this.state.playing ? this.onPause() : this.onPlay()
           }

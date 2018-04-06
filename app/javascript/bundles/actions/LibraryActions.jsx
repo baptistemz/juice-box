@@ -88,7 +88,7 @@ export function addMusicToPlaylist(playlistId, music){
     axios.post(`/api/playlists/${playlistId}/playlist_musics`, music)
       .then(response => {
         setNextHeaders(response.headers)
-        toastr.success(`${response.data.whole_name} added to ${response.data.playlist.name}`);
+        toastr.success(`${music.song} added to ${response.data.playlist.name}`);
         dispatch(musicAddedToPlaylist(response.data));
       }).catch((error)=>{
         errorHandling(error, (action) => dispatch(action))

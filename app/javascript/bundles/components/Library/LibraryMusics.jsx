@@ -40,7 +40,6 @@ const handlers = withHandlers({
     if(lists[`${adding.music_key}_library`] && !lists[`${adding.music_key}_already_in_library`]){
       console.log("ADDMUSIC TO LIBRARAY")
       addMusicTo("library", video);
-      _.pull(ids, `${adding.music_key}_library`);
     }
     ids.map(id =>{
       const splittedId = id.split("_")

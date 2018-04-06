@@ -115,7 +115,7 @@ class Library extends Component {
   }
   render() {
     const { handleSubmit, playlists, artists, musics, playerMusics, location, selectedArtist, selectedArtistMusics, libraryId } = this.props;
-    console.log("Library musics", musics)
+    console.log("Library playlists", playlists)
     return (
       <div className="app-background">
         <div className="space-between align-items-end">

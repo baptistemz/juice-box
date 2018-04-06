@@ -23,8 +23,8 @@ const state = withState('state', 'setState', ({ musicKey, playlists, inLibrary }
 
 const handlers = withHandlers({
   addToPlaylists: ({ addToPlaylists, id, state }) => () => {
-    addToPlaylists(state);
     $(`#${id}`).modal('close');
+    addToPlaylists(state);
   }
 })
 
@@ -43,7 +43,7 @@ let AddToListContent = ({ libraryId, playlists, musicName, id, state, setState, 
           checked={state[`${musicKey}_library`] ? 'checked' : ''} />
       </div>
       <br/>
-      {playlists.length > 0 ?
+      {playlists && playlists.length > 0 ?
         <div className="row">
           <h5 className="secondary-text text-left">To a playlist:</h5>
           <br/>

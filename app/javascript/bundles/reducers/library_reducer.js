@@ -11,7 +11,8 @@ import {
   WAITING_LIST_ADDED_TO_LIBRARY_PLAYER,
   EMPTY_LIBRARY_PLAYER,
   LIBRARY_VOLUME_BALANCE_CHANGED,
-  UPDATED_LIBRARY_PLAYER_MUSIC
+  UPDATED_LIBRARY_PLAYER_MUSIC,
+  MUSIC_ADDED_TO_PLAYLIST
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -38,6 +39,11 @@ export default function (state = INITIAL_STATE, action) {
     case PLAYLIST_CREATED:{
       const { playlist } = action.payload;
       return { ...state, playlists: [ ...state.playlists, playlist ] }
+    }
+    case MUSIC_ADDED_TO_PLAYLIST:{
+      console.log("reducer", action.payload)
+      const { owner_playlists, public_playlists } = action.payload;
+      return { ...state, playlists: owner_playlists }
     }
     case ARTIST_UPDATED:{
       const {  deleted_artist, new_artist, updated_musics } = action.payload;

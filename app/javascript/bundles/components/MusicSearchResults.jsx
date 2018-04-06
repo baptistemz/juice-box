@@ -71,8 +71,7 @@ const modalHandlers = withHandlers({
     console.log("IDS", ids, video)
     if(lists[`${video.id.videoId}_library`] && !lists[`${video.id.videoId}_already_in_library`]){
       console.log("ADDMUSIC TO LIBRARAY")
-      // addMusicTo("library", video);
-      _.pull(ids, `${video.id.videoId}_library`);
+      addMusicTo("library", video);
     }
     ids.map(id =>{
       const splittedId = id.split("_")

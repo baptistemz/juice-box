@@ -19,7 +19,9 @@ module Api
       @playlist_music = @playlist.playlist_musics.build(music_id: @music.id)
       if @playlist_music.save
         Rails.logger.debug("@playlist_music:#{@playlist_music.to_json}")
-        render partial: "api/playlist_musics/playlist_music.json.jbuilder", locals: {playlist_music: @playlist_music}
+        @playlist_musics = @playlist.playlist_musics
+        render :index
+        # render partial: "api/playlist_musics/playlist_music.json.jbuilder", locals: {playlist_music: @playlist_music}
       else
         render_error
       end

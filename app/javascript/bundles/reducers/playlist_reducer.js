@@ -22,7 +22,7 @@ export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GOT_PLAYLISTS:{
       const { owner_playlists, public_playlists } = action.payload;
-      return { ...state, ownerPlaylists: owner_playlists, publicPlaylists: public_playlists}
+      return { ...state, ownerPlaylists: owner_playlists, publicPlaylists: public_playlists }
     }
     case PLAYLIST_CREATED:{
       const { playlist } = action.payload;
@@ -37,10 +37,8 @@ export default function (state = INITIAL_STATE, action) {
     }
     case MUSIC_ADDED_TO_PLAYLIST:{
       console.log("reducer", action.payload)
-      if(action.payload.playlist.id === state.selectedPlaylistId){
-        return { ...state, selectedPlaylistMusics: [ ...state.selectedPlaylistMusics, action.payload ] }
-      }
-      return state
+      const { owner_playlists, public_playlists } = action.payload;
+      return { ...state, ownerPlaylists: owner_playlists, publicPlaylists: public_playlists }
     }
     case MUSIC_DELETED_FROM_PLAYLIST:{
       const index = _.findIndex(state.selectedPlaylistMusics, {id: action.payload.id});
