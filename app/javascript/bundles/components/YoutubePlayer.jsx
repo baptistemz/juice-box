@@ -8,7 +8,8 @@ class YoutubePlayer extends Component {
       playing: props.musicPlaying,
       volume: props.volumeShare,
       duration: 10000000,
-      ending: false
+      ending: false,
+      commandKeyPressed: false
     }
   }
   componentDidUpdate(previousProps){
@@ -25,6 +26,34 @@ class YoutubePlayer extends Component {
     if(previousProps.video.music_key !== this.props.video.music_key){
       this.setState({ ending: false });
     }
+  }
+  componentDidMount(){
+    document.addEventListener("keydown", (event) => {
+      switch (event.keyCode) {
+        case 32:
+          if(!this.props.hidden && !this.props.inTransition){
+            this.state.playing ? this.onPause() : this.onPlay()
+          }
+          break;
+        case 91:
+          this.setState({ commandKeyPressed: true })
+          break;
+        case 39:
+          if(this.state.commandKeyPressed && this.props.hidden && !this.props.inTransition){
+            this.nextVideo()
+          }
+          break;
+        default:
+      }
+    });
+    document.addEventListener("keyup", (event) => {
+      switch (event.keyCode) {
+        case 91:
+          this.setState({ commandKeyPressed: true })
+          break;
+        default:
+      }
+    });
   }
   autoTransition(){
     console.log("START AUTO TRANSITION 2")
