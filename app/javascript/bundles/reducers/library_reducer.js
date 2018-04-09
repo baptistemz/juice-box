@@ -167,7 +167,11 @@ export default function (state = INITIAL_STATE, action) {
         // console.log("MUSIC_STARTED in condition /  startingMusicIndex", startingMusicIndex)
         musics = startingMusicIndex > -1 ? [ ...musics.slice(0, startingMusicIndex), { ...musics[startingMusicIndex], playing: true }, ...musics.slice(startingMusicIndex + 1) ] : musics;
         // console.log("MUSIC_STARTED in condition /  musics", musics)
-        return { ...state, playerMusics, musics, hidden_player: state.hidden_player === 1 ? 0 : 1, [`music_${state.hidden_player}`]: action.payload }
+        const endingArtistMusicIndex = _.findIndex(state.selectedArtistMusics, { playing: true });
+        let selectedArtistMusics = endingArtistMusicIndex > -1 ? [ ...state.selectedArtistMusics.slice(0, endingArtistMusicIndex), { ...state.selectedArtistMusics[endingArtistMusicIndex], playing: false }, ...state.selectedArtistMusics.slice(endingArtistMusicIndex + 1) ] : state.selectedArtistMusics;
+        const startingArtistMusicIndex = _.findIndex(state.selectedArtistMusics, { music_key: action.payload.music_key });
+        selectedArtistMusics = startingArtistMusicIndex > -1 ? [ ...selectedArtistMusics.slice(0, startingArtistMusicIndex), { ...selectedArtistMusics[startingArtistMusicIndex], playing: true }, ...selectedArtistMusics.slice(startingArtistMusicIndex + 1) ] : selectedArtistMusics;
+        return { ...state, playerMusics, musics, selectedArtistMusics, hidden_player: state.hidden_player === 1 ? 0 : 1, [`music_${state.hidden_player}`]: action.payload }
       }
       if(action.payload.status === "archived"){
         return { ...state, [`music_${state.hidden_player}`]: state.playerMusics[0], volume_balance: state.hidden_player === 1 ? 0 : 1 }
