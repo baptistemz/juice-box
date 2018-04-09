@@ -1,6 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { withState, withHandlers, compose, pure } from 'recompose';
 import { Button, AddToListWindow, MusicListElement } from "../../common/index";
 import { updateMusic } from '../../actions/index';
@@ -28,26 +29,28 @@ const handlers = withHandlers({
     $('#music_and_artist_edit_modal').modal('close')
   },
   handleAddClick: ({ setAdding }) => (e, music) => {
-    console.log("handleAddClick")
+    // console.log("handleAddClick")
     setAdding(music)
   },
   handleDeleteClick: ({ deleteMusicFrom }) => (e, music) => {
     e.preventDefault();
     deleteMusicFrom("library", music)
   },
-  addToPlaylists: ({ addMusicTo, adding }) => (lists, video) => {
-    let ids = _.keys(_.pickBy(lists))
-    if(lists[`${adding.music_key}_library`] && !lists[`${adding.music_key}_already_in_library`]){
-      console.log("ADDMUSIC TO LIBRARAY")
+  addToPlaylists: ({ addMusicTo, adding, setAdding }) => (lists, video) => {
+    let ids = _.keys(_.pickBy(lists[adding.music_key]))
+    // console.log("adding, lists, video, ids", adding, lists, video, ids)
+    if(lists[adding.music_key] && lists[adding.music_key].library && !lists[adding.music_key].already_in_library){
+      // console.log("ADDMUSIC TO LIBRARAY", video)
       addMusicTo("library", video);
+      _.pull(ids, "library");
     }
     ids.map(id =>{
-      const splittedId = id.split("_")
-      if( splittedId[1] !== "already" && splittedId[1] !== "library" && !lists[`${splittedId[0]}_already_in_${splittedId[1]}`]){
-        console.log("ADDMUSIC TO PLAYLIST")
-        addMusicTo("playlist", video, splittedId[1])
+      if(!id.startsWith("already") && lists[adding.music_key][id] && !lists[adding.music_key][`already_in_${id}`]){
+        // console.log("ADDMUSIC TO PLAYLIST", video, id)
+        addMusicTo("playlist", video, id)
       }
     })
+    setAdding(null)
   }
 })
 

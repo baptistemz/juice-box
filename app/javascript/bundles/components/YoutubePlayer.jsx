@@ -35,6 +35,8 @@ class YoutubePlayer extends Component {
             event.preventDefault()
           }
           if(!this.props.hidden && !this.props.inTransition){
+            if(document.activeElement.id === 'search'){return}
+            event.preventDefault()
             this.state.playing ? this.onPause() : this.onPlay()
           }
           break;

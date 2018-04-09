@@ -20,7 +20,7 @@ class LibraryArtists extends Component {
     this.setState({ nameField: value });
   }
   shouldComponentUpdate(nextProps){
-    nextProps.artists !== this.props.artists
+    JSON.stringify(nextProps.artists) !== JSON.stringify(this.props.artists)
   }
   submit(e){
     e.preventDefault();

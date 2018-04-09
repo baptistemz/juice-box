@@ -10,14 +10,16 @@ import { withState, withHandlers, compose, pure } from 'recompose';
 
 
 const state = withState('state', 'setState', ({ musicKey, playlists, inLibrary }) => {
-  // console.log("inLibrary", inLibrary)
   let state = {}
   playlists.map(playlist =>{
-    state[`${musicKey}_${playlist.id}`] = _.includes(playlist.music_keys, musicKey);
-    state[`${musicKey}_already_in_${playlist.id}`] = _.includes(playlist.music_keys, musicKey);
+    console.log("_.includes(playlist.music_keys, musicKey)", _.includes(playlist.music_keys, musicKey), playlist.music_keys, musicKey)
+    state[musicKey]={
+      ...state[musicKey],
+      [`${playlist.id}`]: _.includes(playlist.music_keys, musicKey),
+      [`already_in_${playlist.id}`]: _.includes(playlist.music_keys, musicKey),
+    }
   });
-  state[`${musicKey}_library`] = inLibrary
-  state[`${musicKey}_already_in_library`] = inLibrary
+  state[musicKey] = { ...state[musicKey], library: inLibrary, already_in_library: inLibrary}
   return state;
 });
 
@@ -35,12 +37,12 @@ let AddToListContent = ({ libraryId, playlists, musicName, id, state, setState, 
       <br/>
       <div className="row margin-top-20">
         <Input
-          onClick={(e) => setState({...state, [`${musicKey}_library`]: !state.library })}
+          onClick={() => setState({...state, [musicKey]: { ...state[musicKey], library: !state[musicKey].library} })}
           id={`library_${libraryId}_${id}`}
           name={`library_${libraryId}_${id}`}
           type='checkbox'
           label="To My Library"
-          checked={state[`${musicKey}_library`] ? 'checked' : ''} />
+          checked={state[musicKey].library ? 'checked' : ''} />
       </div>
       <br/>
       {playlists && playlists.length > 0 ?
@@ -48,15 +50,14 @@ let AddToListContent = ({ libraryId, playlists, musicName, id, state, setState, 
           <h5 className="secondary-text text-left">To a playlist:</h5>
           <br/>
           {playlists.map((playlist) => {
-            console.log(playlist.name, state, `${musicKey}_${playlist.id}`, state[`${musicKey}_${playlist.id}`])
             return(
               <div key={`${playlist.id}_${id}`} className="col s6 m4 l3 margin-top-20">
                 <Input
-                  onClick={(e) => setState({...state, [`${musicKey}_${playlist.id}`]: !state[playlist.id] })}
+                  onClick={() => setState({ [musicKey]: { ...state[musicKey], [playlist.id]: !state[musicKey][playlist.id] } })}
                   id={`${playlist.id}_${id}`}
                   name={`${playlist.id}_${id}`} type='checkbox'
                   label={"To " + playlist.name}
-                  checked={state[`${musicKey}_${playlist.id}`] ? 'checked' : ''} />
+                  checked={state[musicKey][playlist.id] ? 'checked' : ''} />
               </div>
             )
           })}

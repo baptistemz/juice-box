@@ -44,6 +44,8 @@
   background-size: 120%;
   background-position: center;
   margin-top: 1px;
+  -webkit-filter: opacity(0.6);
+  filter: opacity(0.6);
 }
 .card-title{
   text-shadow: 1px 1px 3px #565454;

@@ -1,6 +1,7 @@
 import React  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { withState, withHandlers, compose, pure } from 'recompose';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { addMusicToRoom, addMusicToLibrary, addMusicToPlaylist } from '../actions/index';
@@ -42,9 +43,11 @@ const handlers = withHandlers({
         addMusicToRoom(roomId, params);
         break;
       case "library":
+        console.log(" in swicth add to library", libraryId, params)
         addMusicToLibrary(libraryId, params);
         break;
       case "playlist":
+        console.log(" in swicth add to playlist", libraryId, params)
         addMusicToPlaylist(id, params);
         break;
       default:
@@ -66,20 +69,21 @@ const handlers = withHandlers({
 })
 
 const modalHandlers = withHandlers({
-  addToPlaylists: ({ addMusicTo }) => (lists, video) => {
-    let ids = _.keys(_.pickBy(lists))
-    console.log("IDS", ids, video)
-    if(lists[`${video.id.videoId}_library`] && !lists[`${video.id.videoId}_already_in_library`]){
-      console.log("ADDMUSIC TO LIBRARAY")
-      addMusicTo("library", video);
+  addToPlaylists: ({ addMusicTo, adding, setAdding }) => (lists) => {
+    let ids = _.keys(_.pickBy(lists[adding.id.videoId]))
+    console.log("adding, lists, ids", adding, lists, ids)
+    if(lists[adding.id.videoId] && lists[adding.id.videoId].library && !lists[adding.id.videoId].already_in_library){
+      console.log("ADDMUSIC TO LIBRARAY", adding)
+      addMusicTo("library", adding);
+      _.pull(ids, "library");
     }
     ids.map(id =>{
-      const splittedId = id.split("_")
-      if( splittedId[1] !== "already" && splittedId[1] !== "library" && !lists[`${splittedId[0]}_already_in_${splittedId[1]}`]){
-        // console.log("ADDMUSIC TO PLAYLIST")
-        addMusicTo("playlist", video, splittedId[1])
+      if(!id.startsWith("already") && lists[adding.id.videoId][id] && !lists[adding.id.videoId][`already_in_${id}`]){
+        console.log("ADDMUSIC TO PLAYLIST", adding, id)
+        addMusicTo("playlist", adding, id)
       }
     })
+    setAdding(null)
   }
 })
 
@@ -127,7 +131,7 @@ let MusicSearchResults = ({
           <AddToListWindow id={`search_add_to_playlist_${inModal ? 'modal' : 'window'}_modal`}
             libraryId={libraryId}
             playlists={playlists}
-            musicKey={adding && adding.id.videoId} addToPlaylists={(lists) => addToPlaylists(lists, adding)}
+            musicKey={adding && adding.id.videoId} addToPlaylists={addToPlaylists}
             inLibrary={_.find(libraryMusics, { music_key: adding && adding.id.videoId }) ? true : false}
             musicName={adding && adding.snippet.title} />
         :

@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, MusicListElement } from '../../common/index';
+import _ from 'lodash';
+import { Button, MusicListElement, AddToListWindow } from '../../common/index';
 import { selectArtist, updateMusic } from '../../actions/index';
+
+
+
+
 
 class LibraryArtist extends Component {
   constructor(){
     super();
-    this.state = { editing: {}, titleField: "" };
+    this.state = { editing: {}, titleField: "", adding: null };
   }
   componentDidMount(){
     this.props.selectArtist(this.props.match.params.id);
@@ -32,26 +37,30 @@ class LibraryArtist extends Component {
   }
   handleAddClick(e, music){
     e.preventDefault();
-    $(`#artist_music_${music.music_key}_modal`).modal({endingTop: "O%"});
-    $(`#artist_music_${music.music_key}_modal`).modal('open');
+    this.setState({ adding: music });
+    $("#add_to_list_modal").modal({endingTop: "O%", complete: () => this.setState({ adding: null })});
+    $("#add_to_list_modal").modal('open');
   }
   handleDeleteClick(e, music){
     e.preventDefault();
     this.props.deleteMusicFrom("library", music);
   }
   addToPlaylists = (lists, video) => {
-    let ids = _.keys(_.pickBy(lists))
-    if(lists.library && !lists.already_in_library){
-      console.log("oui  ajoute a la library")
+    const { adding } = this.state;
+    let ids = _.keys(_.pickBy(lists[adding.music_key]))
+    // console.log("adding, lists, video, ids", adding, lists, video, ids)
+    if(lists[adding.music_key] && lists[adding.music_key].library && !lists[adding.music_key].already_in_library){
+      // console.log("ADDMUSIC TO LIBRARAY", video)
       this.props.addMusicTo("library", video);
       _.pull(ids, "library");
     }
     ids.map(id =>{
-      if(!id.startsWith("already") && lists[id] && !lists[`already_in_${id}`]){
-        console.log("OUI AJoute à la liste", lists[id])
+      if(!id.startsWith("already") && lists[adding.music_key][id] && !lists[adding.music_key][`already_in_${id}`]){
+        // console.log("ADDMUSIC TO PLAYLIST", video, id)
         this.props.addMusicTo("playlist", video, id)
       }
     })
+    this.setState({ adding: null })
   }
   render(){
     const { selectedArtist, selectedArtistMusics, libraryId, playlists, playMusicInLibrary, inRoom, match, addMusicToRoom } = this.props;
@@ -83,11 +92,10 @@ class LibraryArtist extends Component {
                     id={`artist_music_${music.music_key}`}
                     music={music}
                     playMusicInLibrary={() => playMusicInLibrary(music, selectedArtistMusics.slice(index + 1))}
-                    handleAddClick={this.handleAddClick}
+                    handleAddClick={this.handleAddClick.bind(this)}
                     inRoom={inRoom}
                     addMusicToRoom={addMusicToRoom}
                     handleDeleteClick= {this.handleDeleteClick.bind(this)}
-                    addToPlaylists={this.addToPlaylists}
                     editItem={this.editItem.bind(this)} />
                 )
               })}
@@ -104,6 +112,11 @@ class LibraryArtist extends Component {
                 </form>
               </div>
             </div>
+            <AddToListWindow id="add_to_list_modal"
+              musicKey={this.state.adding && this.state.adding.music_key}
+              addToPlaylists={(lists) => this.addToPlaylists(lists, this.state.adding)}
+              libraryId={libraryId} playlists={playlists}
+              inLibrary={true} musicName={this.state.adding && this.state.adding.song} />
           </div>
         :
           <div>No music</div>

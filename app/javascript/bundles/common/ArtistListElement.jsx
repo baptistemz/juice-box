@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const ArtistListElement = ({ artist, match, inRoom, editItem }) => {
+const ArtistListElement = ({ artist, match, inRoom, editItem, selectArtist }) => {
   // console.log("ArtistListElement", `${match.url}/${artist.id}`, inRoom)
   return(
     <Link to={`${match.url}/${artist.id}`}>

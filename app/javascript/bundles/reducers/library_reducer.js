@@ -41,9 +41,12 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, playlists: [ ...state.playlists, playlist ] }
     }
     case MUSIC_ADDED_TO_PLAYLIST:{
-      console.log("reducer", action.payload)
-      const { owner_playlists, public_playlists } = action.payload;
-      return { ...state, playlists: owner_playlists }
+      const index = _.findIndex(state.playlists, { id: action.payload.playlist.id })
+      return { ...state, playlists: [
+        ...state.playlists.slice(0, index),
+        { ...state.playlists[index], music_keys: [ state.playlists[index].music_keys, action.payload.music_key ]},
+        ...state.playlists.slice(index + 1)
+      ]}
     }
     case ARTIST_UPDATED:{
       const {  deleted_artist, new_artist, updated_musics } = action.payload;
@@ -140,7 +143,7 @@ export default function (state = INITIAL_STATE, action) {
       }
     }
     case WAITING_LIST_ADDED_TO_LIBRARY_PLAYER:{
-      console.log("WAITING_LIST_ADDED_TO_LIBRARY_PLAYER action.payload", action.payload)
+      // console.log("WAITING_LIST_ADDED_TO_LIBRARY_PLAYER action.payload", action.payload)
       return {
         ...state,
         playerMusics: action.payload,
@@ -148,22 +151,22 @@ export default function (state = INITIAL_STATE, action) {
       };
     }
     case LIBRARY_VOLUME_BALANCE_CHANGED:{
-      console.log("LIBRARY_VOLUME_BALANCE_CHANGED", action.payload)
+      // console.log("LIBRARY_VOLUME_BALANCE_CHANGED", action.payload)
       const variation = action.payload.music_number === 1 ? action.payload.amount : (0 - action.payload.amount)
       return { ...state, volume_balance: state.volume_balance + variation }
     }
     case UPDATED_LIBRARY_PLAYER_MUSIC:{
-      console.log("ACTION POINT PAYLOAD", action.payload)
+      // console.log("ACTION POINT PAYLOAD", action.payload)
       if(action.payload.status === "playing"){
         const playerMusics = state.playerMusics;
         playerMusics.shift()
         const endingMusicIndex = _.findIndex(state.musics, { playing: true });
-        console.log("MUSIC_STARTED in condition /  endingMusicIndex", endingMusicIndex)
+        // console.log("MUSIC_STARTED in condition /  endingMusicIndex", endingMusicIndex)
         let musics = endingMusicIndex > -1 ? [ ...state.musics.slice(0, endingMusicIndex), { ...state.musics[endingMusicIndex], playing: false }, ...state.musics.slice(endingMusicIndex + 1) ] : state.musics;
         const startingMusicIndex = _.findIndex(state.musics, { music_key: action.payload.music_key });
-        console.log("MUSIC_STARTED in condition /  startingMusicIndex", startingMusicIndex)
+        // console.log("MUSIC_STARTED in condition /  startingMusicIndex", startingMusicIndex)
         musics = startingMusicIndex > -1 ? [ ...musics.slice(0, startingMusicIndex), { ...musics[startingMusicIndex], playing: true }, ...musics.slice(startingMusicIndex + 1) ] : musics;
-        console.log("MUSIC_STARTED in condition /  musics", musics)
+        // console.log("MUSIC_STARTED in condition /  musics", musics)
         return { ...state, playerMusics, musics, hidden_player: state.hidden_player === 1 ? 0 : 1, [`music_${state.hidden_player}`]: action.payload }
       }
       if(action.payload.status === "archived"){

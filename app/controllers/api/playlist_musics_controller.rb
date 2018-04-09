@@ -18,6 +18,8 @@ module Api
       )
       @playlist_music = @playlist.playlist_musics.build(music_id: @music.id)
       if @playlist_music.save
+        @public_playlists = Playlist.where(public: true)
+        @owner_playlists = current_api_user ? current_api_user.playlists : []
         Rails.logger.debug("@playlist_music:#{@playlist_music.to_json}")
         @playlist_musics = @playlist.playlist_musics
         render :index
